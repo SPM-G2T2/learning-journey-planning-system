@@ -53,23 +53,12 @@ FOREIGN KEY (Position_ID) REFERENCES Position (Position_ID),
 FOREIGN KEY (Skill_ID) REFERENCES Skill (Skill_ID)
 );
 
+
 DROP TABLE IF EXISTS Role;
 CREATE TABLE IF NOT EXISTS Role (
 Role_ID int NOT NULL AUTO_INCREMENT,
 Role_Name varchar(50) NOT NULL,
 PRIMARY KEY (Role_ID)
-);
- 
-
-DROP TABLE IF EXISTS Registration;
-CREATE TABLE IF NOT EXISTS Registration (
-Reg_ID int NOT NULL,
-Course_ID varchar(20) NOT NULL,
-Staff_ID int NOT NULL auto_increment,
-Reg_Status varchar(20) NOT NULL,
-Completion_Status varchar(20) NOT NULL,
-PRIMARY KEY (Reg_ID, Course_ID),
-FOREIGN KEY (Staff_ID) REFERENCES Staff (Staff_ID)
 );
 
 
