@@ -1,4 +1,4 @@
-import { Form, Select } from 'antd';
+import { Form, Select, Button } from 'antd';
 import "antd/dist/antd.css"
 
 interface InputDropdownProps {
@@ -21,9 +21,37 @@ export default function InputDropdown(props: InputDropdownProps) {
     return <div>
       <Form.Item label={props.label}>
       { props.label === "Skills" ?
-          <Select defaultValue="Programming" onChange={handleChange} style={{ width: 200 }}>
-            <Option key="S123">Programming</Option>
-          </Select>
+          <Form.List name="skills">
+          {(fields, { add, remove }) => (
+          <>
+              <div style={{ display: 'flex',  marginBottom: 30 }}>
+                  <Select defaultValue="Programming" onChange={handleChange} style={{ width: 200 }}>
+                    <Option key="S123">Programming</Option>
+                  </Select>
+                  <Button onClick={() => add()} style={{ marginLeft: 50 }}>
+                      Add Skill
+                  </Button>
+              </div>
+                
+              {fields.map(({ key, name, ...restField }) => (
+                <div key={key} style={{ display: 'flex', marginTop: 10 }}>
+                    <Form.Item
+                    {...restField}
+                    name={[name, 'resp']}
+                    style={{ marginRight: 50 }}
+                    >
+                    <Select defaultValue="Programming" onChange={handleChange}>
+                      <Option key="S123">Programming</Option>
+                    </Select>
+                    </Form.Item>
+                    <Button type="dashed" onClick={() => remove(name)}>
+                        Remove
+                    </Button>
+                </div>
+              ))}
+          </>
+          )}
+          </Form.List>
         : null }
       { props.label === "Courses" ?
           <Select defaultValue="Intro to Programming" onChange={handleChange} style={{ width: 200 }}>

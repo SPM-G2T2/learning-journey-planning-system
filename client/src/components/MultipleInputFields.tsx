@@ -13,13 +13,13 @@ interface InputFieldsProps {
 export default function MultipleInputFields(props: InputFieldsProps) {
 
     return <div>
-            <Form.List name="users">
+            <Form.List name="responsibilities">
             {(fields, { add, remove }) => (
             <>
                 <Form.Item label={props.label}>
                     <div style={{ display: 'flex' }}>
                         <Input />
-                        <Button type="primary" onClick={() => add()} style={{ marginLeft: 50 }}>
+                        <Button onClick={() => add()} style={{ marginLeft: 50 }}>
                             Add Row
                         </Button>
                     </div>
@@ -29,8 +29,9 @@ export default function MultipleInputFields(props: InputFieldsProps) {
                 <div key={key} style={{ display: 'flex', marginBottom: 8 }}>
                     <Form.Item
                     {...restField}
-                    name={[name, 'first']}
+                    name={[name, 'resp']}
                     style={{ marginLeft: 230 }}
+                    rules={[{ required: true }]}
                     >
                     <Input style={{ width: 660 }} />
                     </Form.Item>

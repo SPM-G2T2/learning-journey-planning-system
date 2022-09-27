@@ -4,9 +4,46 @@ import './styles/App.css';
 import InputField  from "./components/InputField";
 import MultipleInputFields from "../src/components/MultipleInputFields";
 import InputDropdown from "../src/components/InputDropdown";
-import { Form } from 'antd';
+import { Form, Button } from 'antd';
 
 function App() {
+
+  const [form] = Form.useForm();
+
+  const onFinish = (values: any) => {
+    console.log('Success:', values);
+    
+    // mock data first
+    const position = {
+      "Skill_ID": 1, 
+      "Position_name": "Lowest Form",
+      "Position_desc": "Coding IDK",
+      "Position_dept": "SWE", 
+      "Position_rept": "Coding everyday",
+      "Position_status": "Active"
+    }
+
+    fetch("http://localhost:5000/createPosition", 
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          method: "POST",
+          body: JSON.stringify( position )
+      })
+      .then((response) => {
+        if (response.status === 201) {
+          return response.json();
+        } else if (response.status === 400) {
+          console.log("Position Name already exists.")
+        }
+      })
+      .then((data) => console.log(data))
+      .then((error) => console.log(error));
+    
+  };
+
+
   return (
     // <div className="App">
     //   <header className="App-header">
@@ -28,12 +65,15 @@ function App() {
       <Form 
         labelCol={{ span: 4 }}
         wrapperCol={{ span: 14 }}
-        layout="horizontal">
+        layout="horizontal"
+        form={form}
+        onFinish={onFinish}>
         <InputField label="Title"></InputField>
         <InputField label="Description"></InputField>
         <InputDropdown label="Department"></InputDropdown>
         <MultipleInputFields label="Responsibilities"></MultipleInputFields>
         <InputDropdown label="Skills"></InputDropdown>
+        <Button type="primary" style={{ marginLeft: '80%' }} htmlType="submit">Create role</Button>
       </Form>
     </div>
   );

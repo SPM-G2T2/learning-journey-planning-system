@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 import json
 
 app = Flask(__name__)
+CORS(app)
 # Mac User
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:8889/SPM'
 # Window User
@@ -23,8 +25,7 @@ class Position(db.Model):
     Position_rept = db.Column(db.String(1000), nullable=False)
     Position_status = db.Column(db.String(10), nullable=False)
 
-    def __init__(self, Position_ID, Skill_ID, Position_name, Position_desc, Position_dept, Position_rept, Position_status): #constructor, initializes the record
-        self.Position_ID = Position_ID
+    def __init__(self, Skill_ID, Position_name, Position_desc, Position_dept, Position_rept, Position_status): # constructor, initializes the record
         self.Skill_ID = Skill_ID
         self.Position_name = Position_name
         self.Position_desc = Position_desc
@@ -62,7 +63,6 @@ def create_position():
 
     position = request.get_json()
     print(type(position)) #dict 
-    positionID = position['Position_ID']
     skillID = position['Skill_ID']
     positionName = position['Position_name']
 
@@ -81,8 +81,8 @@ def create_position():
     positionDept = position['Position_dept']
     positionRes = position['Position_rept']
     positionStatus = position['Position_status']
-    print(positionID, skillID, positionName, positionDesc, positionDept, positionRes, positionStatus)
-    position = Position(positionID, skillID, positionName, positionDesc, positionDept, positionRes, positionStatus)
+    print(skillID, positionName, positionDesc, positionDept, positionRes, positionStatus)
+    position = Position(skillID, positionName, positionDesc, positionDept, positionRes, positionStatus)
     print(position)
  
     try:
