@@ -34,7 +34,7 @@ Course_Status varchar(15) NOT NULL,
 Course_Type varchar(10) NOT NULL,
 Course_Category varchar(50) NOT NULL,
 Skill_ID int NOT NULL,
-PRIMARY KEY (Course_ID),
+PRIMARY KEY (Course_ID, Skill_ID),
 FOREIGN KEY (Skill_ID) REFERENCES Skill (Skill_ID)
 );
 

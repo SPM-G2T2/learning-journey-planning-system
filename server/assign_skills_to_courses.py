@@ -21,7 +21,7 @@ class Course(db.Model):
     course_status = db.Column(db.String(15), nullable=False)
     course_type = db.Column(db.String(10), nullable=False)
     course_category = db.Column(db.String(50), nullable=False)
-    skill_id = db.Column(db.Integer)
+    skill_id = db.Column(db.Integer, primary_key=True)
 
     def __init__(self, course_id, course_name, course_desc, course_status, course_type, course_category, skill_id): 
         self.course_id = course_id 
@@ -133,8 +133,33 @@ def create_skill(skill_id):
     ), 201 
 
 
-#FUNCTION 3: Assign courses to the created skill
+#FUNCTION 3: Assign courses to the created skill (adding another course entry with different skill_ID)
+@app.route("/assign_skill", methods=['POST']) 
+def assign_skill(): 
 
+    data = request.get_json() 
+    course = Course(**data) #follow course data structure
+
+    try: 
+        db.session.add(course) 
+        db.session.commit() 
+
+    except: 
+        return jsonify( 
+            { 
+                "code": 500, 
+                "data": {}, 
+                "message": "An error occurred creating the skill." 
+            } 
+        ), 500 
+
+    return jsonify( 
+        { 
+            "code": 201, 
+            "data": course.json(),
+            "message": "Skill successfully created."
+        } 
+    ), 201 
 
 if __name__ == '__main__': 
     app.run(port=5000, debug=True) 
