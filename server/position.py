@@ -25,6 +25,17 @@ class Position(db.Model):
     Position_rept = db.Column(db.String(1000), nullable=False)
     Position_status = db.Column(db.String(10), nullable=False)
 
+
+    def __init__(self, Position_ID, Skill_ID, Position_name, Position_desc, Position_dept, Position_rept, Position_status): # constructor, initializes the record
+        self.Position_ID = Position_ID
+        self.Skill_ID = Skill_ID
+        self.Position_name = Position_name
+        self.Position_desc = Position_desc
+        self.Position_dept = Position_dept
+        self.Position_rept = Position_rept
+        self.Position_status = Position_status
+
+
     def __init__(self, Skill_ID, Position_name, Position_desc, Position_dept, Position_rept, Position_status): # constructor, initializes the record
         self.Skill_ID = Skill_ID
         self.Position_name = Position_name
@@ -56,6 +67,41 @@ def get_all_position():
         "message": "There are no Positions."
         }
         ), 404
+
+
+@app.route("/createPositionWithPId", methods=['POST'])
+def create_position():
+
+    position = request.get_json()
+    print(type(position)) #dict 
+    positionID = position['Position_ID']
+    skillID = position['Skill_ID']
+    positionName = position['Position_name']
+    positionDesc = position['Position_desc']
+    positionDept = position['Position_dept']
+    positionRes = position['Position_rept']
+    positionStatus = position['Position_status']
+    print(positionID, skillID, positionName, positionDesc, positionDept, positionRes, positionStatus)
+    position = Position(positionID, skillID, positionName, positionDesc, positionDept, positionRes, positionStatus)
+    print(position)
+ 
+    try:
+        db.session.add(position)
+        db.session.commit()
+    except:
+        return jsonify(
+            {
+                "code": 500,
+                "message": "An error occurred adding the position."
+            }
+        ), 500
+ 
+    return jsonify(
+        {
+            "code": 201,
+            "data": position.json()
+        }
+    ), 201
 
 
 @app.route("/createPosition", methods=['POST'])

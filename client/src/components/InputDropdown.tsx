@@ -42,10 +42,12 @@ export default function InputDropdown(props: InputDropdownProps) {
                       key={key+1} 
                     >
                     <Select>
-                      <Option value="S123">Programming</Option>
+                      <Option value="1">Programming</Option>
+                      <Option value="2">Sleeping</Option>
+                      <Option value="3">Pooping</Option>
                     </Select>
                     </Form.Item>
-                    <Button type="dashed" onClick={() => remove(name)}>
+                    <Button type="dashed" onClick={() => remove(name+1)}>
                         Remove
                     </Button>
                 </>

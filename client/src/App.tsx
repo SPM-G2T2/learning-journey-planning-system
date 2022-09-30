@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // import logo from './logo.svg';
 import './styles/App.css';
 import InputField  from "./components/InputField";
@@ -22,37 +23,47 @@ function App() {
     const Description = values['Description']
     const Department = values['Department']
 
-    
-    const Active = values['Active'] ? "Active" : "Retired" 
+    var responsibilties = ""
+    for (var resp of values['Responsibilities']) {
+      console.log(resp['resp'])
+      responsibilties += resp['resp'] + ","
+    }
+    console.log(responsibilties.substring(0, responsibilties.length-1))
+
+    const Active = "Retired" 
+    if (values['Active']) {
+      const Active = "Active"
+    } 
     
 
-    // mock data first
-    // const position = {
-    //   "Skill_ID": 1, 
-    //   "Position_name": Title,
-    //   "Position_desc": Description,
-    //   "Position_dept": Department, 
-    //   "Position_rept": "Coding everyday",
-    //   "Position_status": Active
+    // for (var skill of values['Skills']) {
+    //   const position = {
+    //     "Skill_ID": skill['skill'], 
+    //     "Position_name": Title,
+    //     "Position_desc": Description,
+    //     "Position_dept": Department, 
+    //     "Position_rept": responsibilties.substring(0, responsibilties.length-1),
+    //     "Position_status": Active
+    //   }
+
+    //   fetch("http://localhost:5000/createPosition", 
+    //       {
+    //         headers: {
+    //           'Content-Type': 'application/json'
+    //         },
+    //         method: "POST",
+    //         body: JSON.stringify( position )
+    //     })
+    //     .then((response) => {
+    //       if (response.status === 201) {
+    //         return response.json();
+    //       } else if (response.status === 400) {
+    //         console.log("Position Name already exists.")
+    //       }
+    //     })
+    //     .then((data) => console.log(data))
+    //     .then((error) => console.log(error));
     // }
-
-    // fetch("http://localhost:5000/createPosition", 
-    //     {
-    //       headers: {
-    //         'Content-Type': 'application/json'
-    //       },
-    //       method: "POST",
-    //       body: JSON.stringify( position )
-    //   })
-    //   .then((response) => {
-    //     if (response.status === 201) {
-    //       return response.json();
-    //     } else if (response.status === 400) {
-    //       console.log("Position Name already exists.")
-    //     }
-    //   })
-    //   .then((data) => console.log(data))
-    //   .then((error) => console.log(error));
     
   };
 
@@ -62,22 +73,6 @@ function App() {
 
 
   return (
-    // <div className="App">
-    //   <header className="App-header">
-    //     <img src={logo} className="App-logo" alt="logo" />
-    //     <p>
-    //       Edit <code>src/App.tsx</code> and save to reload.
-    //     </p>
-    //     <a
-    //       className="App-link"
-    //       href="https://reactjs.org"
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //     >
-    //       Learn React
-    //     </a>
-    //   </header>
-    // </div>
     <div>
       <Form 
         name="userForm"
@@ -94,7 +89,7 @@ function App() {
         <MultipleInputFields label="Responsibilities" name="Responsibilities"></MultipleInputFields>
         <InputDropdown label="Skills" name="Skills"></InputDropdown>
         <Form.Item label="Active" name="Active" valuePropName="checked">
-          <Switch defaultChecked/>
+          <Switch />
         </Form.Item>
         <Form.Item>
           <Button type="primary" style={{ marginLeft: '80%' }} htmlType="submit">Create role</Button>
