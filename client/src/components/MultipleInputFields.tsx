@@ -3,6 +3,7 @@ import "antd/dist/antd.css";
 
 interface InputFieldsProps {
     label?: string;
+    name?: string;
   }
 
 /**
@@ -12,36 +13,45 @@ interface InputFieldsProps {
  */
 export default function MultipleInputFields(props: InputFieldsProps) {
 
-    return <div>
-            <Form.List name="responsibilities">
+    return <>
+            <Form.List name="Responsibilities">
             {(fields, { add, remove }) => (
             <>
-                <Form.Item label={props.label}>
-                    <div style={{ display: 'flex' }}>
-                        <Input />
-                        <Button onClick={() => add()} style={{ marginLeft: 50 }}>
+                <>
+                    <Form.Item label={props.label} name={[0, 'resp']}  key={0} tooltip="This is a required field" 
+                        rules={[
+                        {
+                        required: true,
+                        message: "Please enter a responsibility",
+                        }
+                    ]}
+                    >
+                        <Input style={{ width: 200, marginBottom: 10 }} />
+                    </Form.Item>
+                    <Button onClick={() => add()} style={{ marginLeft: 50,  marginBottom: 10 }}>
                             Add Row
-                        </Button>
-                    </div>
-                </Form.Item>
-                  
+                    </Button>
+                </>
+
                 {fields.map(({ key, name, ...restField }) => (
-                <div key={key} style={{ display: 'flex', marginBottom: 8 }}>
+                <>
                     <Form.Item
                     {...restField}
-                    name={[name, 'resp']}
-                    style={{ marginLeft: 230 }}
-                    rules={[{ required: true }]}
+                    name={[name+1, 'resp']}
+                    key={key+1}
+                    style={{ display: 'inline', marginBottom: 8, marginLeft: 230 }}
+                    tooltip="This is a required field"
+                    rules={[{ required: true, message: "Please enter a responsibility" }]}
                     >
-                    <Input style={{ width: 660 }} />
+                    <Input style={{ width: 200 }} />
                     </Form.Item>
                     <Button type="dashed" onClick={() => remove(name)} style={{ marginLeft: 50 }}>
                         Remove
                     </Button>
-                </div>
+                </>
                 ))}
             </>
             )}
             </Form.List>
-      </div>
+      </>
 } 

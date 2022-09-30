@@ -3,6 +3,7 @@ import "antd/dist/antd.css"
 
 interface InputDropdownProps {
     label?: string;
+    name?: string;
   }
 
 /**
@@ -14,55 +15,62 @@ export default function InputDropdown(props: InputDropdownProps) {
    
     const { Option } = Select;
 
-    const handleChange = (value: string | string[]) => {
-      console.log(`Selected: ${value}`);
-    };
-
-    return <div>
-      <Form.Item label={props.label}>
+    return <>
       { props.label === "Skills" ?
-          <Form.List name="skills">
+          <Form.List name="Skills">
           {(fields, { add, remove }) => (
-          <>
-              <div style={{ display: 'flex',  marginBottom: 30 }}>
-                  <Select defaultValue="Programming" onChange={handleChange} style={{ width: 200 }}>
-                    <Option key="S123">Programming</Option>
+          <div style={{ display: 'inline', marginLeft: 200, marginBottom: 30 }}>
+              <Form.Item label={props.label} name={[0, 'skill']} key={0} tooltip="This is a required field" rules={[{ required: true, message: 'Please select a skill' }]}>
+                  <Select style={{ width: 200 }}>
+                    <Option value="1">Programming</Option>
+                    <Option value="2">Sleeping</Option>
+                    <Option value="3">Pooping</Option>
                   </Select>
-                  <Button onClick={() => add()} style={{ marginLeft: 50 }}>
-                      Add Skill
-                  </Button>
-              </div>
+              </Form.Item>
+              <Button onClick={() => add()} style={{ marginLeft: 50 }}>
+                Add Skill
+              </Button>
                 
               {fields.map(({ key, name, ...restField }) => (
-                <div key={key} style={{ display: 'flex', marginTop: 10 }}>
+                <>
                     <Form.Item
-                    {...restField}
-                    name={[name, 'resp']}
-                    style={{ marginRight: 50 }}
+                      label={props.label}
+                      name={[name+1, 'skill']}
+                      tooltip="This is a required field"
+                      rules={[{ required: true, message: 'Please select a skill' }]}
+                      style={{  display: 'inline', marginLeft: 200, marginBottom: 30 }}
+                      key={key+1} 
                     >
-                    <Select defaultValue="Programming" onChange={handleChange}>
-                      <Option key="S123">Programming</Option>
+                    <Select>
+                      <Option value="S123">Programming</Option>
                     </Select>
                     </Form.Item>
                     <Button type="dashed" onClick={() => remove(name)}>
                         Remove
                     </Button>
-                </div>
+                </>
               ))}
-          </>
+          </div>
           )}
           </Form.List>
         : null }
       { props.label === "Courses" ?
-          <Select defaultValue="Intro to Programming" onChange={handleChange} style={{ width: 200 }}>
-            <Option key="C123">Intro to Programming</Option>
-          </Select>
+         <Form.Item label={props.label} name={props.label} tooltip="This is a required field" rules={[{ required: true, message: 'Please select a course' }]}>
+            <Select style={{ width: 200 }}>
+              <Option value="CS123">Intro to Programming</Option>
+            </Select>
+          </Form.Item>
         : null }
       { props.label === "Department" ?
-          <Select defaultValue="Human Resource" onChange={handleChange} style={{ width: 200 }}>
-            <Option key="R123">Human Resource</Option>
-          </Select>
+          <Form.Item label={props.label} name={props.label} tooltip="This is a required field" rules={[{ required: true, message: 'Please select a department' }]}> 
+            <Select style={{ width: 200 }}>
+              <Option value="HR">Human Resource</Option>
+              <Option value="Finance">Finance</Option>
+              <Option value="Sales">Sales</Option>
+              <Option value="Operations">Operations</Option>
+              <Option value="IT Team">IT Team</Option>
+            </Select>
+          </Form.Item>
       : null }
-       </Form.Item>
-      </div>
+      </>
 }

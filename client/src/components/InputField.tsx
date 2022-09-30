@@ -1,9 +1,9 @@
 import { Form, Input } from 'antd';
-import { useState } from 'react'
 import "antd/dist/antd.css"
 
 interface InputFieldsProps {
     label?: string;
+    name?: string;
   }
 
 /**
@@ -14,21 +14,28 @@ interface InputFieldsProps {
 export default function InputField(props: InputFieldsProps) {
     const { TextArea } = Input;
 
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-
-    // const handleChange = (value: string | string[]) => {
-    //   console.log(`Selected: ${value}`);
-    // };
-
-    return <div>
+    return (<>
       { props.label === "Title" ?
-        <Form.Item label={props.label}>
-          <Input onChange={(e) => setTitle(e.target.value)} />
+        <Form.Item label={props.label} name={props.label}
+          tooltip="This is a required field"
+          rules={[
+            {
+              required: true,
+              message: "Please enter a title",
+            },
+          ]}>
+          <Input/>
         </Form.Item> : 
-        <Form.Item label={props.label}>
-          <TextArea rows={4} onChange={(e) => setDescription(e.target.value)} />
+        <Form.Item label={props.label} name={props.label}
+          tooltip="This is a required field"
+          rules={[
+            {
+              required: true,
+              message: "Please enter a description",
+            },
+          ]}>
+          <TextArea/>
         </Form.Item>
         }
-      </div>
+      </>)
 }
