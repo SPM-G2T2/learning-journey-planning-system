@@ -70,7 +70,7 @@ def get_all_position():
 
 
 @app.route("/createPositionWithPId", methods=['POST'])
-def create_position():
+def create_position_with_PID():
 
     position = request.get_json()
     print(type(position)) #dict 

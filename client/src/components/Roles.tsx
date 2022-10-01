@@ -36,6 +36,35 @@ export default function Roles() {
         if (values['Active']) {
         const Active = "Active"
         } 
+        console.log(values['Skills'][0]['skill']);
+
+        // const position = {
+        //     "Skill_ID": values['Skills'][0]['skill'], 
+        //     "Position_name": Title,
+        //     "Position_desc": Description,
+        //     "Position_dept": Department, 
+        //     "Position_rept": responsibilties.substring(0, responsibilties.length-1),
+        //     "Position_status": Active
+        //     }
+
+        //     fetch("http://localhost:5000/createPosition", 
+        //         {
+        //         headers: {
+        //             'Content-Type': 'application/json'
+        //         },
+        //         method: "POST",
+        //         body: JSON.stringify( position )
+        //     })
+        //     .then((response) => {
+        //         if (response.status === 201) {
+        //         return response.json();
+        //         } else if (response.status === 400) {
+        //         console.log("Position Name already exists.")
+        //         }
+        //     })
+        //     .then((data) => console.log(data))
+        //     .then((error) => console.log(error));
+        // }
 
 
         // for (var skill of values['Skills']) {
