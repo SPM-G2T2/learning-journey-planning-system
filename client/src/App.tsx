@@ -25,7 +25,7 @@ function App() {
 
     var responsibilties = ""
     for (var resp of values['Responsibilities']) {
-      console.log(resp['resp'])
+      console.log(resp)
       responsibilties += resp['resp'] + ","
     }
     console.log(responsibilties.substring(0, responsibilties.length-1))
