@@ -51,13 +51,13 @@ class Position(db.Model):
 
 @app.route("/position")
 def get_all_position():
-    positionlist = Position.query.all() 
-    if len(positionlist): 
+    positionList = Position.query.all() 
+    if len(positionList): 
         return jsonify ( 
         {
             "code": 200,
             "data": {
-            "Positions": [position.json() for position in positionlist] 
+            "Positions": [position.json() for position in positionList] 
                     }
                 }
             )

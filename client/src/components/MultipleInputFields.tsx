@@ -1,4 +1,7 @@
-import { Form, Input, Button } from 'antd';
+import {
+    MinusCircleOutlined
+  } from "@ant-design/icons";
+import { Form, Input, Button, Space } from 'antd';
 import "antd/dist/antd.css";
 
 interface InputFieldsProps {
@@ -17,38 +20,36 @@ export default function MultipleInputFields(props: InputFieldsProps) {
             <Form.List name="Responsibilities">
             {(fields, { add, remove }) => (
                 <>
-                    <>
-                    <Form.Item label={props.label} name={[0, 'resp']} key={0} tooltip="This is a required field" 
-                        rules={[
-                        {
-                        required: true,
-                        message: "Please enter a responsibility",
-                        }
-                    ]}
-                    >
-                        <Input style={{ width: 200, marginBottom: 10 }} />
-                    </Form.Item>
-                    <Button onClick={() => add()} style={{ marginLeft: 50,  marginBottom: 10 }}>
+                    {/* <Space align="baseline" style={{ marginRight: 750 }}> */}
+                        <Form.Item label={props.label} name={[0, 'resp']} tooltip="This is a required field" 
+                            rules={[
+                            {
+                            required: true,
+                            message: "Please enter a responsibility",
+                            }
+                        ]}
+                        >
+                            <Input style={{ marginBottom: 10 }} />
+                        </Form.Item>
+                        <Button onClick={() => add()} style={{ marginBottom: 10 }}>
                             Add Row
-                    </Button>
-                    </>
+                        </Button>
+                    {/* </Space> */}
 
                 {fields.map(({ key, name, ...restField }) => (
-                    <> 
+                    <Space style={{ display: 'flex',  marginBottom: 8 }} align="baseline"> 
                         <Form.Item
                         {...restField}
-                        name={[name+1, 'resp']}
-                        key={key+1}
-                        style={{ display: 'inline', marginBottom: 8, marginLeft: 230 }}
+                        name={[name, 'resp']}
+                        key={key}
+                        style={{ marginLeft: 120 }}
                         tooltip="This is a required field"
                         rules={[{ required: true, message: "Please enter a responsibility" }]}
                         >
-                        <Input style={{ width: 200 }} />
+                        <Input style={{ width: 320 }} />
                         </Form.Item>
-                        <Button type="dashed" onClick={() => remove(name)} style={{ marginLeft: 50 }}>
-                            Remove
-                        </Button>
-                    </>
+                        <MinusCircleOutlined onClick={() => remove(name)} style={{ marginLeft: 10 }} />
+                    </Space>
                 ))}
                 </>
             )}

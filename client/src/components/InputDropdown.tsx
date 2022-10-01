@@ -1,3 +1,6 @@
+import {
+  MinusCircleOutlined
+} from "@ant-design/icons";
 import { Form, Select, Button } from 'antd';
 import "antd/dist/antd.css"
 
@@ -21,13 +24,13 @@ export default function InputDropdown(props: InputDropdownProps) {
           {(fields, { add, remove }) => (
           <div style={{ display: 'inline', marginLeft: 200, marginBottom: 30 }}>
               <Form.Item label={props.label} name={[0, 'skill']} key={0} tooltip="This is a required field" rules={[{ required: true, message: 'Please select a skill' }]}>
-                  <Select style={{ width: 200 }}>
+                  <Select>
                     <Option value="1">Programming</Option>
                     <Option value="2">Sleeping</Option>
                     <Option value="3">Pooping</Option>
                   </Select>
               </Form.Item>
-              <Button onClick={() => add()} style={{ marginLeft: 50 }}>
+              <Button onClick={() => add()}>
                 Add Skill
               </Button>
                 
@@ -47,9 +50,7 @@ export default function InputDropdown(props: InputDropdownProps) {
                       <Option value="3">Pooping</Option>
                     </Select>
                     </Form.Item>
-                    <Button type="dashed" onClick={() => remove(name+1)}>
-                        Remove
-                    </Button>
+                    <MinusCircleOutlined type="dashed" onClick={() => remove(name)} />
                 </>
               ))}
           </div>
@@ -58,14 +59,16 @@ export default function InputDropdown(props: InputDropdownProps) {
         : null }
       { props.label === "Courses" ?
          <Form.Item label={props.label} name={props.label} tooltip="This is a required field" rules={[{ required: true, message: 'Please select a course' }]}>
-            <Select style={{ width: 200 }}>
+            <Select>
               <Option value="CS123">Intro to Programming</Option>
+              <Option value="CS121">Intro to UX Design</Option>
+              <Option value="CS120">Intro to Meditation</Option>
             </Select>
           </Form.Item>
         : null }
       { props.label === "Department" ?
           <Form.Item label={props.label} name={props.label} tooltip="This is a required field" rules={[{ required: true, message: 'Please select a department' }]}> 
-            <Select style={{ width: 200 }}>
+            <Select>
               <Option value="HR">Human Resource</Option>
               <Option value="Finance">Finance</Option>
               <Option value="Sales">Sales</Option>
