@@ -1,7 +1,8 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
-import json
+import json, string, requests
+from invokes import invoke_http
 from os import environ
 from flask_cors import CORS
 
@@ -59,47 +60,34 @@ class Skill(db.Model):
 
 
 #FUNCTION 1: Return all courses
-@app.route("/get_all__courses") 
+@app.route("/get_all_courses") 
 def get_all_courses(): 
     courselist = Course.query.all() 
 
     if len(courselist): 
-
         return jsonify( 
-
             { 
-
                 "code": 200, 
-
                 "data": { 
-
                     "courses": [course.json() for course in courselist] 
-
                 } 
-
             } 
-
         ) 
 
     return jsonify( 
-
         { 
-
             "code": 404, 
-
             "message": "There are no courses." 
-
         } 
-
     ), 404 
 
 
-#FUNCTION 2: Add a skill **Validate using skill name**
+#FUNCTION 2: Add a skill and assign it to selected courses
 @app.route("/add_skill", methods=['POST']) 
-def create_skill(): 
+def add_skill(): 
 
     data = request.get_json() 
-    skill_name = data['skill_name']
+    skill_name = string.capwords(data['skill_name'])
 
     if (Skill.query.filter_by(skill_name=skill_name).first()): 
         return jsonify( 
@@ -120,7 +108,7 @@ def create_skill():
         max_skill_id = int(max_skill_id[0])
         incremented_skill_id = max_skill_id + 1
 
-    skill = Skill(incremented_skill_id, **data) 
+    skill = Skill(incremented_skill_id, string.capwords(data['skill_name']), data['skill_description'], data['skill_status']) 
 
     try: 
         db.session.add(skill) 
@@ -136,11 +124,32 @@ def create_skill():
                 "message": "An error occurred creating the skill." 
             } 
         ), 500 
+    
+    #2.2 assigning skill to courses
+    courses = data['courses']
 
+    for course_id in courses:
+        course_obj = Course.query.filter_by(course_id=course_id).first().json()
+        new_course_obj = Course(course_obj['course_id'], course_obj['course_name'], course_obj['course_desc'], course_obj['course_status'], course_obj['course_type'], course_obj['course_category'], incremented_skill_id)
+
+        try: 
+            db.session.add(new_course_obj) 
+            db.session.commit() 
+
+        except:
+            return jsonify( 
+                { 
+                    "code": 500, 
+                    "data": {}, 
+                    "message": "An error occurred assigning the skill." 
+                } 
+            ), 500 
+    
     return jsonify( 
         { 
             "code": 201, 
-            "data": skill.json() 
+            "data": skill.json(),
+            "message": "Skill successfully created and assigned"
         } 
     ), 201 
 
@@ -149,29 +158,35 @@ def create_skill():
 @app.route("/assign_skill", methods=['POST']) 
 def assign_skill(): 
 
-    data = request.get_json() 
-    course = Course(**data) #follow course data structure
+    data = request.get_json()
+    courses = data['courses']
+    skill_id = int(data["skill_id"])
 
-    try: 
-        db.session.add(course) 
-        db.session.commit() 
+    for course_id in courses:
+        
+        course_obj = Course.query.filter_by(course_id=course_id).first().json()
+        new_course_obj = Course(course_obj['course_id'], course_obj['course_name'], course_obj['course_desc'], course_obj['course_status'], course_obj['course_type'], course_obj['course_category'], skill_id)
+        
+        try: 
+            db.session.add(new_course_obj) 
+            db.session.commit() 
 
-    except: 
-        return jsonify( 
-            { 
-                "code": 500, 
-                "data": {}, 
-                "message": "An error occurred creating the skill." 
-            } 
-        ), 500 
+        except:
+            return jsonify( 
+                { 
+                    "code": 500, 
+                    "data": {}, 
+                    "message": "An error occurred creating the skill." 
+                } 
+            ), 500 
 
     return jsonify( 
         { 
             "code": 201, 
-            "data": course.json(),
+            "data": data,
             "message": "Skill successfully created."
         } 
-    ), 201 
+    ), 201
 
 
 #FUNCTION 4: Filter courses by skill_id
