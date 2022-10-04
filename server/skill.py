@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from os import environ
 
@@ -28,7 +28,23 @@ class Skill(db.Model):
 
     #Fill up columns here
 
+@app.route("/getSkillBySkillID")
+def get_skill_by_skillID(skillID):
 
+    skill=Skill.query.filter_by(Skill_ID=skillID).all()
+    if (skill):
+        return jsonify(
+            {
+                "code": 200,
+                "data": skill.json()
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Skill not found."
+        }
+    ), 404
 
 @app.route('/') # Just a decorator to route to certain url
 def hello():
