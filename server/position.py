@@ -6,9 +6,9 @@ import json
 app = Flask(__name__)
 CORS(app)
 # Mac User
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:8889/SPM'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:8889/SPM'
 # Window User
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/SPM'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/SPM'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_recycle': 299}
 
@@ -149,15 +149,17 @@ def create_position():
         }
     ), 201
 
-@app.route("/getPositionByPID")
+@app.route("/getPositionByPID/<string:positionID>")
 def get_position_by_PID(positionID):
 
-    position=Position.query.filter_by(Position_ID=positionID).first()
-    if (position):
+    positionList = Position.query.filter_by(Position_ID=positionID).all()
+    if positionList:
         return jsonify(
             {
                 "code": 200,
-                "data": position.json()
+                "data": {
+                    "Positions": [position.json() for position in positionList]
+                }
             }
         )
     return jsonify(

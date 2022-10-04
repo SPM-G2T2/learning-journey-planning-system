@@ -1,10 +1,16 @@
-from flask import Flask, jsonify
+from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from os import environ
+from flask_cors import CORS
+import json
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
+CORS(app)
+# Mac User
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:8889/SPM'
+# Window User
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/SPM'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_recycle': 299}
 
 db = SQLAlchemy(app)
 
@@ -28,15 +34,17 @@ class Skill(db.Model):
 
     #Fill up columns here
 
-@app.route("/getSkillBySkillID")
+@app.route("/getSkillBySkillID/<string:skillID>")
 def get_skill_by_skillID(skillID):
 
-    skill=Skill.query.filter_by(Skill_ID=skillID).all()
-    if (skill):
+    skill = Skill.query.filter_by(Skill_ID=skillID).all()
+    if skill:
         return jsonify(
             {
                 "code": 200,
-                "data": skill.json()
+                "data": {
+                    "Skill": skill.json()
+                }
             }
         )
     return jsonify(
@@ -50,6 +58,5 @@ def get_skill_by_skillID(skillID):
 def hello():
     return 'Hello, World!'
 
-
-if __name__ == 'main':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+if __name__ == '__main__':
+    app.run(port=5000, debug=True)

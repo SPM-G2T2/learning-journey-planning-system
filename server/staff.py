@@ -1,10 +1,16 @@
-from flask import Flask, jsonify
+from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from os import environ
+from flask_cors import CORS
+import json
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
+CORS(app)
+# Mac User
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:8889/SPM'
+# Window User
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/SPM'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_recycle': 299}
 
 db = SQLAlchemy(app)
 
@@ -32,15 +38,17 @@ class Staff(db.Model):
 
     #Fill up columns here
 
-@app.route("/getStaffByStaffID")
-def get_staff_by_StaffID(staffID):
+@app.route("/getStaffByStaffID/<string:staffID>")
+def get_staff_by_staffID(staffID):
 
-    staff=Staff.query.filter_by(Staff_ID=staffID).all()
-    if (staff):
+    staffList = Staff.query.filter_by(Staff_ID=staffID).all()
+    if staffList:
         return jsonify(
             {
                 "code": 200,
-                "data": staff.json()
+                "data": {
+                    "Positions": [staff.json() for staff in staffList]
+                }
             }
         )
     return jsonify(
@@ -55,5 +63,5 @@ def hello():
     return 'Hello, World!'
 
 
-if __name__ == 'main':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+if __name__ == '__main__':
+    app.run(port=5000, debug=True)
