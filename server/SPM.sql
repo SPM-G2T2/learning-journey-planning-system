@@ -73,3 +73,12 @@ Position_rept varchar(1000) NOT NULL,
 Position_status varchar(10) NOT NULL,
 PRIMARY KEY (Position_ID, Skill_ID)
 );
+
+DROP TABLE IF EXISTS Staff_skills;
+CREATE TABLE IF NOT EXISTS Staff_skills (
+Staff_ID int NOT NULL,
+Skill_ID int NOT NULL,
+PRIMARY KEY (Staff_ID, skill_ID),
+FOREIGN KEY (Staff_ID) REFERENCES Staff (Staff_ID),
+FOREIGN KEY (Skill_ID) REFERENCES Skill (Skill_ID)
+);

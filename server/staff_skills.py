@@ -14,34 +14,25 @@ app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_recycle': 299}
 
 db = SQLAlchemy(app)
 
-class Staff(db.Model):
-    __tablename__ = "staff"
+class Staff_skills(db.Model):
+    __tablename__ = "staff_skills"
 
     Staff_ID = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
-    Staff_FName = db.Column(db.String(50), nullable=False)
-    Staff_LName = db.Column(db.String(255), nullable=False)
-    Dept = db.Column(db.String(50), nullable=False)
-    Email = db.Column(db.String(50), nullable=False)
-    Role_ID = db.Column(db.String(20), nullable=False)
+    Skill_ID = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
 
-    def __init__(self, Staff_ID, Staff_FName, Staff_LName, Dept, Email, Role_ID): #constructor, initializes the record
+    def __init__(self, Staff_ID, Skill_ID): #constructor, initializes the record
         self.Staff_ID = Staff_ID
-        self.Staff_FName = Staff_FName
-        self.Staff_LName = Staff_LName
-        self.Dept = Dept
-        self.Email = Email
-        self.Role_ID = Role_ID
+        self.Skill_ID = Skill_ID
 
     def json(self): #returns json representation of the table in dict form
-        return {"Staff_ID": self.Staff_ID, "Staff_FName": self.Staff_FName, "Staff_LName": self.Staff_LName, "Dept": self.Dept, "Email": self.Email,
-        "Role_ID": self.Role_ID}
+        return {"Staff_ID": self.Staff_ID, "Skill_ID": self.Skill_ID}
 
     #Fill up columns here
 
 @app.route("/getStaffByStaffID/<string:staffID>")
 def get_staff_by_staffID(staffID):
 
-    staffList = Staff.query.filter_by(Staff_ID=staffID).all()
+    staffList = Staff_skills.query.filter_by(Staff_ID=staffID).all()
     if staffList:
         return jsonify(
             {
