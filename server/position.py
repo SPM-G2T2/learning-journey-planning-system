@@ -69,7 +69,7 @@ def get_all_position():
         ), 404
 
 
-@app.route("/createPositionWithPId", methods=['POST'])
+@app.route("/createPositionWithPID", methods=['POST'])
 def create_position_with_PID():
 
     position = request.get_json()
@@ -149,6 +149,23 @@ def create_position():
         }
     ), 201
 
+@app.route("/getPositionByPID")
+def get_position_by_PID(positionID):
+
+    position=Position.query.filter_by(Position_ID=positionID).first()
+    if (position):
+        return jsonify(
+            {
+                "code": 200,
+                "data": position.json()
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Position not found."
+        }
+    ), 404
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
