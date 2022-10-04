@@ -1,28 +1,36 @@
-import { Tabs, } from 'antd';
-import "antd/dist/antd.css";
-import "../styles/App.css";
-import Roles from "./Roles";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Tabs } from "antd";
+import CreateRoles from "../components/CreateRoles"
+import PreviewRoles from "../components/PreviewRoles"
 
 export default function ManageLJPS() {
 
-    const items = ['Roles', 'Skills', 'Courses']
-    const navigate = useNavigate();
+  const [rolesStep, setRolesStep] = useState("form");
+  const [form, setForm] = useState(null)
 
-    return (<Tabs
-        style = {{ marginTop: "5vw" }}
-        onChange={() => {
-            navigate(`/roles`); // <-- sibling path
-          }}
-        defaultActiveKey="1"
-        centered
-        items={items.map((item, i) => {
-            const id = String(i + 1);
-        return {
-            label: `${item}`,
-            key: id,
-            children: "hello",
-        };
-        })}
-  />)
+  return (
+    <>
+      <h1 className="header">Manage LJPS</h1>
+
+      <Tabs
+        items={[
+          {
+            label: "Roles",
+            key: "roles",
+            children: rolesStep === "form" ? <CreateRoles setForm={setForm} setNext = {setRolesStep} /> : <PreviewRoles form={form} /> ,
+          },
+          {
+            label: "Skills",
+            key: "skills",
+            children: "Content of Skills",
+          },
+          {
+            label: "Courses",
+            key: "course",
+            children: "Content of Courses",
+          },
+        ]}
+      />
+    </>
+  );
 }

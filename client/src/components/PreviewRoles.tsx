@@ -1,23 +1,13 @@
 import { Typography, Form, Button, Row, Col } from 'antd';
 import "antd/dist/antd.css";
 import '../styles/App.css';
-import { useNavigate, useLocation } from 'react-router-dom';
 
-export default function PreviewRoles(){
+export default function PreviewRoles(props:any){
     
     const { Title } = Typography;
     const { Paragraph } = Typography;
 
-    const navigate = useNavigate();
-    const location = useLocation()
-    console.log(location.state);
-
-    const title = location.state.title
-    const desc = location.state.desc
-    const department = location.state.dept
-    const res = location.state.resp
-    const skills = location.state.skills
-    console.log(title, desc, department)
+    console.log(props.form);
 
     // var responsibilties = "";
     // for (var resp of values["Responsibilities"]) {
@@ -90,14 +80,14 @@ export default function PreviewRoles(){
     // }
 
     return <>
-        <Title level={3}>Review role</Title>
-        <div style={{ marginLeft: "15%", marginRight: "15%" }}>
-            <Row style={{ marginBottom: "2%" }}>
+        <Title level={4}>Review role</Title>
+        <div style={{ marginLeft: 10 }}>
+            <Row style={{ marginTop: "5%" }}>
                 <Col span={5}>
                     <Title level={5}>Title </Title>
                 </Col>
                 <Col span={19}>
-                    <Paragraph> { title } </Paragraph>
+                    <Paragraph> { props.form.Title }</Paragraph>
                 </Col>
             </Row>
             <Row style={{ marginBottom: "2%" }}>
@@ -105,7 +95,7 @@ export default function PreviewRoles(){
                     <Title level={5}>Description </Title>
                 </Col>
                 <Col span={19}>
-                    <Paragraph> { desc } </Paragraph>
+                    <Paragraph> { props.form.Description } </Paragraph>
                 </Col>
             </Row>
             <Row style={{ marginBottom: "2%" }}>
@@ -113,7 +103,7 @@ export default function PreviewRoles(){
                     <Title level={5}>Department </Title>
                 </Col>
                 <Col span={19}>
-                    <Paragraph> { department } </Paragraph>
+                    <Paragraph> { props.form.Department } </Paragraph>
                 </Col>
             </Row>
             <Row style={{ marginBottom: "2%" }}>
@@ -121,10 +111,10 @@ export default function PreviewRoles(){
                     <Title level={5}>Responsibilities </Title>
                 </Col>
                 <Col span={19}>
-                    <Paragraph> { res[0] } </Paragraph>
+                    <Paragraph> { props.form.Responsibilities[0] } </Paragraph>
                 </Col>
             </Row>
-            { res.length > 1 ? res.slice(1,).map((eachRes: (any)) => (
+            { props.form.Responsibilities.length > 1 ? props.form.Responsibilities.slice(1).map((eachRes: (any)) => (
                 <Row style={{ marginBottom: "2%" }}>
                     <Col span={5}>
                     </Col>
@@ -138,14 +128,23 @@ export default function PreviewRoles(){
                     <Title level={5}>Skills </Title>
                 </Col>
                 <Col span={19}>
-                    <Paragraph>Operating stuffs </Paragraph>
+                    <Paragraph> { props.form.Skills[0] } </Paragraph>
                 </Col>
             </Row>
+            { props.form.Skills.length > 1 ? props.form.Skills.slice(1).map((eachSkill: (any)) => (
+                <Row style={{ marginBottom: "2%" }}>
+                    <Col span={5}>
+                    </Col>
+                    <Col span={19}>
+                        <Paragraph> { eachSkill } </Paragraph>
+                    </Col>
+                </Row> 
+            )) : null }
         </div>
         <Row style={{ justifyContent: "flex-end" }}>
             <Col style={{ marginRight: 20 }}>
                 <Form.Item>
-                    <Button onClick={() => navigate(-1)}>Back</Button>
+                    <Button>Back</Button>
                 </Form.Item>
             </Col>
             <Col>
