@@ -9,6 +9,24 @@ interface InputDropdownProps {
     name?: string;
   }
 
+const formItemLayout = {
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 4 },
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 20 },
+  },
+};
+
+const formItemLayoutWithOutLabel = {
+  wrapperCol: {
+    xs: { span: 24, offset: 0 },
+    sm: { span: 20, offset: 4 },
+  },
+};
+
 /**
  * This is the input dropdown component!
  * @param {InputFieldsProps} props for React Functional Component
@@ -18,44 +36,66 @@ export default function InputDropdown(props: InputDropdownProps) {
    
     const { Option } = Select;
 
-    return <>
+    return (<>
       { props.label === "Skills" ?
-          <Form.List name="Skills">
-          {(fields, { add, remove }) => (
-          <div style={{ display: 'inline', marginLeft: 200, marginBottom: 30 }}>
-              <Form.Item label={props.label} name={[0, 'skill']} key={0} tooltip="This is a required field" rules={[{ required: true, message: 'Please select a skill' }]}>
-                  <Select>
-                    <Option value="1">Programming</Option>
-                    <Option value="2">Sleeping</Option>
-                    <Option value="3">Pooping</Option>
-                  </Select>
-              </Form.Item>
-              <Button onClick={() => add()}>
-                Add Skill
-              </Button>
-                
-              {fields.map(({ key, name, ...restField }) => (
-                <>
-                    <Form.Item
-                      label={props.label}
-                      name={[name+1, 'skill']}
-                      tooltip="This is a required field"
-                      rules={[{ required: true, message: 'Please select a skill' }]}
-                      style={{  display: 'inline', marginLeft: 200, marginBottom: 30 }}
-                      key={key+1} 
-                    >
-                    <Select>
+        <Form.List name="Skills">
+        {(fields, { add, remove }, { errors }) => (
+          <>
+            <Form.Item {...formItemLayout} label="Skills">
+              <Form.Item style={{ display: "inline-block" }} 
+                tooltip="This is a required field" 
+                validateTrigger={["onChange", "onBlur"]}
+                rules={[
+                    {
+                      required: true,
+                      whitespace: true,
+                      message:
+                        "Please select a skill",
+                    },
+                  ]}>
+                 <Select defaultValue="Programming" style={{ width: "30vw" }}>
                       <Option value="1">Programming</Option>
                       <Option value="2">Sleeping</Option>
                       <Option value="3">Pooping</Option>
-                    </Select>
-                    </Form.Item>
-                    <MinusCircleOutlined type="dashed" onClick={() => remove(name)} />
-                </>
-              ))}
-          </div>
-          )}
-          </Form.List>
+                  </Select>
+              </Form.Item>
+              <Form.Item style={{ display: "inline-block", marginLeft: 20 }}>
+                <Button onClick={() => add()}>Add field</Button>
+                <Form.ErrorList errors={errors} />
+              </Form.Item>
+            </Form.Item>
+            {fields.map((field) => (
+              <Form.Item {...formItemLayoutWithOutLabel} key={field.key}>
+                <Form.Item
+                  {...field}
+                  validateTrigger={["onChange", "onBlur"]}
+                  name={field.key}
+                  rules={[
+                    {
+                      required: true,
+                      whitespace: true,
+                      message:
+                        "Please select a skill",
+                    },
+                  ]}
+                  noStyle
+                >
+                  <Select defaultValue="Programming" style={{ width: "30vw" }}>
+                      <Option value="1">Programming</Option>
+                      <Option value="2">Sleeping</Option>
+                      <Option value="3">Pooping</Option>
+                  </Select>
+                </Form.Item>
+                <MinusCircleOutlined
+                  className="dynamic-delete-button"
+                  onClick={() => remove(field.name)}
+                  style={{ marginLeft: 20 }}
+                />
+              </Form.Item>
+            ))}
+          </>
+        )}
+      </Form.List>
         : null }
       { props.label === "Courses" ?
          <Form.Item label={props.label} name={props.label} tooltip="This is a required field" rules={[{ required: true, message: 'Please select a course' }]}>
@@ -77,5 +117,5 @@ export default function InputDropdown(props: InputDropdownProps) {
             </Select>
           </Form.Item>
       : null }
-      </>
+      </>)
 }

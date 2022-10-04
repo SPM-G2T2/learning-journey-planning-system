@@ -1,14 +1,28 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Typography, Form, Button, Switch, Row } from "antd";
+import { useState } from "react";
 import "antd/dist/antd.css";
 import "../styles/App.css";
 import InputField from "../components/InputField";
 import MultipleInputFields from "../components/MultipleInputFields";
 import InputDropdown from "../components/InputDropdown";
+import { useNavigate } from "react-router-dom";
+import { setConstantValue } from "typescript";
+
 
 export default function Roles() {
+  
   const { Title } = Typography;
   const [form] = Form.useForm();
+
+  const [title, setTitle] = useState("");
+  const [desc, setDesc] = useState("");
+  const [dept, setDept] = useState("");
+  const [res, setRes] = useState([]);
+  const [skills, setSkills] = useState([]);
+
+  const onFinishFailed = (errorInfo: any) => {
+    console.log("Errors:", errorInfo);
+  };
 
   const onFinish = (values: any) => {
     console.log("Form:", values);
@@ -19,84 +33,21 @@ export default function Roles() {
     console.log("Skills:", values["Skills"]);
     console.log("Active:", values["Active"]);
 
-    const Title = values["Title"];
-    const Description = values["Description"];
-    const Department = values["Department"];
+    setTitle(values["Title"]);
+    setDesc(values["Description"]);
+    setDept(values["Department"]);
+    console.log(title)
+    routeChange();
 
-    var responsibilties = "";
-    for (var resp of values["Responsibilities"]) {
-      console.log(resp);
-      responsibilties += resp["resp"] + ",";
-    }
-    console.log(responsibilties.substring(0, responsibilties.length - 1));
-
-    const Active = "Retired";
-    if (values["Active"]) {
-      const Active = "Active";
-    }
-    console.log(values["Skills"][0]["skill"]);
-
-    // const position = {
-    //     "Skill_ID": values['Skills'][0]['skill'],
-    //     "Position_name": Title,
-    //     "Position_desc": Description,
-    //     "Position_dept": Department,
-    //     "Position_rept": responsibilties.substring(0, responsibilties.length-1),
-    //     "Position_status": Active
-    //     }
-
-    //     fetch("http://localhost:5000/createPosition",
-    //         {
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         },
-    //         method: "POST",
-    //         body: JSON.stringify( position )
-    //     })
-    //     .then((response) => {
-    //         if (response.status === 201) {
-    //         return response.json();
-    //         } else if (response.status === 400) {
-    //         console.log("Position Name already exists.")
-    //         }
-    //     })
-    //     .then((data) => console.log(data))
-    //     .then((error) => console.log(error));
-    // }
-
-    // for (var skill of values['Skills']) {
-    //   const position = {
-    //     "Skill_ID": skill['skill'],
-    //     "Position_name": Title,
-    //     "Position_desc": Description,
-    //     "Position_dept": Department,
-    //     "Position_rept": responsibilties.substring(0, responsibilties.length-1),
-    //     "Position_status": Active
-    //   }
-
-    //   fetch("http://localhost:5000/createPosition",
-    //       {
-    //         headers: {
-    //           'Content-Type': 'application/json'
-    //         },
-    //         method: "POST",
-    //         body: JSON.stringify( position )
-    //     })
-    //     .then((response) => {
-    //       if (response.status === 201) {
-    //         return response.json();
-    //       } else if (response.status === 400) {
-    //         console.log("Position Name already exists.")
-    //       }
-    //     })
-    //     .then((data) => console.log(data))
-    //     .then((error) => console.log(error));
-    // }
   };
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Errors:", errorInfo);
-  };
+  let navigate = useNavigate(); 
+
+  const routeChange = () => { 
+      let path = "/preview-role"; 
+      navigate(path, { state: { title: title, desc: desc, dept: dept, resp: ['manage', 'ppl'], skills: ['programming', 'idk'] }});
+  }
+  
 
   return (
     <>

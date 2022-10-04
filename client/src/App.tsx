@@ -14,6 +14,8 @@ import Home from "./pages/Home";
 import Roles from "./pages/Roles";
 import Skills from "./pages/Skills";
 import Courses from "./pages/Courses";
+import ManageLJPS from "./pages/ManageLJPS";
+import PreviewRoles from "./pages/PreviewRoles";
 
 const { Content, Sider } = Layout;
 
@@ -38,8 +40,9 @@ const App = () => (
           </Menu.Item>
           {[
             [<BarChartOutlined />, "Roles"],
-            [<MessageOutlined />, "Skills"],
+            [<BarChartOutlined />, "Skills"],
             [<SettingOutlined />, "Courses"],
+            [<MessageOutlined />, "ManageLJPS"],
           ].map((navItem) => (
             <Menu.Item icon={navItem[0]} key={navItem[1] as string}>
               <Link
@@ -57,7 +60,9 @@ const App = () => (
           shape="round"
           icon={<UserOutlined />}
           style={{
+            borderColor: "#DBDBDB",
             backgroundColor: "#DBDBDB",
+            color: "#000000",
             position: "absolute",
             right: "4vw",
           }}
@@ -69,6 +74,8 @@ const App = () => (
           <Route path="/roles" element={<Roles />} />
           <Route path="/skills" element={<Skills />} />
           <Route path="/courses" element={<Courses />} />
+          <Route path="/manageljps" element={<ManageLJPS />} />
+          <Route path="/preview-role" element={<PreviewRoles />} />
         </Routes>
       </Content>
     </BrowserRouter>
