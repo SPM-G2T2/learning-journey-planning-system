@@ -3,16 +3,17 @@ import {
   BarChartOutlined,
   MessageOutlined,
   SettingOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
-import { Layout, Menu } from "antd";
+import { Button, Layout, Menu } from "antd";
 import "antd/dist/antd.css";
 import "./styles/App.css";
-import logo from "./logo.png";
+import logo from "./assets/logo.png";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
-import Home from "./components/Home";
-import Roles from "./components/Roles";
-import Skills from "./components/Skills";
-import Courses from "./components/Courses";
+import Home from "./pages/Home";
+import Roles from "./pages/Roles";
+import Skills from "./pages/Skills";
+import Courses from "./pages/Courses";
 
 const { Content, Sider } = Layout;
 
@@ -21,7 +22,13 @@ const App = () => (
     <BrowserRouter>
       <Sider breakpoint="lg">
         <div className="brand">
-          <img src={logo} className="logo" /> All-in-One LJPS
+          <img
+            src={logo}
+            className="icon"
+            alt="logo"
+            style={{ marginRight: "1vw" }}
+          />{" "}
+          All-in-One LJPS
         </div>
         <Menu mode="inline" defaultSelectedKeys={["Home"]}>
           <Menu.Item icon={<AppstoreOutlined />} key="Home">
@@ -46,6 +53,17 @@ const App = () => (
         </Menu>
       </Sider>
       <Content>
+        <Button
+          shape="round"
+          icon={<UserOutlined />}
+          style={{
+            backgroundColor: "#DBDBDB",
+            position: "absolute",
+            right: "4vw",
+          }}
+        >
+          Eric
+        </Button>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/roles" element={<Roles />} />
