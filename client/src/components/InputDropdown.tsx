@@ -43,7 +43,7 @@ export default function InputDropdown(props: InputDropdownProps) {
            <>
              <Form.Item {...formItemLayout} label="Skills">
                <Form.Item style={{ display: "inline-block" }} 
-                 tooltip="This is a required field" 
+                tooltip="This is a required field" 
                  // name={0}
                  fieldKey={0}
                  isListField={true}
@@ -61,9 +61,9 @@ export default function InputDropdown(props: InputDropdownProps) {
                  noStyle
                  >
                  <Select style={{ width: "30vw" }}>
-                    <Option value="Programming">Programming</Option>
-                    <Option value="Sleeping">Sleeping</Option>
-                    <Option value="Pooping">Pooping</Option>
+                    <Option value="1_Programming">Programming</Option>
+                    <Option value="2_Sleeping">Sleeping</Option>
+                    <Option value="3_Pooping">Pooping</Option>
                   </Select>
                </Form.Item>
                {/* <Form.Item style={{ display: "inline-block" }}> */}
@@ -88,9 +88,9 @@ export default function InputDropdown(props: InputDropdownProps) {
                    noStyle
                  >
                   <Select style={{ width: "30vw" }}>
-                    <Option value="Programming">Programming</Option>
-                    <Option value="Sleeping">Sleeping</Option>
-                    <Option value="Pooping">Pooping</Option>
+                    <Option value="1_Programming">Programming</Option>
+                    <Option value="2_Sleeping">Sleeping</Option>
+                    <Option value="3_Pooping">Pooping</Option>
                   </Select>
                  </Form.Item>
                  <MinusCircleOutlined

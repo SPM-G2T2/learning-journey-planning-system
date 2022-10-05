@@ -26,14 +26,14 @@ class Position(db.Model):
     Position_status = db.Column(db.String(10), nullable=False)
 
 
-    def __init__(self, Position_ID, Skill_ID, Position_name, Position_desc, Position_dept, Position_rept, Position_status): # constructor, initializes the record
-        self.Position_ID = Position_ID
-        self.Skill_ID = Skill_ID
-        self.Position_name = Position_name
-        self.Position_desc = Position_desc
-        self.Position_dept = Position_dept
-        self.Position_rept = Position_rept
-        self.Position_status = Position_status
+    # def __init__(self, Skill_ID, Position_name, Position_desc, Position_dept, Position_rept, Position_status, Position_ID=None): # constructor, initializes the record
+    #     self.Skill_ID = Skill_ID
+    #     self.Position_name = Position_name
+    #     self.Position_desc = Position_desc
+    #     self.Position_dept = Position_dept
+    #     self.Position_rept = Position_rept
+    #     self.Position_status = Position_status
+    #     self.Position_ID = Position_ID
 
 
     def __init__(self, Skill_ID, Position_name, Position_desc, Position_dept, Position_rept, Position_status): # constructor, initializes the record
@@ -69,39 +69,39 @@ def get_all_position():
         ), 404
 
 
-@app.route("/createPositionWithPId", methods=['POST'])
-def create_position_with_PID():
+# @app.route("/createPositionWithPId", methods=['POST'])
+# def create_position_with_PID():
 
-    position = request.get_json()
-    print(type(position)) #dict 
-    positionID = position['Position_ID']
-    skillID = position['Skill_ID']
-    positionName = position['Position_name']
-    positionDesc = position['Position_desc']
-    positionDept = position['Position_dept']
-    positionRes = position['Position_rept']
-    positionStatus = position['Position_status']
-    print(positionID, skillID, positionName, positionDesc, positionDept, positionRes, positionStatus)
-    position = Position(positionID, skillID, positionName, positionDesc, positionDept, positionRes, positionStatus)
-    print(position)
+#     position = request.get_json()
+#     print(type(position)) #dict 
+#     positionID = position['Position_ID']
+#     skillID = position['Skill_ID']
+#     positionName = position['Position_name']
+#     positionDesc = position['Position_desc']
+#     positionDept = position['Position_dept']
+#     positionRes = position['Position_rept']
+#     positionStatus = position['Position_status']
+#     print(positionID, skillID, positionName, positionDesc, positionDept, positionRes, positionStatus)
+#     position = Position(positionID, skillID, positionName, positionDesc, positionDept, positionRes, positionStatus)
+#     print(position)
  
-    try:
-        db.session.add(position)
-        db.session.commit()
-    except:
-        return jsonify(
-            {
-                "code": 500,
-                "message": "An error occurred adding the position."
-            }
-        ), 500
+#     try:
+#         db.session.add(position)
+#         db.session.commit()
+#     except:
+#         return jsonify(
+#             {
+#                 "code": 500,
+#                 "message": "An error occurred adding the position."
+#             }
+#         ), 500
  
-    return jsonify(
-        {
-            "code": 201,
-            "data": position.json()
-        }
-    ), 201
+#     return jsonify(
+#         {
+#             "code": 201,
+#             "data": position.json()
+#         }
+#     ), 201
 
 
 @app.route("/createPosition", methods=['POST'])
@@ -127,6 +127,17 @@ def create_position():
     positionDept = position['Position_dept']
     positionRes = position['Position_rept']
     positionStatus = position['Position_status']
+
+    # if 'Position_ID' in position.keys():
+    #     positionID = position['Position_ID']
+    #     print(skillID, positionName, positionDesc, positionDept, positionRes, positionStatus, positionID)
+    #     position = Position(skillID, positionName, positionDesc, positionDept, positionRes, positionStatus, positionID)
+    #     print(position)
+    # else:
+    #     print(skillID, positionName, positionDesc, positionDept, positionRes, positionStatus)
+    #     position = Position(skillID, positionName, positionDesc, positionDept, positionRes, positionStatus)
+    #     print(position)
+
     print(skillID, positionName, positionDesc, positionDept, positionRes, positionStatus)
     position = Position(skillID, positionName, positionDesc, positionDept, positionRes, positionStatus)
     print(position)
