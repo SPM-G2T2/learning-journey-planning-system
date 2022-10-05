@@ -49,10 +49,5 @@ def get_staff_by_staffID(staffID):
         }
     ), 404
 
-@app.route('/') # Just a decorator to route to certain url
-def hello():
-    return 'Hello, World!'
-
-
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
