@@ -1,5 +1,5 @@
 // import { useState } from 'react';
-import { Typography, Form, Button, Row, Col } from 'antd';
+import { Typography, Form, Button, Row, Col, Modal } from 'antd';
 import "antd/dist/antd.css";
 import '../styles/App.css';
 
@@ -55,17 +55,20 @@ export default function PreviewRoles(props:any){
         })
         .then((response) => {
             if (response.status === 201) {
+                success();
                 return response.json();
             } else if (response.status === 400) {
                 console.log("Position Name already exists.")
+                warning();
             } else if (response.status === 500) {
                 console.log("An error occurred creating the position.")
+                error();
             }
         })
         .then((data) => {
             console.log(data);
-            positionId = data.data.Position_ID;
-            console.log(positionId);
+            // positionId = data.data.Position_ID;
+            // console.log(positionId);
         })
         .then((error) => console.log(error));
 
@@ -105,6 +108,28 @@ export default function PreviewRoles(props:any){
        
     }
 
+    const success = () => {
+        Modal.success({
+          content: 'Role has been successfully created!',
+        });
+        goToForm();
+    };
+
+    const warning = () => {
+        Modal.warning({
+          content: 'Role name already exists. Please try another name.',
+        });
+    };
+
+    const error = () => {
+        Modal.error({
+          content: 'An error occurred creating the role! Please try again later.',
+        });
+    };
+
+    const goToForm = () => {
+        props.setNext("form");
+    }
 
     return <>
         <Title level={4}>Review role</Title>
@@ -171,7 +196,7 @@ export default function PreviewRoles(props:any){
         <Row style={{ justifyContent: "flex-end" }}>
             <Col style={{ marginRight: 20 }}>
                 <Form.Item>
-                    <Button>Back</Button>
+                    <Button onClick={goToForm}>Back</Button>
                 </Form.Item>
             </Col>
             <Col>

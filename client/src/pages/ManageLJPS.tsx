@@ -17,7 +17,7 @@ export default function ManageLJPS() {
           {
             label: "Roles",
             key: "roles",
-            children: rolesStep === "form" ? <CreateRoles setForm={setForm} setNext = {setRolesStep} /> : <PreviewRoles form={form} /> ,
+            children: rolesStep === "form" ? <CreateRoles setForm={setForm} setNext = {setRolesStep} /> : <PreviewRoles form={form} setNext = {setRolesStep} /> ,
           },
           {
             label: "Skills",
