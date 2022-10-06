@@ -18,7 +18,6 @@ class Position(db.Model):
     __tablename__ = "Position"
 
     Position_ID = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
-    Skill_ID = db.Column(db.Integer, nullable=False)
     Position_name = db.Column(db.String(50), nullable=False)
     Position_desc = db.Column(db.String(255), nullable=False)
     Position_dept = db.Column(db.String(20), nullable=False)
@@ -26,18 +25,7 @@ class Position(db.Model):
     Position_status = db.Column(db.String(10), nullable=False)
 
 
-    # def __init__(self, Skill_ID, Position_name, Position_desc, Position_dept, Position_rept, Position_status, Position_ID=None): # constructor, initializes the record
-    #     self.Skill_ID = Skill_ID
-    #     self.Position_name = Position_name
-    #     self.Position_desc = Position_desc
-    #     self.Position_dept = Position_dept
-    #     self.Position_rept = Position_rept
-    #     self.Position_status = Position_status
-    #     self.Position_ID = Position_ID
-
-
-    def __init__(self, Skill_ID, Position_name, Position_desc, Position_dept, Position_rept, Position_status): # constructor, initializes the record
-        self.Skill_ID = Skill_ID
+    def __init__(self, Position_name, Position_desc, Position_dept, Position_rept, Position_status): # constructor, initializes the record
         self.Position_name = Position_name
         self.Position_desc = Position_desc
         self.Position_dept = Position_dept
@@ -46,7 +34,23 @@ class Position(db.Model):
 
 
     def json(self): # returns json representation of the table in dict form
-        return {"Position_ID": self.Position_ID, "Skill_ID": self.Skill_ID, "Position_name": self.Position_name, "Position_desc": self.Position_desc, "Position_dept": self.Position_dept, "Position_rept": self.Position_rept, "Position_status": self.Position_status}
+        return {"Position_ID": self.Position_ID, "Position_name": self.Position_name, "Position_desc": self.Position_desc, "Position_dept": self.Position_dept, "Position_rept": self.Position_rept, "Position_status": self.Position_status}
+
+
+class Position_Skill(db.Model):
+    __tablename__ = "Position_Skill"
+
+    Position_ID = db.Column(db.Integer, primary_key=True, nullable=False)
+    Skill_ID = db.Column(db.Integer, primary_key=True, nullable=False)
+   
+
+    def __init__(self, Position_ID, Skill_ID): # constructor, initializes the record
+        self.Position_ID = Position_ID
+        self.Skill_ID = Skill_ID
+
+
+    def json(self): # returns json representation of the table in dict form
+        return {"Position_ID": self.Position_ID, "Skill_ID": self.Skill_ID}
 
 
 @app.route("/position")
@@ -69,47 +73,11 @@ def get_all_position():
         ), 404
 
 
-# @app.route("/createPositionWithPId", methods=['POST'])
-# def create_position_with_PID():
-
-#     position = request.get_json()
-#     print(type(position)) #dict 
-#     positionID = position['Position_ID']
-#     skillID = position['Skill_ID']
-#     positionName = position['Position_name']
-#     positionDesc = position['Position_desc']
-#     positionDept = position['Position_dept']
-#     positionRes = position['Position_rept']
-#     positionStatus = position['Position_status']
-#     print(positionID, skillID, positionName, positionDesc, positionDept, positionRes, positionStatus)
-#     position = Position(positionID, skillID, positionName, positionDesc, positionDept, positionRes, positionStatus)
-#     print(position)
- 
-#     try:
-#         db.session.add(position)
-#         db.session.commit()
-#     except:
-#         return jsonify(
-#             {
-#                 "code": 500,
-#                 "message": "An error occurred adding the position."
-#             }
-#         ), 500
- 
-#     return jsonify(
-#         {
-#             "code": 201,
-#             "data": position.json()
-#         }
-#     ), 201
-
-
 @app.route("/createPosition", methods=['POST'])
 def create_position():
 
     position = request.get_json()
     print(type(position)) #dict 
-    skillID = position['Skill_ID']
     positionName = position['Position_name']
 
     if (Position.query.filter_by(Position_name=positionName).first()):
@@ -128,18 +96,8 @@ def create_position():
     positionRes = position['Position_rept']
     positionStatus = position['Position_status']
 
-    # if 'Position_ID' in position.keys():
-    #     positionID = position['Position_ID']
-    #     print(skillID, positionName, positionDesc, positionDept, positionRes, positionStatus, positionID)
-    #     position = Position(skillID, positionName, positionDesc, positionDept, positionRes, positionStatus, positionID)
-    #     print(position)
-    # else:
-    #     print(skillID, positionName, positionDesc, positionDept, positionRes, positionStatus)
-    #     position = Position(skillID, positionName, positionDesc, positionDept, positionRes, positionStatus)
-    #     print(position)
-
-    print(skillID, positionName, positionDesc, positionDept, positionRes, positionStatus)
-    position = Position(skillID, positionName, positionDesc, positionDept, positionRes, positionStatus)
+    print(positionName, positionDesc, positionDept, positionRes, positionStatus)
+    position = Position(positionName, positionDesc, positionDept, positionRes, positionStatus)
     print(position)
  
     try:
@@ -150,6 +108,38 @@ def create_position():
             {
                 "code": 500,
                 "message": "An error occurred creating the position."
+            }
+        ), 500
+ 
+    return jsonify(
+        {
+            "code": 201,
+            "data": position.json()
+        }
+    ), 201
+
+
+@app.route("/createPositionSkill", methods=['POST'])
+def create_position_skill():
+
+    position = request.get_json()
+    print(type(position)) #dict 
+    positionID = position['Position_ID']
+    skillID = position['Skill_ID']
+
+
+    print(positionID, skillID)
+    position = Position_Skill(positionID, skillID)
+    print(position)
+ 
+    try:
+        db.session.add(position)
+        db.session.commit()
+    except:
+        return jsonify(
+            {
+                "code": 500,
+                "message": "An error occurred adding the position and skill."
             }
         ), 500
  

@@ -7,8 +7,6 @@ export default function PreviewRoles(props:any){
     
     const { Title } = Typography;
     const { Paragraph } = Typography;
-    // const [active, setActive] = useState("Retired");
-    // const [positionId, setPositionId] = useState(null);
 
     console.log(props.form);
 
@@ -30,7 +28,6 @@ export default function PreviewRoles(props:any){
     console.log(props.form.Skills[0].split("_")[0]);
 
     const position = {
-        "Skill_ID": props.form.Skills[0].split("_")[0],
         "Position_name": props.form.Title,
         "Position_desc": props.form.Description,
         "Position_dept": props.form.Department,
@@ -67,45 +64,42 @@ export default function PreviewRoles(props:any){
         })
         .then((data) => {
             console.log(data);
-            // positionId = data.data.Position_ID;
-            // console.log(positionId);
+            if (data.code === 201) {
+                positionId = data.data.Position_ID;
+                console.log(positionId);
+
+                // if position has more than one skill
+                if (props.form.Skills.length > 1 ) {
+                    console.log("run multiple insertion")
+                    for (var skill of props.form.Skills) {
+                        const Position_Skill = {
+                            "Position_ID": positionId,
+                            "Skill_ID": skill.split("_")[0],
+                        }
+            
+                        fetch("http://localhost:5000/createPositionSkill",
+                            {
+                                headers: {
+                                'Content-Type': 'application/json'
+                                },
+                                method: "POST",
+                                body: JSON.stringify( Position_Skill )
+                            })
+                            .then((response) => {
+                            if (response.status === 201) {
+                                return response.json();
+                            } else if (response.status === 500) {
+                                console.log("An error occurred adding the position.")
+                            }
+                            })
+                            .then((data) => console.log(data))
+                            .then((error) => console.log(error));
+                    }
+                }
+            }
         })
         .then((error) => console.log(error));
 
-
-        // if position has more than one skill
-        // if (props.form.Skills.length > 1 ) {
-        //     for (var skill of props.form.Skills.slice(1)) {
-        //         const samePosition = {
-        //             "Position_ID": positionId,
-        //             "Skill_ID": skill.split("_")[0],
-        //             "Position_name": props.form.Title,
-        //             "Position_desc": props.form.Description,
-        //             "Position_dept": props.form.Department,
-        //             "Position_rept": responsibilities.substring(0, responsibilities.length-1),
-        //             "Position_status": active
-        //         }
-    
-        //         fetch("http://localhost:5000/createPosition",
-        //             {
-        //                 headers: {
-        //                 'Content-Type': 'application/json'
-        //                 },
-        //                 method: "POST",
-        //                 body: JSON.stringify( samePosition )
-        //             })
-        //             .then((response) => {
-        //             if (response.status === 201) {
-        //                 return response.json();
-        //             } else if (response.status === 500) {
-        //                 console.log("An error occurred adding the position.")
-        //             }
-        //             })
-        //             .then((data) => console.log(data))
-        //             .then((error) => console.log(error));
-        //     }
-        // }
-       
     }
 
     const success = () => {

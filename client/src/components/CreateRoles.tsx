@@ -28,7 +28,6 @@ export default function CreateRoles(props:any) {
     props.setNext("preview")
 
   };
-  
 
   return (
     <>
