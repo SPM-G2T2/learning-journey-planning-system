@@ -71,7 +71,14 @@
   border-radius: 10px;
 }
 
-.cyan {
+.card {
+  background-color: #FAFAFA;
+  padding: 1vw;
+  border-radius: 4px;
+}
+
+.btn-color {
+  color: white;
   background-color: #86B0FF;
 }
 
@@ -81,4 +88,14 @@
 
 .horizontal {
   display: flex;
+}
+
+.card-row {
+  color: #3649F9;
+  font-size: 0.8vw;
+  line-height: 0.2vw;
+}
+
+#root .ant-steps-item-title {
+  color: #3649F9;
 }
