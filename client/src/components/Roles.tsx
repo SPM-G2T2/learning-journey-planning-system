@@ -6,7 +6,6 @@ import InputField  from "./InputField";
 import MultipleInputFields from "./MultipleInputFields";
 import InputDropdown from "./InputDropdown";
 
-
 export default function Roles() {
 
     const { Title } = Typography;
@@ -32,71 +31,43 @@ export default function Roles() {
         }
         console.log(responsibilties.substring(0, responsibilties.length-1))
 
-        const Active = "Retired" 
-        if (values['Active']) {
-        const Active = "Active"
-        } 
+        function Status() {
+            if (values['Active']) {
+              return "Active";
+            }
+            return "Retired";
+          }
+        const Active = Status() 
+
         console.log(values['Skills'][0]['skill']);
 
-        // const position = {
-        //     "Skill_ID": values['Skills'][0]['skill'], 
-        //     "Position_name": Title,
-        //     "Position_desc": Description,
-        //     "Position_dept": Department, 
-        //     "Position_rept": responsibilties.substring(0, responsibilties.length-1),
-        //     "Position_status": Active
-        //     }
+        const position = {
+            "Skill_ID": values['Skills'][0]['skill'], 
+            "Position_name": Title,
+            "Position_desc": Description,
+            "Position_dept": Department, 
+            "Position_rept": responsibilties.substring(0, responsibilties.length-1),
+            "Position_status": Active
+            }
 
-        //     fetch("http://localhost:5000/createPosition", 
-        //         {
-        //         headers: {
-        //             'Content-Type': 'application/json'
-        //         },
-        //         method: "POST",
-        //         body: JSON.stringify( position )
-        //     })
-        //     .then((response) => {
-        //         if (response.status === 201) {
-        //         return response.json();
-        //         } else if (response.status === 400) {
-        //         console.log("Position Name already exists.")
-        //         }
-        //     })
-        //     .then((data) => console.log(data))
-        //     .then((error) => console.log(error));
-        // }
-
-
-        // for (var skill of values['Skills']) {
-        //   const position = {
-        //     "Skill_ID": skill['skill'], 
-        //     "Position_name": Title,
-        //     "Position_desc": Description,
-        //     "Position_dept": Department, 
-        //     "Position_rept": responsibilties.substring(0, responsibilties.length-1),
-        //     "Position_status": Active
-        //   }
-
-        //   fetch("http://localhost:5000/createPosition", 
-        //       {
-        //         headers: {
-        //           'Content-Type': 'application/json'
-        //         },
-        //         method: "POST",
-        //         body: JSON.stringify( position )
-        //     })
-        //     .then((response) => {
-        //       if (response.status === 201) {
-        //         return response.json();
-        //       } else if (response.status === 400) {
-        //         console.log("Position Name already exists.")
-        //       }
-        //     })
-        //     .then((data) => console.log(data))
-        //     .then((error) => console.log(error));
-        // }
-
-    };
+            fetch("http://localhost:5000/createPosition", 
+                {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                method: "POST",
+                body: JSON.stringify( position )
+            })
+            .then((response) => {
+                if (response.status === 201) {
+                return response.json();
+                } else if (response.status === 400) {
+                console.log("Position Name already exists.")
+                }
+            })
+            .then((data) => console.log(data))
+            .catch((error) => console.log(error));
+        }
 
     const onFinishFailed = (errorInfo: any) => {
         console.log('Errors:', errorInfo);

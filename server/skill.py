@@ -34,6 +34,26 @@ class Skill(db.Model):
 
     #Fill up columns here
 
+@app.route("/skills")
+def get_all_skills():
+
+    skillList = Skill.query.all()
+    if skillList:
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "Skill": [skill.json() for skill in skillList]
+                }
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "There are no skills."
+        }
+    ), 404
+
 @app.route("/getSkillBySkillID/<string:skillID>")
 def get_skill_by_skillID(skillID):
 
