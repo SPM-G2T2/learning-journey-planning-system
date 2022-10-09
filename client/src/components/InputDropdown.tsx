@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import {
   MinusCircleOutlined
 } from "@ant-design/icons";
@@ -36,6 +37,29 @@ export default function InputDropdown(props: InputDropdownProps) {
    
     const { Option } = Select;
 
+    const [skills, setSkills] = useState<String[]>([]);
+
+    useEffect(() => {
+
+      fetch('http://localhost:5000/skill')
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data) 
+        var skillArr: String[] = [];
+        for (var skill of data.data.Skills) {
+          if (skill['Skill_Status'].toUpperCase() === "ACTIVE") {
+            skillArr.push(skill);
+          }
+        }
+        console.log(skillArr);
+        setSkills(skillArr);
+      })
+      .then((error) => console.log(error));
+
+    }, [])
+  
+    console.log(skills);
+
     return (<>
       { props.label === "Skills" ?
          <Form.List name="Skills">
@@ -60,10 +84,10 @@ export default function InputDropdown(props: InputDropdownProps) {
                  ]}
                  noStyle
                  >
-                 <Select style={{ width: "30vw" }}>
-                    <Option value="1_Programming">Programming</Option>
-                    <Option value="2_Sleeping">Sleeping</Option>
-                    <Option value="3_Pooping">Pooping</Option>
+                  <Select style={{ width: "30vw" }}>
+                    { skills.map((skill:any, i:number) => 
+                      <Option value={ skill['Skill_ID'] + "_" + skill['Skill_Name'] } key={i}>{ skill['Skill_Name'] }</Option>
+                    )}
                   </Select>
                </Form.Item>
                {/* <Form.Item style={{ display: "inline-block" }}> */}
@@ -88,9 +112,9 @@ export default function InputDropdown(props: InputDropdownProps) {
                    noStyle
                  >
                   <Select style={{ width: "30vw" }}>
-                    <Option value="1_Programming">Programming</Option>
-                    <Option value="2_Sleeping">Sleeping</Option>
-                    <Option value="3_Pooping">Pooping</Option>
+                    { skills.map((skill:any, i:number) => 
+                        <Option value={ skill['Skill_ID'] + "_" + skill['Skill_Name'] } key={i}>{ skill['Skill_Name'] }</Option>
+                    )}
                   </Select>
                  </Form.Item>
                  <MinusCircleOutlined

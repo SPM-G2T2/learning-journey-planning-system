@@ -28,11 +28,11 @@ export default function PreviewRoles(props:any){
     console.log(props.form.Skills[0].split("_")[0]);
 
     const position = {
-        "Position_name": props.form.Title,
-        "Position_desc": props.form.Description,
-        "Position_dept": props.form.Department,
-        "Position_rept": responsibilities.substring(0, responsibilities.length-1),
-        "Position_status": active
+        "Position_Name": props.form.Title,
+        "Position_Desc": props.form.Description,
+        "Position_Dept": props.form.Department,
+        "Position_Res": responsibilities.substring(0, responsibilities.length-1),
+        "Position_Status": active
     }
     console.log(position)
 
@@ -41,7 +41,7 @@ export default function PreviewRoles(props:any){
 
         var positionId = null;
 
-        // if position only has one skill
+        // insert into position table
         fetch("http://localhost:5000/createPosition",
             {
             headers: {
@@ -68,34 +68,32 @@ export default function PreviewRoles(props:any){
                 positionId = data.data.Position_ID;
                 console.log(positionId);
 
-                // if position has more than one skill
-                if (props.form.Skills.length > 1 ) {
-                    console.log("run multiple insertion")
-                    for (var skill of props.form.Skills) {
-                        const Position_Skill = {
-                            "Position_ID": positionId,
-                            "Skill_ID": skill.split("_")[0],
-                        }
-            
-                        fetch("http://localhost:5000/createPositionSkill",
-                            {
-                                headers: {
-                                'Content-Type': 'application/json'
-                                },
-                                method: "POST",
-                                body: JSON.stringify( Position_Skill )
-                            })
-                            .then((response) => {
-                            if (response.status === 201) {
-                                return response.json();
-                            } else if (response.status === 500) {
-                                console.log("An error occurred adding the position.")
-                            }
-                            })
-                            .then((data) => console.log(data))
-                            .then((error) => console.log(error));
+                // insert into position skill table
+                for (var skill of props.form.Skills) {
+                    const Position_Skill = {
+                        "Position_ID": positionId,
+                        "Skill_ID": skill.split("_")[0],
                     }
+        
+                    fetch("http://localhost:5000/createPositionSkill",
+                        {
+                            headers: {
+                            'Content-Type': 'application/json'
+                            },
+                            method: "POST",
+                            body: JSON.stringify( Position_Skill )
+                        })
+                        .then((response) => {
+                        if (response.status === 201) {
+                            return response.json();
+                        } else if (response.status === 500) {
+                            console.log("An error occurred adding the position.")
+                        }
+                        })
+                        .then((data) => console.log(data))
+                        .then((error) => console.log(error));
                 }
+                
             }
         })
         .then((error) => console.log(error));
