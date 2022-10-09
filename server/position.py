@@ -6,9 +6,9 @@ import json
 app = Flask(__name__)
 CORS(app)
 # Mac User
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:8889/SPM'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:8889/learning_journey_planning_system'
 # Window User
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/SPM'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/learning_journey_planning_system'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_recycle': 299}
 
@@ -18,23 +18,23 @@ class Position(db.Model):
     __tablename__ = "Position"
 
     Position_ID = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
-    Position_name = db.Column(db.String(50), nullable=False)
-    Position_desc = db.Column(db.String(255), nullable=False)
-    Position_dept = db.Column(db.String(20), nullable=False)
-    Position_rept = db.Column(db.String(1000), nullable=False)
-    Position_status = db.Column(db.String(10), nullable=False)
+    Position_Name = db.Column(db.String(50), nullable=False)
+    Position_Desc = db.Column(db.String(255), nullable=False)
+    Position_Dept = db.Column(db.String(20), nullable=False)
+    Position_Res = db.Column(db.String(1000), nullable=False)
+    Position_Status = db.Column(db.String(10), nullable=False)
 
 
-    def __init__(self, Position_name, Position_desc, Position_dept, Position_rept, Position_status): # constructor, initializes the record
-        self.Position_name = Position_name
-        self.Position_desc = Position_desc
-        self.Position_dept = Position_dept
-        self.Position_rept = Position_rept
-        self.Position_status = Position_status
+    def __init__(self, Position_Name, Position_Desc, Position_Dept, Position_Res, Position_Status): # constructor, initializes the record
+        self.Position_Name = Position_Name
+        self.Position_Desc = Position_Desc
+        self.Position_Dept = Position_Dept
+        self.Position_Res = Position_Res
+        self.Position_Status = Position_Status
 
 
     def json(self): # returns json representation of the table in dict form
-        return {"Position_ID": self.Position_ID, "Position_name": self.Position_name, "Position_desc": self.Position_desc, "Position_dept": self.Position_dept, "Position_rept": self.Position_rept, "Position_status": self.Position_status}
+        return { "Position_ID": self.Position_ID, "Position_Name": self.Position_Name, "Position_Desc": self.Position_Desc, "Position_Dept": self.Position_Dept, "Position_Res": self.Position_Res, "Position_Status": self.Position_Status }
 
 
 class Position_Skill(db.Model):
@@ -51,6 +51,26 @@ class Position_Skill(db.Model):
 
     def json(self): # returns json representation of the table in dict form
         return {"Position_ID": self.Position_ID, "Skill_ID": self.Skill_ID}
+
+
+class Skill(db.Model): 
+    __tablename__ = 'Skill' 
+
+    Skill_ID = db.Column(db.Integer, primary_key=True, autoincrement=True) 
+    Skill_Name = db.Column(db.String(50), nullable=False) 
+    Skill_Desc = db.Column(db.String(255), nullable=False) 
+    Skill_Status = db.Column(db.String(10), nullable=False)
+
+
+    def __init__(self, Skill_ID, Skill_Name, Skill_Desc, Skill_Status): 
+        self.Skill_ID = Skill_ID 
+        self.Skill_Name = Skill_Name 
+        self.Skill_Desc = Skill_Desc
+        self.Skill_Status = Skill_Status 
+
+
+    def json(self): 
+        return { "Skill_ID": self.Skill_ID, "Skill_Name": self.Skill_Name, "Skill_Desc": self.Skill_Desc, "Skill_Status": self.Skill_Status } 
 
 
 @app.route("/position")
@@ -73,14 +93,34 @@ def get_all_position():
         ), 404
 
 
+@app.route("/skill")
+def get_all_skill():
+    skillList = Skill.query.all() 
+    if len(skillList): 
+        return jsonify ( 
+        {
+            "code": 200,
+            "data": {
+            "Skills": [skill.json() for skill in skillList] 
+                    }
+                }
+            )
+    return jsonify(
+        {
+        "code": 404,
+        "message": "There are no Skills."
+        }
+        ), 404
+
+
 @app.route("/createPosition", methods=['POST'])
 def create_position():
 
     position = request.get_json()
     print(type(position)) #dict 
-    positionName = position['Position_name']
+    positionName = position['Position_Name']
 
-    if (Position.query.filter_by(Position_name=positionName).first()):
+    if (Position.query.filter_by(Position_Name=positionName).first()):
         return jsonify(
             {
                 "code": 400,
@@ -91,10 +131,10 @@ def create_position():
             }
         ), 400
 
-    positionDesc = position['Position_desc']
-    positionDept = position['Position_dept']
-    positionRes = position['Position_rept']
-    positionStatus = position['Position_status']
+    positionDesc = position['Position_Desc']
+    positionDept = position['Position_Dept']
+    positionRes = position['Position_Res']
+    positionStatus = position['Position_Status']
 
     print(positionName, positionDesc, positionDept, positionRes, positionStatus)
     position = Position(positionName, positionDesc, positionDept, positionRes, positionStatus)
