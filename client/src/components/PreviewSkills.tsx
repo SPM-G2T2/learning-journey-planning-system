@@ -4,7 +4,7 @@ import axios, { AxiosResponse, AxiosError } from 'axios';
 import '../styles/App.css';
 import { useState, useEffect } from "react";
 export default function PreviewSkills(props:any){
-    
+    console.log(props)
     const { Title } = Typography;
     const { Paragraph } = Typography;
     const [skills, setSkills] = useState<String[]>([]);

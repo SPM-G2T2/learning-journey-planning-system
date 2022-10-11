@@ -8,7 +8,7 @@ import InputDropdown from "./InputDropdown";
 export default function CreateSkills(props:any) {
 
   const { Title } = Typography;
-  const [form] = Form.useForm();
+  const [form2] = Form.useForm();
 
   const onFinishFailed = (errorInfo: any) => {
     console.log("Errors:", errorInfo);
@@ -36,7 +36,7 @@ export default function CreateSkills(props:any) {
         wrapperCol={{ span: 10 }}
         layout="horizontal"
         initialValues={{ remember: true }}
-        form={form}
+        form={form2}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         style={{ marginLeft: 10 }}

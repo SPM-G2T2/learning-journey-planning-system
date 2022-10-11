@@ -36,27 +36,35 @@ const formItemLayoutWithOutLabel = {
 export default function InputDropdown(props: InputDropdownProps) {
   const [courses, setCourses] = useState<String[]>([]);
     const { Option } = Select;
-    const submitSkill = async() =>{
-      axios.get("http://127.0.0.1:5000/get_all_courses")
-      .then(
-          (response: AxiosResponse) => {
-              console.log(response.data.data.courses)
-            for (const course of response.data.data.courses)  {
-              console.log(course.course_name)
+
+    useEffect(() => {
+      const submitSkill = async() =>{
+        axios.get("http://127.0.0.1:5000/get_all_courses")
+        .then(
+            (response: AxiosResponse) => {
+                console.log(response.data.data.courses)
+                var courseArr: String[] = [];
+              for (const course of response.data.data.courses)  {
+                // console.log(course.course_name)
+                // console.log(course.course_id)
+                courseArr.push(course)
+              }
+              setCourses(courseArr)
+              }
+        )
+        .catch((reason: AxiosError) =>  {
+            console.log(reason)
+            if (reason.response!.status === 404){
+                console.log("There are no courses")
             }
+            else{
+                console.log("Network error")
+              };
             }
-      )
-      .catch((reason: AxiosError) =>  {
-          console.log(reason)
-          if (reason.response!.status === 400){
-              console.log("Skill already exist")
-          }
-          else{
-              console.log("Network error")
-            };
-          }
-        );
-  }
+          );
+    }
+    submitSkill()
+    }, [])
 
     return (<>
       { props.label === "Skills" ?
@@ -157,11 +165,12 @@ export default function InputDropdown(props: InputDropdownProps) {
                 ]}
                 noStyle
                 >
+
                 <Select style={{ width: "30vw" }}>
-                <Option value="COR001">Systems Thinking and Design</Option>
-                    <Option value="COR002">Lean Six Sigma Green Belt Certification</Option>
-                    <Option value="COR004">Service Excellence</Option>
-                </Select>
+                    { courses.map((course:any, i:number) => 
+                        <Option value={course['course_id']} key={i}>{course['course_name'] }</Option>
+                    )}
+               </Select>
               </Form.Item>
               {/* <Form.Item style={{ display: "inline-block" }}> */}
                 <Button style={{ display: "inline-block", marginLeft: 20 }} onClick={() => add()}>Add field</Button>
@@ -185,9 +194,9 @@ export default function InputDropdown(props: InputDropdownProps) {
                   noStyle
                 >
                  <Select style={{ width: "30vw" }}>
-                    <Option value="COR001">Systems Thinking and Design</Option>
-                    <Option value="COR002">Lean Six Sigma Green Belt Certification</Option>
-                    <Option value="COR004">Service Excellence</Option>
+                 { courses.map((course:any, i:number) => 
+                        <Option value={course['course_id']} key={i}>{course['course_name'] }</Option>
+                    )}
                  </Select>
                 </Form.Item>
                 <MinusCircleOutlined

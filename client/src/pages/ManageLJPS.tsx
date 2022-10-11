@@ -8,9 +8,9 @@ import PreviewSkills from "../components/PreviewSkills"
 export default function ManageLJPS() {
 
   const [rolesStep, setRolesStep] = useState("form");
-  const [skillsStep, setSkillsStep] = useState("form2");
+  const [skillsStep, setSkillsStep] = useState("form");
   const [form, setForm] = useState(null)
-  const [form2, setForm2] = useState(null)
+  // const [form2, setForm2] = useState(null)
 
   return (
     <>
@@ -21,12 +21,13 @@ export default function ManageLJPS() {
           {
             label: "Roles",
             key: "roles",
-            children: rolesStep === "form" ? <CreateRoles setForm={setForm} setNext = {setRolesStep} /> : <PreviewRoles form={form} /> ,
+            children: rolesStep === "form" ? <CreateRoles setForm={setForm} setNext = {setRolesStep} /> : <PreviewRoles form={form} setNext = {setRolesStep}  /> ,
           },
           {
             label: "Skills",
             key: "skills",
-            children: skillsStep === "form2" ? <CreateSkills setForm={setForm2} setNext = {setSkillsStep} /> : <PreviewSkills form={form2} /> ,
+            children: skillsStep === "form" ? <CreateSkills setForm={setForm} setNext = {setSkillsStep} /> : <PreviewSkills form={form} setNext = {setSkillsStep} />
+            ,
           },
           {
             label: "Courses",
