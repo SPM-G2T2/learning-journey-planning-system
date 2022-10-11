@@ -34,9 +34,8 @@ const formItemLayoutWithOutLabel = {
  * @return {React.FC}: The JSX Code for input dropdown template component.
  */
 export default function InputDropdown(props: InputDropdownProps) {
-  const [courses, setCourses] = useState<String[]>([]);
     const { Option } = Select;
-
+    const [courses, setCourses] = useState<String[]>([]);
     useEffect(() => {
       const submitSkill = async() =>{
         axios.get("http://127.0.0.1:5000/get_all_courses")
