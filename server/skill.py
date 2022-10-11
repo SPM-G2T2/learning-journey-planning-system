@@ -7,7 +7,8 @@ from flask_cors import CORS
 
 app = Flask(__name__) 
 CORS(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/spm'
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/learning_journey_planning_system'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
 
 db = SQLAlchemy(app) 
@@ -23,19 +24,17 @@ class Course(db.Model):
     course_status = db.Column(db.String(15), nullable=False)
     course_type = db.Column(db.String(10), nullable=False)
     course_category = db.Column(db.String(50), nullable=False)
-    skill_id = db.Column(db.Integer, primary_key=True)
 
-    def __init__(self, course_id, course_name, course_desc, course_status, course_type, course_category, skill_id): 
+    def __init__(self, course_id, course_name, course_desc, course_status, course_type, course_category): 
         self.course_id = course_id 
         self.course_name = course_name 
         self.course_desc = course_desc
         self.course_status = course_status 
         self.course_type = course_type
         self.course_category = course_category
-        self.skill_id = skill_id
 
     def json(self): 
-        return {"course_id": self.course_id, "course_name": self.course_name, "course_desc": self.course_desc, "course_status": self.course_status, "course_type": self.course_type, "course_category": self.course_category, "skill_id": self.skill_id} 
+        return {"course_id": self.course_id, "course_name": self.course_name, "course_desc": self.course_desc, "course_status": self.course_status, "course_type": self.course_type, "course_category": self.course_category} 
 
 
 #Skill DB Model
@@ -45,18 +44,32 @@ class Skill(db.Model):
 
     skill_id = db.Column(db.Integer, primary_key=True, autoincrement=True) 
     skill_name = db.Column(db.String(50), nullable=False) 
-    skill_description = db.Column(db.String(255), nullable=False) 
+    skill_desc = db.Column(db.String(255), nullable=False) 
     skill_status = db.Column(db.String(10), nullable=False)
 
-    def __init__(self, skill_id, skill_name, skill_description, skill_status): 
+    def __init__(self, skill_id, skill_name, skill_desc, skill_status): 
         self.skill_id = skill_id 
         self.skill_name = skill_name 
-        self.skill_description = skill_description
+        self.skill_desc = skill_desc
         self.skill_status = skill_status 
 
     def json(self): 
-        return {"skill_id": self.skill_id, "skill_name": self.skill_name, "skill_description": self.skill_description, "skill_status": self.skill_status} 
+        return {"skill_id": self.skill_id, "skill_name": self.skill_name, "skill_desc": self.skill_desc, "skill_status": self.skill_status} 
 
+#Skill_course DB Model
+class Skill_course(db.Model): 
+
+    __tablename__ = 'skill_course' 
+
+    skill_id = db.Column(db.Integer, primary_key=True) 
+    course_id = db.Column(db.String(20), primary_key=True) 
+
+    def __init__(self, skill_id, course_id): 
+        self.skill_id = skill_id 
+        self.course_id = course_id 
+
+    def json(self): 
+        return {"skill_id": self.skill_id, "course_id": self.course_id} 
 
 #FUNCTION 1: Return all courses
 @app.route("/get_all_courses") 
@@ -107,7 +120,7 @@ def add_skill():
         max_skill_id = int(max_skill_id[0])
         incremented_skill_id = max_skill_id + 1
 
-    skill = Skill(incremented_skill_id, string.capwords(data['skill_name']), data['skill_description'], data['skill_status']) 
+    skill = Skill(incremented_skill_id, string.capwords(data['skill_name']), data['skill_desc'], data['skill_status']) 
 
     try: 
         db.session.add(skill) 
@@ -128,12 +141,14 @@ def add_skill():
     courses = data['courses']
 
     for course_id in courses:
-        course_obj = Course.query.filter_by(course_id=course_id).first().json()
-        new_course_obj = Course(course_obj['course_id'], course_obj['course_name'], course_obj['course_desc'], course_obj['course_status'], course_obj['course_type'], course_obj['course_category'], incremented_skill_id)
+        # course_obj = Course.query.filter_by(course_id=course_id).first().json()
+        # new_course_obj = Course(course_obj['course_id'], course_obj['course_name'], course_obj['course_desc'], course_obj['course_status'], course_obj['course_type'], course_obj['course_category'], incremented_skill_id)
+
+        skill_course_obj = Skill_course(incremented_skill_id, course_id)
 
         try: 
-            db.session.add(new_course_obj) 
-            db.session.commit()  
+            db.session.add(skill_course_obj) 
+            db.session.commit() 
 
         except:
             return jsonify( 

@@ -1,4 +1,5 @@
-import { Typography, Form, Button, Row, Col } from 'antd';
+// import { useState } from 'react';
+import { Typography, Form, Button, Row, Col, Modal } from 'antd';
 import "antd/dist/antd.css";
 import '../styles/App.css';
 
@@ -7,77 +8,122 @@ export default function PreviewRoles(props:any){
     const { Title } = Typography;
     const { Paragraph } = Typography;
 
-    // console.log(props.form);
+    console.log(props.form);
 
-    // var responsibilties = "";
-    // for (var resp of values["Responsibilities"]) {
-    //   console.log(resp);
-    //   responsibilties += resp["resp"] + ",";
-    // }
-    // console.log(responsibilties.substring(0, responsibilties.length - 1));
+    var responsibilities = "";
+    for (var resp of props.form.Responsibilities) {
+      console.log(resp);
+      responsibilities += resp + ",";
+    }
+    console.log(responsibilities.substring(0, responsibilities.length - 1));
 
-    // const Active = "Retired";
-    // if (values["Active"]) {
-    //   const Active = "Active";
-    // }
-    // console.log(values["Skills"][0]["skill"]);
+    var active = "Retired";
+    if (props.form.Active) {
+        active = "Active";
+    }
 
-    // const position = {
-    //     "Skill_ID": values['Skills'][0]['skill'],
-    //     "Position_name": Title,
-    //     "Position_desc": Description,
-    //     "Position_dept": Department,
-    //     "Position_rept": responsibilties.substring(0, responsibilties.length-1),
-    //     "Position_status": Active
-    //     }
+    console.log(active);
 
-    //     fetch("http://localhost:5000/createPosition",
-    //         {
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         },
-    //         method: "POST",
-    //         body: JSON.stringify( position )
-    //     })
-    //     .then((response) => {
-    //         if (response.status === 201) {
-    //         return response.json();
-    //         } else if (response.status === 400) {
-    //         console.log("Position Name already exists.")
-    //         }
-    //     })
-    //     .then((data) => console.log(data))
-    //     .then((error) => console.log(error));
-    // }
+    console.log(props.form.Skills);
+    console.log(props.form.Skills[0].split("_")[0]);
 
-    // for (var skill of values['Skills']) {
-    //   const position = {
-    //     "Skill_ID": skill['skill'],
-    //     "Position_name": Title,
-    //     "Position_desc": Description,
-    //     "Position_dept": Department,
-    //     "Position_rept": responsibilties.substring(0, responsibilties.length-1),
-    //     "Position_status": Active
-    //   }
+    const position = {
+        "Position_name": props.form.Title,
+        "Position_desc": props.form.Description,
+        "Position_dept": props.form.Department,
+        "Position_rept": responsibilities.substring(0, responsibilities.length-1),
+        "Position_status": active
+    }
+    console.log(position)
 
-    //   fetch("http://localhost:5000/createPosition",
-    //       {
-    //         headers: {
-    //           'Content-Type': 'application/json'
-    //         },
-    //         method: "POST",
-    //         body: JSON.stringify( position )
-    //     })
-    //     .then((response) => {
-    //       if (response.status === 201) {
-    //         return response.json();
-    //       } else if (response.status === 400) {
-    //         console.log("Position Name already exists.")
-    //       }
-    //     })
-    //     .then((data) => console.log(data))
-    //     .then((error) => console.log(error));
-    // }
+
+    const submitForm = () => {
+
+        var positionId = null;
+
+        // if position only has one skill
+        fetch("http://localhost:5000/createPosition",
+            {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify( position )
+        })
+        .then((response) => {
+            if (response.status === 201) {
+                success();
+                return response.json();
+            } else if (response.status === 400) {
+                console.log("Position Name already exists.")
+                warning();
+            } else if (response.status === 500) {
+                console.log("An error occurred creating the position.")
+                error();
+            }
+        })
+        .then((data) => {
+            console.log(data);
+            if (data.code === 201) {
+                positionId = data.data.Position_ID;
+                console.log(positionId);
+
+                // if position has more than one skill
+                if (props.form.Skills.length > 1 ) {
+                    console.log("run multiple insertion")
+                    for (var skill of props.form.Skills) {
+                        const Position_Skill = {
+                            "Position_ID": positionId,
+                            "Skill_ID": skill.split("_")[0],
+                        }
+            
+                        fetch("http://localhost:5000/createPositionSkill",
+                            {
+                                headers: {
+                                'Content-Type': 'application/json'
+                                },
+                                method: "POST",
+                                body: JSON.stringify( Position_Skill )
+                            })
+                            .then((response) => {
+                            if (response.status === 201) {
+                                return response.json();
+                            } else if (response.status === 500) {
+                                console.log("An error occurred adding the position.")
+                            }
+                            })
+                            .then((data) => console.log(data))
+                            .then((error) => console.log(error));
+                    }
+                }
+            }
+        })
+        .then((error) => console.log(error));
+
+    }
+
+    const success = () => {
+        Modal.success({
+          content: 'Role has been successfully created!',
+        });
+        goToForm();
+    };
+
+    const warning = () => {
+        Modal.warning({
+          content: 'Role name already exists. Please try another name.',
+        });
+    };
+
+    const error = () => {
+        Modal.error({
+          content: 'An error occurred creating the role! Please try again later.',
+        });
+    };
+
+    const goToForm = () => {
+        props.setNext("form");
+    }
 
     return <>
         <Title level={4}>Review role</Title>
@@ -128,7 +174,7 @@ export default function PreviewRoles(props:any){
                     <Title level={5}>Skills </Title>
                 </Col>
                 <Col span={19}>
-                    <Paragraph> { props.form.Skills[0] } </Paragraph>
+                    <Paragraph> { props.form.Skills[0].split("_")[1] } </Paragraph>
                 </Col>
             </Row>
             { props.form.Skills.length > 1 ? props.form.Skills.slice(1).map((eachSkill: (any)) => (
@@ -136,7 +182,7 @@ export default function PreviewRoles(props:any){
                     <Col span={5}>
                     </Col>
                     <Col span={19}>
-                        <Paragraph> { eachSkill } </Paragraph>
+                        <Paragraph> { eachSkill.split("_")[1] } </Paragraph>
                     </Col>
                 </Row> 
             )) : null }
@@ -144,12 +190,12 @@ export default function PreviewRoles(props:any){
         <Row style={{ justifyContent: "flex-end" }}>
             <Col style={{ marginRight: 20 }}>
                 <Form.Item>
-                    <Button>Back</Button>
+                    <Button onClick={goToForm}>Back</Button>
                 </Form.Item>
             </Col>
             <Col>
                 <Form.Item>
-                    <Button type="primary">Confirm</Button>
+                    <Button type="primary" onClick={submitForm}>Confirm</Button>
                 </Form.Item>
             </Col>
         </Row>

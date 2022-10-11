@@ -1,83 +1,76 @@
-import { Typography, Form, Button, Row, Col } from 'antd';
+import { Typography, Form, Button, Row, Col, Modal, message } from 'antd';
 import "antd/dist/antd.css";
+import axios, { AxiosResponse, AxiosError } from 'axios';
 import '../styles/App.css';
-
+import { useState, useEffect } from "react";
 export default function PreviewSkills(props:any){
     
     const { Title } = Typography;
     const { Paragraph } = Typography;
+    const [skills, setSkills] = useState<String[]>([]);
+    // console.log(props.form);
+    
+    var active = "Retired";
+    if (props.form.Active) {
+        active = "Active";
+    }
 
-    console.log(props.form);
+    const skill = {
+        "skill_name": props.form.Title,
+        "skill_desc": props.form.Description,
+        "skill_status": active,
+        "courses":props.form.Courses
+    }
+    console.log(skill)
 
-    // var responsibilties = "";
-    // for (var resp of values["Responsibilities"]) {
-    //   console.log(resp);
-    //   responsibilties += resp["resp"] + ",";
-    // }
-    // console.log(responsibilties.substring(0, responsibilties.length - 1));
+    // const submitSkill = () => {
 
-    // const Active = "Retired";
-    // if (values["Active"]) {
-    //   const Active = "Active";
-    // }
-    // console.log(values["Skills"][0]["skill"]);
+const submitSkill = async() =>{
+    axios.post("http://127.0.0.1:5000/add_skill",skill)
+    .then(
+        (response: AxiosResponse) => {
+            console.log(response.status)
+            success()
+          }
+    )
+    .catch((reason: AxiosError) =>  {
+        console.log(reason)
+        if (reason.response!.status === 400){
+            warning()
+            console.log("Skill already exist")
+        }
+        else{
+            error2()
+            console.log("Network error")
+          };
+        }
+      );
+}
 
-    // const position = {
-    //     "Skill_ID": values['Skills'][0]['skill'],
-    //     "Position_name": Title,
-    //     "Position_desc": Description,
-    //     "Position_dept": Department,
-    //     "Position_rept": responsibilties.substring(0, responsibilties.length-1),
-    //     "Position_status": Active
-    //     }
+    const success = () => {
+        Modal.success({
+          content: 'Skill has been successfully created!',
+        });
+        goToForm();
+    };
 
-    //     fetch("http://localhost:5000/createPosition",
-    //         {
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         },
-    //         method: "POST",
-    //         body: JSON.stringify( position )
-    //     })
-    //     .then((response) => {
-    //         if (response.status === 201) {
-    //         return response.json();
-    //         } else if (response.status === 400) {
-    //         console.log("Position Name already exists.")
-    //         }
-    //     })
-    //     .then((data) => console.log(data))
-    //     .then((error) => console.log(error));
-    // // }
+    const warning = () => {
+        Modal.warning({
+          content: 'Skill name already exists. Please try another name.',
+        });
+    };
 
-    // for (var skill of values['Skills']) {
-    //   const position = {
-    //     "Skill_ID": skill['skill'],
-    //     "Position_name": Title,
-    //     "Position_desc": Description,
-    //     "Position_dept": Department,
-    //     "Position_rept": responsibilties.substring(0, responsibilties.length-1),
-    //     "Position_status": Active
-    //   }
+    const error2 = () => {
+        Modal.error({
+          content: 'An error occurred creating the skill! Please try again later.',
+        });
+    };
 
-    //   fetch("http://localhost:5000/createPosition",
-    //       {
-    //         headers: {
-    //           'Content-Type': 'application/json'
-    //         },
-    //         method: "POST",
-    //         body: JSON.stringify( position )
-    //     })
-    //     .then((response) => {
-    //       if (response.status === 201) {
-    //         return response.json();
-    //       } else if (response.status === 400) {
-    //         console.log("Position Name already exists.")
-    //       }
-    //     })
-    //     .then((data) => console.log(data))
-    //     .then((error) => console.log(error));
-    // }
+    const goToForm = () => {
+        props.setNext("form");
+    };
+
+
 
     return <>
         <Title level={4}>Review Skill</Title>
@@ -119,12 +112,12 @@ export default function PreviewSkills(props:any){
         <Row style={{ justifyContent: "flex-end" }}>
             <Col style={{ marginRight: 20 }}>
                 <Form.Item>
-                    <Button>Back</Button>
+                    <Button onClick={goToForm}>Back</Button>
                 </Form.Item>
             </Col>
             <Col>
                 <Form.Item>
-                    <Button type="primary">Confirm</Button>
+                    <Button type="primary" onClick={submitSkill}>Confirm</Button>
                 </Form.Item>
             </Col>
         </Row>

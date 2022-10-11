@@ -3,7 +3,8 @@ import {
 } from "@ant-design/icons";
 import { Form, Select, Button } from 'antd';
 import "antd/dist/antd.css"
-
+import { useState, useEffect } from "react";
+import axios, { AxiosResponse, AxiosError } from 'axios';
 interface InputDropdownProps {
     label?: string;
     name?: string;
@@ -33,8 +34,29 @@ const formItemLayoutWithOutLabel = {
  * @return {React.FC}: The JSX Code for input dropdown template component.
  */
 export default function InputDropdown(props: InputDropdownProps) {
-   
+  const [courses, setCourses] = useState<String[]>([]);
     const { Option } = Select;
+    const submitSkill = async() =>{
+      axios.get("http://127.0.0.1:5000/get_all_courses")
+      .then(
+          (response: AxiosResponse) => {
+              console.log(response.data.data.courses)
+            for (const course of response.data.data.courses)  {
+              console.log(course.course_name)
+            }
+            }
+      )
+      .catch((reason: AxiosError) =>  {
+          console.log(reason)
+          if (reason.response!.status === 400){
+              console.log("Skill already exist")
+          }
+          else{
+              console.log("Network error")
+            };
+          }
+        );
+  }
 
     return (<>
       { props.label === "Skills" ?
@@ -136,10 +158,9 @@ export default function InputDropdown(props: InputDropdownProps) {
                 noStyle
                 >
                 <Select style={{ width: "30vw" }}>
-
-                  <Option value="CS123">Intro to Programming</Option>
-                  <Option value="CS121">Intro to UX Design</Option>
-                  <Option value="CS120">Intro to Meditation</Option>
+                <Option value="COR001">Systems Thinking and Design</Option>
+                    <Option value="COR002">Lean Six Sigma Green Belt Certification</Option>
+                    <Option value="COR004">Service Excellence</Option>
                 </Select>
               </Form.Item>
               {/* <Form.Item style={{ display: "inline-block" }}> */}
@@ -164,9 +185,9 @@ export default function InputDropdown(props: InputDropdownProps) {
                   noStyle
                 >
                  <Select style={{ width: "30vw" }}>
-                    <Option value="CS123">Intro to Programming</Option>
-                    <Option value="CS121">Intro to UX Design</Option>
-                    <Option value="CS120">Intro to Meditation</Option>
+                    <Option value="COR001">Systems Thinking and Design</Option>
+                    <Option value="COR002">Lean Six Sigma Green Belt Certification</Option>
+                    <Option value="COR004">Service Excellence</Option>
                  </Select>
                 </Form.Item>
                 <MinusCircleOutlined
