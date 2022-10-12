@@ -65,16 +65,16 @@ def create_learningjourney():
     staffID = learningjourney['Staff_ID']
     learningjourneyID = learningjourney['Lj_ID']
 
-    if (Learning_Journey.query.filter_by(lj_id=learningjourneyID).first()):
-        return jsonify(
-            {
-                "code": 400,
-                "data": {
-                    "Learning Journey ID": learningjourneyID
-                },
-                "message": "Learning Journey already exists."
-            }
-        ), 400
+    # if (Learning_Journey.query.filter_by(lj_id=learningjourneyID).first()):
+    #     return jsonify(
+    #         {
+    #             "code": 400,
+    #             "data": {
+    #                 "Learning Journey ID": learningjourneyID
+    #             },
+    #             "message": "Learning Journey already exists."
+    #         }
+    #     ), 400
 
     Staff_ID = learningjourney['Staff_ID']
     skill_ID = learningjourney['skill_ID']
