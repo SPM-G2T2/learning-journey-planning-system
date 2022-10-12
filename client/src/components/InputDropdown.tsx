@@ -159,7 +159,7 @@ export default function InputDropdown(props: InputDropdownProps) {
                       required: true,
                       whitespace: true,
                       message:
-                        "Please select a skill",
+                        "Please select a course",
                     },
                 ]}
                 noStyle
@@ -187,7 +187,7 @@ export default function InputDropdown(props: InputDropdownProps) {
                       required: true,
                       whitespace: true,
                       message:
-                        "Please select a skill",
+                        "Please select a course",
                     },
                   ]}
                   noStyle
