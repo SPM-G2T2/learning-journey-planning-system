@@ -8,6 +8,10 @@ from flask_cors import CORS
 app = Flask(__name__) 
 CORS(app)
 
+# Mac User
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:8889/learning_journey_planning_system'
+
+# Windows User
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/learning_journey_planning_system'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
 
@@ -70,6 +74,9 @@ class Skill_course(db.Model):
 
     def json(self): 
         return {"skill_id": self.skill_id, "course_id": self.course_id} 
+
+    def get_courses(self):
+        return {"course_id": self.course_id}
 
 #FUNCTION 1: Return all courses
 @app.route("/get_all_courses") 
@@ -168,7 +175,43 @@ def add_skill():
     ), 201 
 
 
-#FUNCTION 3: Assign courses to the created skill (adding another course entry with different skill_ID)
+#FUNCTION 3: Filter courses by skill_id
+@app.route("/filter_courses_by_skill/<int:skill_id>", methods=['GET']) 
+def filter_courses(skill_id): 
+
+    courselist = Skill_course.query.filter_by(skill_id=skill_id).all()
+
+    courses = []
+
+    for item in courselist:
+
+        course_id = item.json()['course_id']
+        # print(course_id)
+
+        course = Course.query.filter_by(course_id=course_id).all()
+        # print(course[0].json())
+
+        courses.append(course[0].json())
+
+    # print(courses)
+
+    if courses: 
+        return jsonify( 
+            { 
+                "code": 200, 
+                "data": [courses for courses in courses]
+            } 
+        ) 
+
+    return jsonify( 
+        { 
+            "code": 404, 
+            "message": "Skill id invalid." 
+        } 
+    ), 404 
+
+
+#FUNCTION 4: Assign courses to the created skill (adding another course entry with different skill_ID)
 @app.route("/assign_skill", methods=['POST']) 
 def assign_skill(): 
 
@@ -201,28 +244,6 @@ def assign_skill():
             "message": "Skill successfully created."
         } 
     ), 201
-
-
-#FUNCTION 4: Filter courses by skill_id
-@app.route("/filter_courses/<int:skill_id>", methods=['GET']) 
-def filter_courses(skill_id): 
-
-    courselist = Course.query.filter_by(skill_id=skill_id).all()
-
-    if courselist: 
-        return jsonify( 
-            { 
-                "code": 200, 
-                "data": [course.json() for course in courselist]  
-            } 
-        ) 
-
-    return jsonify( 
-        { 
-            "code": 404, 
-            "message": "courses not found." 
-        } 
-    ), 404 
 
 
 #FUNCTION 5: Delete skill from courses (delete course entry by course_id and skill_id)
