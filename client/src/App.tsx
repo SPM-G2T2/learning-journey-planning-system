@@ -9,10 +9,10 @@ import "antd/dist/antd.css";
 import "./styles/App.css";
 import logo from "./logo.png";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
-import Home from "./components/Home";
-import Roles from "./components/Roles";
-import Skills from "./components/Skills";
-import Courses from "./components/Courses";
+import Home from "./pages/Home";
+import Roles from "./pages/Roles";
+import Skills from "./pages/Skills";
+import Courses from "./pages/Courses";
 
 const { Content, Sider } = Layout;
 
