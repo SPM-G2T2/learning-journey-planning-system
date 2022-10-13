@@ -69,10 +69,10 @@
   overflow-y: auto;
 }
 
-h3.ant-typography {
+h4.ant-typography {
   color: #3649F9;
-  margin-top: 20px;
-  margin-bottom: 50px;
+  margin-top: 10px;
+  margin-bottom: 20px;
 }
 
 label {
@@ -92,4 +92,32 @@ label {
   color: #3649F9;
   background-color: #FFF;
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
+}
+
+.header {
+  font-weight: 700;
+}
+
+.ant-tabs {
+  width: 60vw;
+  margin: auto;
+}
+
+.ant-tabs-tab.ant-tabs-tab-active>.ant-tabs-tab-btn {
+  font-weight: 700;
+  color: #3649F9;
+}
+
+.ant-tabs-ink-bar {
+  background-color: #3649F9;
+}
+
+.ant-tabs-tab + .ant-tabs-tab {
+  margin: 0;
+}
+
+.ant-tabs-tab-btn {
+  width: 20vw;
+  text-align: center;
+  color: #808080;
 }
