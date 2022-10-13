@@ -6,7 +6,7 @@ export default function PreviewLearningJourney(props:any){
     const { Paragraph } = Typography;
 
     const learning_journey = {
-        "lj_id": props.form.Learning_journey_id,
+        "lj_id": props.form.Learning_journey_id, //"1"
         "staff_id": props.form.staff_id,
         "skill_id": props.form.skill_id,
         "position_id": props.form.position_id,
@@ -104,6 +104,7 @@ export default function PreviewLearningJourney(props:any){
         props.setNext("form");
     }
 
+return 
 
 
 
