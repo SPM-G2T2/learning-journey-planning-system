@@ -11,10 +11,7 @@
   align-self: center;
 }
 
-.ant-layout {
-  background-color: #3649F9;
-}
-
+.ant-layout,
 .ant-layout-sider {
   background-color: #3649F9;
 }
@@ -38,7 +35,8 @@
   border-right: 0;
 }
 
-#root .ant-menu-item:hover {
+#root .ant-menu-item:hover,
+.ant-menu-title-content>.menu-item-link:hover {
   color: black;
 }
 
@@ -49,10 +47,6 @@
 
 .ant-menu-title-content>.menu-item-link {
   color: white;
-}
-
-.ant-menu-title-content>.menu-item-link:hover {
-  color: black;
 }
 
 .ant-menu-item-selected .menu-item-link {
@@ -98,4 +92,56 @@
 
 #root .ant-steps-item-title {
   color: #3649F9;
+  overflow-y: auto;
 }
+
+/* may need to check for any integration problems */
+
+h1, label {
+  font-weight: 700;
+}
+
+.ant-tabs {
+  width: 60vw;
+  margin: auto;
+}
+
+.ant-tabs-tab.ant-tabs-tab-active>.ant-tabs-tab-btn {
+  font-weight: 700;
+  color: #3649F9;
+}
+
+.ant-tabs-ink-bar {
+  background-color: #3649F9;
+}
+
+.ant-tabs-tab+.ant-tabs-tab {
+  margin: 0;
+}
+
+.ant-tabs-tab-btn {
+  width: 20vw;
+  text-align: center;
+  color: #808080;
+}
+
+.ant-btn-primary {
+  border-color: #3649F9;
+  border-radius: 10px;
+  background-color: #3649F9;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.ant-btn-primary:hover,
+.ant-btn-default,
+.ant-btn-default:hover,
+.ant-btn-default::after {
+  border-color: #3649F9;
+  border-radius: 10px;
+  color: #3649F9;
+  background-color: #FFF;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
+}
+
+
+/* may need to check for any integration problems */

@@ -1,7 +1,6 @@
 import {
   AppstoreOutlined,
   BarChartOutlined,
-  MessageOutlined,
   SettingOutlined,
   UserOutlined,
 } from "@ant-design/icons";
@@ -14,6 +13,7 @@ import Home from "./pages/Home";
 import Roles from "./pages/Roles";
 import Skills from "./pages/Skills";
 import Courses from "./pages/Courses";
+import ManageLJPS from "./pages/ManageLJPS";
 
 const { Content, Sider } = Layout;
 
@@ -38,7 +38,7 @@ const App = () => (
           </Menu.Item>
           {[
             [<BarChartOutlined />, "Roles"],
-            [<MessageOutlined />, "Skills"],
+            [<BarChartOutlined />, "Skills"],
             [<SettingOutlined />, "Courses"],
           ].map((navItem) => (
             <Menu.Item icon={navItem[0]} key={navItem[1] as string}>
@@ -50,6 +50,14 @@ const App = () => (
               </Link>
             </Menu.Item>
           ))}
+          <Menu.Item icon={<SettingOutlined/>} key="LJPS">
+            <Link
+              to="/ljps"
+              className="menu-item-link"
+            >
+              Manage LJPS
+            </Link>
+          </Menu.Item>
         </Menu>
       </Sider>
       <Content>
@@ -57,7 +65,9 @@ const App = () => (
           shape="round"
           icon={<UserOutlined />}
           style={{
+            borderColor: "#DBDBDB",
             backgroundColor: "#DBDBDB",
+            color: "#000000",
             position: "absolute",
             right: "4vw",
           }}
@@ -66,10 +76,11 @@ const App = () => (
         </Button>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/roles" element={<Roles />} />
+          <Route path="/roles" element={<Roles/>} />
           <Route path="/skills" element={<Skills />} />
           <Route path="/courses" element={<Courses />} />
           <Route path="/create/2" element={<Roles lj={true} />} />
+          <Route path="/ljps" element={<ManageLJPS />} />
         </Routes>
       </Content>
     </BrowserRouter>
