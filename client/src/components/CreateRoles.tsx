@@ -1,10 +1,9 @@
 import { Typography, Form, Button, Switch, Row } from "antd";
 // import { useState, useEffect } from "react";
-import "antd/dist/antd.css";
-import "../styles/App.css";
 import InputField from "./InputField";
 import MultipleInputFields from "./MultipleInputFields";
 import InputDropdown from "./InputDropdown";
+import styles from "../styles/ManageLJPS.module.css"
 
 export default function CreateRoles(props:any) {
 
@@ -31,7 +30,7 @@ export default function CreateRoles(props:any) {
 
   return (
     <>
-      <Title level={4}>Create a new role</Title>
+      <Title className={`${styles.tabTitleColor} ${styles.tabTitleSpacing}`} level={4}>Create a new role</Title>
       <Form
         name="userForm"
         labelCol={{ span: 4 }}

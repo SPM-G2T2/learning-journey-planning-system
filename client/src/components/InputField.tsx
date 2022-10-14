@@ -1,5 +1,4 @@
 import { Form, Input } from 'antd';
-import "antd/dist/antd.css"
 
 interface InputFieldsProps {
     label?: string;

@@ -3,7 +3,6 @@ import {
   MinusCircleOutlined
 } from "@ant-design/icons";
 import { Form, Select, Button } from 'antd';
-import "antd/dist/antd.css"
 
 interface InputDropdownProps {
     label?: string;
