@@ -37,12 +37,17 @@ export default function PreviewSkills(props:any) {
             }
         )
         .catch((reason: AxiosError) =>  {
-            console.log(reason)
+            console.log(reason.response!.status)
+            if (reason.response!.status === 406){
+                warning2()
+                console.log("Duplicated course")
+            }
             if (reason.response!.status === 400){
                 warning()
                 console.log("Skill already exist")
             }
-            else{
+
+            if (reason.response!.status !== 400 && reason.response!.status !== 406  ){
                 error2()
                 console.log("Network error")
             };
@@ -60,6 +65,12 @@ export default function PreviewSkills(props:any) {
     const warning = () => {
         Modal.warning({
           content: 'Skill name already exists. Please try another name.',
+        });
+    };
+
+    const warning2 = () => {
+        Modal.warning({
+          content: 'Duplicate course. Please select another course or remove duplicated course.',
         });
     };
 
