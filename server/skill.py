@@ -9,9 +9,10 @@ app = Flask(__name__)
 CORS(app)
 
 # Mac User
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:8889/learning_journey_planning_system'
-# Window User
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/learning_journey_planning_system'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:8889/learning_journey_planning_system'
+
+# Windows User
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/learning_journey_planning_system'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
 
 db = SQLAlchemy(app) 
@@ -74,6 +75,9 @@ class Skill_course(db.Model):
     def json(self): 
         return {"skill_id": self.skill_id, "course_id": self.course_id} 
 
+    def get_courses(self):
+        return {"course_id": self.course_id}
+
 #FUNCTION 1: Return all courses
 @app.route("/get_all_courses") 
 def get_all_courses(): 
@@ -102,6 +106,27 @@ def get_all_courses():
 def add_skill(): 
 
     data = request.get_json() 
+
+    #2.1 Check for duplicates in courses
+    courses = data['courses']
+
+    def checkIfDuplicates_1(listOfElems):
+        if len(listOfElems) == len(set(listOfElems)):
+            return False
+        else:
+            return True
+
+    result = checkIfDuplicates_1(courses)
+    if result:
+        return jsonify( 
+            { 
+                "code": 500, 
+                "data": {}, 
+                "message": "Duplicate courses detected. Please try again." 
+            } 
+        ), 500 
+
+    #2.2 Add skill
     skill_name = string.capwords(data['skill_name'])
 
     if (Skill.query.filter_by(skill_name=skill_name).first()): 
@@ -140,7 +165,7 @@ def add_skill():
             } 
         ), 500 
     
-    #2.2 assigning skill to courses
+    #2.3 assigning skill to courses
     courses = data['courses']
 
     for course_id in courses:
@@ -171,7 +196,43 @@ def add_skill():
     ), 201 
 
 
-#FUNCTION 3: Assign courses to the created skill (adding another course entry with different skill_ID)
+#FUNCTION 3: Filter courses by skill_id
+@app.route("/filter_courses_by_skill/<int:skill_id>", methods=['GET']) 
+def filter_courses(skill_id): 
+
+    courselist = Skill_course.query.filter_by(skill_id=skill_id).all()
+
+    courses = []
+
+    for item in courselist:
+
+        course_id = item.json()['course_id']
+        # print(course_id)
+
+        course = Course.query.filter_by(course_id=course_id).all()
+        # print(course[0].json())
+
+        courses.append(course[0].json())
+
+    # print(courses)
+
+    if courses: 
+        return jsonify( 
+            { 
+                "code": 200, 
+                "data": [courses for courses in courses]
+            } 
+        ) 
+
+    return jsonify( 
+        { 
+            "code": 404, 
+            "message": "Skill id invalid." 
+        } 
+    ), 404 
+
+
+#FUNCTION 4: Assign courses to the created skill (adding another course entry with different skill_ID)
 @app.route("/assign_skill", methods=['POST']) 
 def assign_skill(): 
 
@@ -204,28 +265,6 @@ def assign_skill():
             "message": "Skill successfully created."
         } 
     ), 201
-
-
-#FUNCTION 4: Filter courses by skill_id
-@app.route("/filter_courses/<int:skill_id>", methods=['GET']) 
-def filter_courses(skill_id): 
-
-    courselist = Course.query.filter_by(skill_id=skill_id).all()
-
-    if courselist: 
-        return jsonify( 
-            { 
-                "code": 200, 
-                "data": [course.json() for course in courselist]  
-            } 
-        ) 
-
-    return jsonify( 
-        { 
-            "code": 404, 
-            "message": "courses not found." 
-        } 
-    ), 404 
 
 
 #FUNCTION 5: Delete skill from courses (delete course entry by course_id and skill_id)
