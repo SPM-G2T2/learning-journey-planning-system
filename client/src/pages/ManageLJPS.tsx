@@ -10,7 +10,6 @@ export default function ManageLJPS() {
   const [rolesStep, setRolesStep] = useState("form");
   const [skillsStep, setSkillsStep] = useState("form");
   const [form, setForm] = useState(null)
-  // const [form2, setForm2] = useState(null)
 
   return (
     <>
