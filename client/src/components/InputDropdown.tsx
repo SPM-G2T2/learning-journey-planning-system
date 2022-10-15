@@ -232,7 +232,7 @@ export default function InputDropdown(props: InputDropdownProps) {
         : null }
       { props.label === "Department" ?
           <Form.Item label={props.label} name={props.label} tooltip="This is a required field" rules={[{ required: true, message: 'Please select a department' }]}> 
-            <Select>
+            <Select style={{ width: "30vw" }}>
               <Option value="HR">Human Resource</Option>
               <Option value="Finance">Finance</Option>
               <Option value="Sales">Sales</Option>

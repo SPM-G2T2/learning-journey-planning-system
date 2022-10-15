@@ -25,7 +25,7 @@ export default function InputField(props: InputFieldsProps) {
               message: "Please enter a title",
             },
           ]}>
-          <Input/>
+          <Input style={{ width: "30vw" }}/>
         </Form.Item> : 
         <Form.Item label={props.label} name={props.label}
           tooltip="This is a required field"
@@ -35,7 +35,7 @@ export default function InputField(props: InputFieldsProps) {
               message: "Please enter a description",
             },
           ]}>
-          <TextArea/>
+          <TextArea style={{ width: "30vw", maxWidth: "125%" }}/>
         </Form.Item>
         }
       </>)
