@@ -48,7 +48,7 @@ export default function PreviewSkills(props:any) {
             }
 
             if (reason.response!.status !== 400 && reason.response!.status !== 406  ){
-                error2()
+                error()
                 console.log("Network error")
             };
             }
@@ -70,11 +70,11 @@ export default function PreviewSkills(props:any) {
 
     const warning2 = () => {
         Modal.warning({
-          content: 'Duplicate course. Please select another course or remove duplicated course.',
+          content: 'There is duplicate course. Please select another course or remove duplicated course.',
         });
     };
 
-    const error2 = () => {
+    const error = () => {
         Modal.error({
           content: 'An error occurred creating the skill! Please try again later.',
         });

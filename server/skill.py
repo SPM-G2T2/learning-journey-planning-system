@@ -123,11 +123,7 @@ def add_skill():
                 "code": 406, 
                 "message": "Duplicate courses detected. Please try again." 
             } 
-<<<<<<< HEAD
         ), 406
-=======
-        ), 500 
->>>>>>> ffdbfec114a521e5a62cecfc92509be798d9cfea
 
     #2.2 Add skill
     skill_name = string.capwords(data['skill_name'])

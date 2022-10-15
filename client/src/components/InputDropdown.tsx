@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  MinusCircleOutlined
-} from "@ant-design/icons";
+import { MinusCircleOutlined } from "@ant-design/icons";
 import { Form, Select, Button } from 'antd';
 import "antd/dist/antd.css"
 import axios, { AxiosResponse, AxiosError } from 'axios';
@@ -42,7 +40,7 @@ export default function InputDropdown(props: InputDropdownProps) {
     const [courses, setCourses] = useState<String[]>([]);
 
     useEffect(() => {
-      const submitSkill = async() =>{
+      const submitSkill = async() => {
         axios.get("http://127.0.0.1:5000/get_all_courses")
         .then(
             (response: AxiosResponse) => {
