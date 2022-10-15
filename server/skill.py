@@ -42,41 +42,23 @@ class Course(db.Model):
 
 
 #Skill DB Model
-# class Skill(db.Model): 
-
-#     __tablename__ = 'skill' 
-
-#     skill_id = db.Column(db.Integer, primary_key=True, autoincrement=True) 
-#     skill_name = db.Column(db.String(50), nullable=False) 
-#     skill_desc = db.Column(db.String(255), nullable=False) 
-#     skill_status = db.Column(db.String(10), nullable=False)
-
-#     def __init__(self, skill_id, skill_name, skill_desc, skill_status): 
-#         self.skill_id = skill_id 
-#         self.skill_name = skill_name 
-#         self.skill_desc = skill_desc
-#         self.skill_status = skill_status 
-
-#     def json(self): 
-#         return {"skill_id": self.skill_id, "skill_name": self.skill_name, "skill_desc": self.skill_desc, "skill_status": self.skill_status} 
 class Skill(db.Model): 
-    __tablename__ = 'Skill' 
 
-    Skill_ID = db.Column(db.Integer, primary_key=True, autoincrement=True) 
-    Skill_Name = db.Column(db.String(50), nullable=False) 
-    Skill_Desc = db.Column(db.String(255), nullable=False) 
-    Skill_Status = db.Column(db.String(10), nullable=False)
+    __tablename__ = 'skill' 
 
+    skill_id = db.Column(db.Integer, primary_key=True, autoincrement=True) 
+    skill_name = db.Column(db.String(50), nullable=False) 
+    skill_desc = db.Column(db.String(255), nullable=False) 
+    skill_status = db.Column(db.String(10), nullable=False)
 
-    def __init__(self, Skill_ID, Skill_Name, Skill_Desc, Skill_Status): 
-        self.Skill_ID = Skill_ID 
-        self.Skill_Name = Skill_Name 
-        self.Skill_Desc = Skill_Desc
-        self.Skill_Status = Skill_Status 
-
+    def __init__(self, skill_id, skill_name, skill_desc, skill_status): 
+        self.skill_id = skill_id 
+        self.skill_name = skill_name 
+        self.skill_desc = skill_desc
+        self.skill_status = skill_status 
 
     def json(self): 
-        return { "Skill_ID": self.Skill_ID, "Skill_Name": self.Skill_Name, "Skill_Desc": self.Skill_Desc, "Skill_Status": self.Skill_Status } 
+        return {"skill_id": self.skill_id, "skill_name": self.skill_name, "skill_desc": self.skill_desc, "skill_status": self.skill_status} 
 
 
 #Skill_course DB Model
@@ -300,7 +282,7 @@ def delete_course_skill(skill_id):
 @app.route("/getSkillById/<int:skill_id>", methods=['GET'])
 def find_by_skillId(skill_id):
 
-    skill = Skill.query.filter_by(Skill_ID=skill_id).first()
+    skill = Skill.query.filter_by(skill_id=skill_id).first()
 
     if skill:
         return jsonify(
