@@ -120,8 +120,7 @@ def add_skill():
     if result:
         return jsonify( 
             { 
-                "code": 500, 
-                "data": {}, 
+                "code": 406, 
                 "message": "Duplicate courses detected. Please try again." 
             } 
         ), 500 
@@ -231,8 +230,42 @@ def filter_courses(skill_id):
         } 
     ), 404 
 
+#FUNCTION 4: Filter ACTIVE courses by skill_id
+@app.route("/filter_active_courses_by_skill/<int:skill_id>", methods=['GET']) 
+def filter_active_courses(skill_id): 
 
-#FUNCTION 4: Assign courses to the created skill (adding another course entry with different skill_ID)
+    courselist = Skill_course.query.filter_by(skill_id=skill_id).all()
+
+    courses = []
+
+    for item in courselist:
+
+        course_id = item.json()['course_id']
+        # print(course_id)
+        course = Course.query.filter_by(course_id=course_id, course_status="ACTIVE").all()
+        # print(course[0].json())
+
+        courses.append(course[0].json())
+
+    # print(courses)
+
+    if courses: 
+        return jsonify( 
+            { 
+                "code": 200, 
+                "data": [courses for courses in courses]
+            } 
+        ) 
+
+    return jsonify( 
+        { 
+            "code": 404, 
+            "message": "Skill id invalid." 
+        } 
+    ), 404 
+
+
+#FUNCTION 5: Assign courses to the created skill (adding another course entry with different skill_ID)
 @app.route("/assign_skill", methods=['POST']) 
 def assign_skill(): 
 
@@ -267,7 +300,7 @@ def assign_skill():
     ), 201
 
 
-#FUNCTION 5: Delete skill from courses (delete course entry by course_id and skill_id)
+#FUNCTION 6: Delete skill from courses (delete course entry by course_id and skill_id)
 @app.route("/delete_course_skill/<int:skill_id>", methods=['POST'])
 def delete_course_skill(skill_id):
 
