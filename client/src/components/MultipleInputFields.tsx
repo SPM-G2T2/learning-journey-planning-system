@@ -9,8 +9,6 @@ interface InputFieldsProps {
     name?: string;
   }
 
-const { TextArea } = Input;
-
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -34,6 +32,9 @@ const formItemLayoutWithOutLabel = {
  * @return {React.FC}: The JSX Code for multiple input fields template component.
  */
 export default function MultipleInputFields(props: InputFieldsProps) {
+
+  const { TextArea } = Input;
+  
   return (
     <>
       <Form.List name="Responsibilities">
