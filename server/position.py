@@ -15,85 +15,83 @@ app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_recycle': 299}
 db = SQLAlchemy(app)
 
 class Position(db.Model):
-    __tablename__ = "Position"
+    __tablename__ = "position"
 
-    Position_ID = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
-    Position_Name = db.Column(db.String(50), nullable=False)
-    Position_Desc = db.Column(db.String(255), nullable=False)
-    Position_Dept = db.Column(db.String(20), nullable=False)
-    Position_Res = db.Column(db.String(1000), nullable=False)
-    Position_Status = db.Column(db.String(10), nullable=False)
+    position_id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
+    position_name = db.Column(db.String(50), nullable=False)
+    position_desc = db.Column(db.String(255), nullable=False)
+    position_dept = db.Column(db.String(20), nullable=False)
+    position_res = db.Column(db.String(1000), nullable=False)
+    position_status = db.Column(db.String(10), nullable=False)
 
 
-    def __init__(self, Position_Name, Position_Desc, Position_Dept, Position_Res, Position_Status): # constructor, initializes the record
-        self.Position_Name = Position_Name
-        self.Position_Desc = Position_Desc
-        self.Position_Dept = Position_Dept
-        self.Position_Res = Position_Res
-        self.Position_Status = Position_Status
+    def __init__(self, position_name, position_desc, position_dept, position_des, position_status): # constructor, initializes the record
+        self.position_name = position_name
+        self.position_desc = position_desc
+        self.position_dept = position_dept
+        self.position_res = position_res
+        self.position_status = position_status
 
 
     def json(self): # returns json representation of the table in dict form
-        return { "Position_ID": self.Position_ID, "Position_Name": self.Position_Name, "Position_Desc": self.Position_Desc, "Position_Dept": self.Position_Dept, "Position_Res": self.Position_Res, "Position_Status": self.Position_Status }
+        return { "position_id": self.position_id, "position_name": self.position_name, "position_desc": self.position_desc, "position_dept": self.position_dept, "position_res": self.position_res, "position_status": self.position_status }
 
 
 class Position_Skill(db.Model):
-    __tablename__ = "Position_Skill"
+    __tablename__ = "position_skill"
 
-    Position_ID = db.Column(db.Integer, primary_key=True, nullable=False)
-    Skill_ID = db.Column(db.Integer, primary_key=True, nullable=False)
+    position_id = db.Column(db.Integer, primary_key=True, nullable=False)
+    skill_id = db.Column(db.Integer, primary_key=True, nullable=False)
    
 
-    def __init__(self, Position_ID, Skill_ID): # constructor, initializes the record
-        self.Position_ID = Position_ID
-        self.Skill_ID = Skill_ID
+    def __init__(self, position_id, skill_id): # constructor, initializes the record
+        self.position_id = position_id
+        self.skill_id = skill_id
 
 
     def json(self): # returns json representation of the table in dict form
-        return {"Position_ID": self.Position_ID, "Skill_ID": self.Skill_ID}
+        return {"position_id": self.position_id, "skill_id": self.skill_id}
 
 
 class Skill(db.Model): 
     __tablename__ = 'Skill' 
 
-    Skill_ID = db.Column(db.Integer, primary_key=True, autoincrement=True) 
-    Skill_Name = db.Column(db.String(50), nullable=False) 
-    Skill_Desc = db.Column(db.String(255), nullable=False) 
-    Skill_Status = db.Column(db.String(10), nullable=False)
+    skill_id = db.Column(db.Integer, primary_key=True, autoincrement=True) 
+    skill_name = db.Column(db.String(50), nullable=False) 
+    skill_desc = db.Column(db.String(255), nullable=False) 
+    skill_status = db.Column(db.String(10), nullable=False)
 
 
-    def __init__(self, Skill_ID, Skill_Name, Skill_Desc, Skill_Status): 
-        self.Skill_ID = Skill_ID 
-        self.Skill_Name = Skill_Name 
-        self.Skill_Desc = Skill_Desc
-        self.Skill_Status = Skill_Status 
+    def __init__(self, skill_id, skill_name, skill_desc, skill_status): 
+        self.skill_id = skill_id
+        self.skill_name = skill_name 
+        self.skill_desc = skill_desc
+        self.skill_status = skill_status 
 
 
     def json(self): 
-        return { "Skill_ID": self.Skill_ID, "Skill_Name": self.Skill_Name, "Skill_Desc": self.Skill_Desc, "Skill_Status": self.Skill_Status } 
+        return { "skill_id": self.skill_id, "skill_name": self.skill_name, "skill_desc": self.skill_desc, "skill_status": self.skill_status } 
 
 
-@app.route("/position")
+@app.route("/positions")
 def get_all_position():
     positionList = Position.query.all() 
     if len(positionList): 
         return jsonify ( 
-        {
-            "code": 200,
-            "data": {
-            "Positions": [position.json() for position in positionList] 
-                    }
-                }
-            )
+            {
+                "code": 200,
+                "data": [position.json() for position in positionList]
+            }
+        )
     return jsonify(
         {
-        "code": 404,
-        "message": "There are no Positions."
+            "code": 404,
+            "message": "There are no Positions."
         }
-        ), 404
+    ), 404
 
 
-@app.route("/skill")
+@app.route("/skills")
 def get_all_skill():
     skillList = Skill.query.all() 
     if len(skillList): 
@@ -101,7 +99,7 @@ def get_all_skill():
         {
             "code": 200,
             "data": {
-            "Skills": [skill.json() for skill in skillList] 
+            "skills": [skill.json() for skill in skillList] 
                     }
                 }
             )
@@ -113,28 +111,28 @@ def get_all_skill():
         ), 404
 
 
-@app.route("/createPosition", methods=['POST'])
+@app.route("/create_position", methods=['POST'])
 def create_position():
 
     position = request.get_json()
     print(type(position)) #dict 
-    positionName = position['Position_Name']
+    positionName = position['position_name']
 
-    if (Position.query.filter_by(Position_Name=positionName).first()):
+    if (Position.query.filter_by(position_name=positionName).first()):
         return jsonify(
             {
                 "code": 400,
                 "data": {
-                    "Position Name": positionName
+                    "positionName": positionName
                 },
                 "message": "Position Name already exists."
             }
         ), 400
 
-    positionDesc = position['Position_Desc']
-    positionDept = position['Position_Dept']
-    positionRes = position['Position_Res']
-    positionStatus = position['Position_Status']
+    positionDesc = position['position_desc']
+    positionDept = position['position_dept']
+    positionRes = position['position_res']
+    positionStatus = position['position_status']
 
     print(positionName, positionDesc, positionDept, positionRes, positionStatus)
     position = Position(positionName, positionDesc, positionDept, positionRes, positionStatus)
@@ -159,13 +157,13 @@ def create_position():
     ), 201
 
 
-@app.route("/createPositionSkill", methods=['POST'])
+@app.route("/create_position_skill", methods=['POST'])
 def create_position_skill():
 
     position = request.get_json()
     print(type(position)) #dict 
-    positionID = position['Position_ID']
-    skillID = position['Skill_ID']
+    positionID = position['position_id']
+    skillID = position['skill_id']
 
 
     print(positionID, skillID)

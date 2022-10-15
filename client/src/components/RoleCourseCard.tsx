@@ -1,18 +1,35 @@
 import { Button } from "antd";
-import role from "../assets/role.png"
+import { useState } from "react";
+import role from "../assets/role.png";
+import styles from "../styles/RoleCourseCard.module.css";
+import { Role } from "../types/Role";
+import GenericModal from "./GenericModal";
 
-export default function RoleCourseCard() {
+export default function RoleCourseCard(props: { role?: Role }) {
+  const [modalStatus, setModalStatus] = useState<boolean>(false);
+
+  function handleClose() {
+    setModalStatus(false);
+  }
+
   return (
-    <div style={{ width: "50vw", justifyContent:"space-between", marginTop:"1vw"}} className="horizontal card">
-      <div className="horizontal">
-        <img src={role} alt="role icon" className="icon"/>
-        <div className="card-row" style={{margin:"1vw 0 0 1.5vw"}}>
-          <p style={{fontSize:"1vw", fontWeight:"700"}}>Role</p>
-          <p>Department:</p>
-          <p>Description:</p>
+    <div className={`${styles.horizontal} ${styles.card}`}>
+      <div className={styles.horizontal}>
+        <img src={role} alt="role icon" className="icon" />
+        <div className={styles.cardRow}>
+          <p className={styles.title}>{props.role?.position_name}</p>
+          <p>Department: {props.role?.position_dept}</p>
+          <p>Description: {props.role?.position_desc}</p>
         </div>
       </div>
-      <Button className="border btn-color">Read More</Button>
+      <Button className={styles.more} onClick={() => setModalStatus(true)}>
+        Read More
+      </Button>
+      <GenericModal
+        role={props.role}
+        status={modalStatus}
+        handleClose={handleClose}
+      />
     </div>
   );
 }

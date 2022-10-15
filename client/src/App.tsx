@@ -79,7 +79,7 @@ const App = () => (
           <Route path="/roles" element={<Roles/>} />
           <Route path="/skills" element={<Skills />} />
           <Route path="/courses" element={<Courses />} />
-          <Route path="/create/2" element={<Roles lj={true} />} />
+          <Route path="/create/2" element={<Home lj={true} />} />
           <Route path="/ljps" element={<ManageLJPS />} />
         </Routes>
       </Content>

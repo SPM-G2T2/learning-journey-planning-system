@@ -1,0 +1,31 @@
+.horizontal {
+    display: flex;
+}
+
+.card {
+    align-items: center;
+    background-color: #FAFAFA;
+    padding: 1vw;
+    border-radius: 4px;
+    justify-content: space-between;
+    margin-top: 2vh;
+}
+
+.cardRow {
+    color: #3649F9;
+    font-size: 1.6vh;
+    line-height: 0.4vh;
+    margin: 2vh 0 0 1.5vw;
+}
+
+.title {
+    font-size: 2vh;
+    font-weight: 700;
+}
+
+.more {
+    color: black;
+    background-color: #86B0FF;
+    font-weight: 500;
+    border: 0;
+}
