@@ -3,44 +3,69 @@ import { Steps, Row, Col, Button, Form } from 'antd';
 import RoleCourseCard from '../components/RoleCourseCard';
 
 
+  type Skill = {
+    Skill_Name: string
+    Skill_ID: number
+    Skill_Desc: string
+    Skill_Status: string
+  }
+
 export default function Courses({ lj }: { lj?: boolean }) {
 
-  const [skills, setSkills] = useState([]);
+  const [skills, setSkills] = useState<Skill[]>([]);
+  const skillIds = [1, 2];
 
   useEffect(() => {
 
     // To change based on props from prev step
-    var skillIds = [1, 2];
-    var skillsArr:any = [];
+    // const skillsArr:Skill[] = [];
 
-    for (var skillId of skillIds) {
+    let i = 0
+
+    for (let skillId of skillIds) {
+      
+      if (skills.length >= skillIds.length){
+        break
+      }
+
       console.log(skillId);
       
       fetch('http://127.0.0.1:5000/getSkillById/' + skillId)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-        skillsArr.push(data.data);
+        console.log(data.data);
+        setSkills(oldSkills => [...oldSkills, data.data])
+        console.log(skills)
+        // skillsArr.push(data.data);
       })
       .then((error) => console.log(error));
 
     }
 
-    setSkills(skillsArr)
+    // setSkills(skillsArr)
 
   }, [])
 
-  console.log(skills);
+  function checkSkills(){
+    console.log("hi")
+    console.log(skills);
+    for (let skill of skills){
+      console.log(skill)
+    }
+  }
 
-  // eslint-disable-next-line array-callback-return
-  skills.map((skill: any, i: number) => {
-    console.log(skill['skill_name'])
-  })
-  
+  // const arrs = ["bob", "billy"]
+
 
   return (
     <>
       <h1 style={{ fontWeight: 700 }}>Create Your Desired Learning Journey</h1>
+      {/* {skills && <Button>{skills[0]["Skill_Name"]}</Button>} */}
+      <Button onClick={checkSkills}>test</Button>
+      {/* {skills.map(skill => (<div>{skill.Skill_ID}</div>))} */}
+      {skills.map((skill) => (
+         <Button key={skill.Skill_ID}>{ skill.Skill_Name }</Button>
+      ))}
 
       <div
         style={{
@@ -68,9 +93,9 @@ export default function Courses({ lj }: { lj?: boolean }) {
           <Col span={5}>
             <Button style={{ marginBottom: '2vh' }}>Web Architecture</Button>
             <Button>Database Management</Button>
-            { skills.map((skill: any, i: number) => 
+            {/* { skills.map((skill: any, i: number) => 
               <Button key={i}>{ skill['skill_name'] }</Button>
-            )}
+            )} */}
           </Col>
           <Col span={19}>
             <RoleCourseCard/>
