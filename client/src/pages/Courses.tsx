@@ -1,7 +1,43 @@
+import { useState, useEffect } from "react";
 import { Steps, Row, Col, Button, Form } from 'antd';
 import RoleCourseCard from '../components/RoleCourseCard';
 
+
 export default function Courses({ lj }: { lj?: boolean }) {
+
+  const [skills, setSkills] = useState([]);
+
+  useEffect(() => {
+
+    // To change based on props from prev step
+    var skillIds = [1, 2];
+    var skillsArr:any = [];
+
+    for (var skillId of skillIds) {
+      console.log(skillId);
+      
+      fetch('http://127.0.0.1:5000/getSkillById/' + skillId)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        skillsArr.push(data.data);
+      })
+      .then((error) => console.log(error));
+
+    }
+
+    setSkills(skillsArr)
+
+  }, [])
+
+  console.log(skills);
+
+  // eslint-disable-next-line array-callback-return
+  skills.map((skill: any, i: number) => {
+    console.log(skill['skill_name'])
+  })
+  
+
   return (
     <>
       <h1 style={{ fontWeight: 700 }}>Create Your Desired Learning Journey</h1>
@@ -27,11 +63,14 @@ export default function Courses({ lj }: { lj?: boolean }) {
         <div style={{ display: "flex", justifyContent: "center", margin:"0vh 0 2vh 0", color:"#3649F9" }}>
           <p style={{ fontWeight: 700, marginRight: "1vh" }}>Courses Selected:</p><p></p>
         </div>
-        
+
         <Row>
           <Col span={5}>
             <Button style={{ marginBottom: '2vh' }}>Web Architecture</Button>
             <Button>Database Management</Button>
+            { skills.map((skill: any, i: number) => 
+              <Button key={i}>{ skill['skill_name'] }</Button>
+            )}
           </Col>
           <Col span={19}>
             <RoleCourseCard/>
