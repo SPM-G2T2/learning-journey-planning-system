@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Steps, Row, Col, Button, Form } from 'antd';
 import RoleCourseCard from '../components/RoleCourseCard';
+import styles from '../styles/ChooseCourse.module.css'
 
 type Skill = {
   skill_id: number
@@ -22,11 +23,13 @@ export default function Courses({ lj }: { lj?: boolean }) {
 
   const [skills, setSkills] = useState<Skill[]>([]);
   const [courses, setCourses] = useState<Course[]>([]);
+  const [skillName, setSkillName] = useState<String[]>([]);
+
+  // To change based on props from prev step
   const skillIds = [1, 2];
 
   useEffect(() => {
 
-    // To change based on props from prev step
     for (let skillId of skillIds) {
 
       console.log(skillId);
@@ -36,12 +39,13 @@ export default function Courses({ lj }: { lj?: boolean }) {
       .then((data) => {
         console.log(data.data);
         setSkills(oldSkills => [...oldSkills, data.data])
-        console.log(skills)
+        setSkillName(oldSkillName => [...oldSkillName, data.data.skill_name]);
+        console.log(skills);
+        console.log(skillName);
       })
       .then((error) => console.log(error));
 
     }
-
     getCourseBySkill(skillIds[0]);
 
   }, [])
@@ -90,20 +94,25 @@ export default function Courses({ lj }: { lj?: boolean }) {
           <Steps.Step title="Choose skills" />
           <Steps.Step title="Choose courses" />
         </Steps>
-        <div style={{ display: "flex", justifyContent: "center", margin:"2vh 0 0vh 0", color:"#3649F9" }}>
-          <p style={{ fontWeight: 700, marginRight: "1vh" }}>Role Selected:</p><p>Full-stack Developer</p>
-        </div>
-        <div style={{ display: "flex", justifyContent: "center", margin:"0vh 0 0vh 0", color:"#3649F9" }}>
-          <p style={{ fontWeight: 700, marginRight: "1vh" }}>Skills Selected:</p><p>Programming, Designing</p>
-        </div>
-        <div style={{ display: "flex", justifyContent: "center", margin:"0vh 0 2vh 0", color:"#3649F9" }}>
-          <p style={{ fontWeight: 700, marginRight: "1vh" }}>Courses Selected:</p><p></p>
-        </div>
+
+        <p className={styles.selectionLabel}>
+          Role Selected:{" "}
+          <span className={styles.selectionContent}>Full-stack Developer</span>
+        </p>
+        <p className={styles.selectionLabel}>
+          Skills Selected:{" "}
+          <span className={styles.selectionContent}>{ skillName.join( " , ") }</span>
+        </p>
+        <p className={styles.selectionLabel}>
+          Courses Selected:{" "}
+          <span className={styles.selectionContent}></span>
+        </p>
+
 
         <Row>
           <Col span={5}>
             { skills.map((skill) => (
-              <Button style={{ marginBottom: '2vh' }} key={skill.skill_id} onClick={() => getCourseBySkill(skill.skill_id)}>{ skill.skill_name }</Button>
+              <Button className={styles.selectedButton} key={skill.skill_id} onClick={() => getCourseBySkill(skill.skill_id)}>{ skill.skill_name }</Button>
             )) }
           </Col>
           <Col span={19}>
