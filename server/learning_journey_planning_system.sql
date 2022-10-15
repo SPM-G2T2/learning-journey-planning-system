@@ -113,4 +113,3 @@ FOREIGN KEY (skill_id) REFERENCES skill (skill_id),
 FOREIGN KEY (course_id) REFERENCES course (course_id),
 PRIMARY KEY (lj_id, staff_id)
 );
-
