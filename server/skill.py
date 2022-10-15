@@ -106,6 +106,26 @@ def get_all_courses():
 def add_skill(): 
 
     data = request.get_json() 
+
+    #2.1 Check for duplicates in courses
+    courses = data['courses']
+
+    def checkIfDuplicates_1(listOfElems):
+        if len(listOfElems) == len(set(listOfElems)):
+            return False
+        else:
+            return True
+
+    result = checkIfDuplicates_1(courses)
+    if result:
+        return jsonify( 
+            { 
+                "code": 406, 
+                "message": "Duplicate courses detected. Please try again." 
+            } 
+        ), 406 
+
+    #2.2 Add skill
     skill_name = string.capwords(data['skill_name'])
 
     if (Skill.query.filter_by(skill_name=skill_name).first()): 
@@ -144,7 +164,7 @@ def add_skill():
             } 
         ), 500 
     
-    #2.2 assigning skill to courses
+    #2.3 assigning skill to courses
     courses = data['courses']
 
     for course_id in courses:
@@ -211,7 +231,42 @@ def filter_courses(skill_id):
     ), 404 
 
 
-#FUNCTION 4: Assign courses to the created skill (adding another course entry with different skill_ID)
+#FUNCTION 4: Filter ACTIVE courses by skill_id
+@app.route("/filter_active_courses_by_skill/<int:skill_id>", methods=['GET']) 
+def filter_active_courses(skill_id): 
+
+    courselist = Skill_course.query.filter_by(skill_id=skill_id).all()
+
+    courses = []
+
+    for item in courselist:
+
+        course_id = item.json()['course_id']
+        # print(course_id)
+        course = Course.query.filter_by(course_id=course_id).all()
+        course_obj=course[0].json()
+        if course_obj["course_status"] == "Active":
+            courses.append(course_obj)
+
+    # print(courses)
+
+    if courses: 
+        return jsonify( 
+            { 
+                "code": 200, 
+                "data": [courses for courses in courses]
+            } 
+        ) 
+
+    return jsonify( 
+        { 
+            "code": 404, 
+            "message": "Skill id invalid." 
+        } 
+    ), 404 
+
+
+#FUNCTION 5: Assign courses to the created skill (adding another course entry with different skill_ID)
 @app.route("/assign_skill", methods=['POST']) 
 def assign_skill(): 
 
@@ -246,7 +301,7 @@ def assign_skill():
     ), 201
 
 
-#FUNCTION 5: Delete skill from courses (delete course entry by course_id and skill_id)
+#FUNCTION 6: Delete skill from courses (delete course entry by course_id and skill_id)
 @app.route("/delete_course_skill/<int:skill_id>", methods=['POST'])
 def delete_course_skill(skill_id):
 
