@@ -25,7 +25,7 @@ class Position(db.Model):
     position_status = db.Column(db.String(10), nullable=False)
 
 
-    def __init__(self, position_name, position_desc, position_dept, position_des, position_status): # constructor, initializes the record
+    def __init__(self, position_name, position_desc, position_dept, position_res, position_status): # constructor, initializes the record
         self.position_name = position_name
         self.position_desc = position_desc
         self.position_dept = position_dept
@@ -37,7 +37,7 @@ class Position(db.Model):
         return { "position_id": self.position_id, "position_name": self.position_name, "position_desc": self.position_desc, "position_dept": self.position_dept, "position_res": self.position_res, "position_status": self.position_status }
 
 
-class Position_Skill(db.Model):
+class PositionSkill(db.Model):
     __tablename__ = "position_skill"
 
     position_id = db.Column(db.Integer, primary_key=True, nullable=False)
@@ -54,7 +54,7 @@ class Position_Skill(db.Model):
 
 
 class Skill(db.Model): 
-    __tablename__ = 'Skill' 
+    __tablename__ = 'skill' 
 
     skill_id = db.Column(db.Integer, primary_key=True, autoincrement=True) 
     skill_name = db.Column(db.String(50), nullable=False) 
@@ -74,13 +74,13 @@ class Skill(db.Model):
 
 
 @app.route("/positions")
-def get_all_position():
-    positionList = Position.query.all() 
-    if len(positionList): 
-        return jsonify ( 
+def get_all_positions():
+    positions = Position.query.all() 
+    if positions:
+        return jsonify (
             {
                 "code": 200,
-                "data": [position.json() for position in positionList]
+                "data": [position.json() for position in positions]
             }
         )
     return jsonify(
@@ -90,26 +90,64 @@ def get_all_position():
         }
     ), 404
 
+@app.route("/active_positions")
+def get_active_positions():
+    positions = Position.query.filter_by(position_status="Active").all()
+    if positions:
+        return jsonify (
+            {
+                "code": 200,
+                "data": [position.json() for position in positions]
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "There are no Positions."
+        }
+    ), 404
 
 @app.route("/skills")
 def get_all_skill():
     skillList = Skill.query.all() 
-    if len(skillList): 
+    if skillList: 
         return jsonify ( 
-        {
-            "code": 200,
-            "data": {
-            "skills": [skill.json() for skill in skillList] 
-                    }
-                }
-            )
+            {
+                "code": 200,
+                "data": [skill.json() for skill in skillList]
+            }
+        )
     return jsonify(
         {
-        "code": 404,
-        "message": "There are no Skills."
+            "code": 404,
+            "message": "There are no Skills."
         }
-        ), 404
+    ), 404
 
+@app.route('/position_skills/<int:position_id>')
+def get_position_skills(position_id):
+    positionSkills = PositionSkill.query.filter_by(position_id=position_id).all()
+
+    skills = []
+
+    for positionSkill in positionSkills:
+        skill = Skill.query.filter_by(skill_id=positionSkill.json()["skill_id"], skill_status="Active").first()
+        if skill:
+            skills.append(skill.json())
+
+    if skills:
+        return jsonify (
+            {
+                "code": 200,
+                "data": skills
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "There are no Skills."
+        }
+    ), 404
 
 @app.route("/create_position", methods=['POST'])
 def create_position():
@@ -167,7 +205,7 @@ def create_position_skill():
 
 
     print(positionID, skillID)
-    position = Position_Skill(positionID, skillID)
+    position = PositionSkill(positionID, skillID)
     print(position)
  
     try:
