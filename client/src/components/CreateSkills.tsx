@@ -1,9 +1,7 @@
 import { Typography, Form, Button, Switch, Row } from "antd";
-// import { useState, useEffect } from "react";
-import "antd/dist/antd.css";
-import "../styles/App.css";
 import InputField from "./InputField";
 import InputDropdown from "./InputDropdown";
+import styles from "../styles/ManageLJPS.module.css"
 
 export default function CreateSkills(props:any) {
 
@@ -15,7 +13,6 @@ export default function CreateSkills(props:any) {
   };
 
   const onFinish = (values: any) => {
-    console.log("before")
     console.log("Form:", values);
     console.log("Title:", values['Title']);
     console.log("Description:", values["Description"]);
@@ -26,10 +23,9 @@ export default function CreateSkills(props:any) {
 
   };
   
-
   return (
     <>
-      <Title level={4}>Create a new skill</Title>
+      <Title className={`${styles.tabTitleColor} ${styles.tabTitleSpacing}`} level={4}>Create a new skill</Title>
       <Form
         name="userForm"
         labelCol={{ span: 4 }}

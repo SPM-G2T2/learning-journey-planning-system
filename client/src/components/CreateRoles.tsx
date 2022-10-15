@@ -1,5 +1,4 @@
 import { Typography, Form, Button, Switch, Row } from "antd";
-// import { useState, useEffect } from "react";
 import InputField from "./InputField";
 import MultipleInputFields from "./MultipleInputFields";
 import InputDropdown from "./InputDropdown";
@@ -15,7 +14,6 @@ export default function CreateRoles(props:any) {
   };
 
   const onFinish = (values: any) => {
-    console.log("before")
     console.log("Form:", values);
     console.log("Title:", values['Title']);
     console.log("Description:", values["Description"]);

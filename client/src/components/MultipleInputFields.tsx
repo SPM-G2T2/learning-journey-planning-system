@@ -1,7 +1,7 @@
 import {
     MinusCircleOutlined
   } from "@ant-design/icons";
-import { Form, Input, Button, Space } from 'antd';
+import { Form, Input, Button } from 'antd';
 import "antd/dist/antd.css";
 
 interface InputFieldsProps {
@@ -14,11 +14,13 @@ const formItemLayout = {
     xs: { span: 24 },
     sm: { span: 4 },
   },
+
   wrapperCol: {
     xs: { span: 24 },
     sm: { span: 20 },
   },
 };
+
 const formItemLayoutWithOutLabel = {
   wrapperCol: {
     xs: { span: 24, offset: 0 },

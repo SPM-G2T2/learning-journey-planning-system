@@ -187,7 +187,7 @@ export default function InputDropdown(props: InputDropdownProps) {
 
                 <Select style={{ width: "30vw" }}>
                     { courses.map((course:any, i:number) => 
-                        <Option value={course['course_id']} key={i}>{course['course_name'] }</Option>
+                        <Option value={ course['course_id'] + "_" + course['course_name'] } key={i}>{ course['course_name'] }</Option>
                     )}
                </Select>
               </Form.Item>
@@ -214,7 +214,7 @@ export default function InputDropdown(props: InputDropdownProps) {
                 >
                  <Select style={{ width: "30vw" }}>
                  { courses.map((course:any, i:number) => 
-                        <Option value={course['course_id']} key={i}>{course['course_name'] }</Option>
+                        <Option value={ course['course_id'] + "_" + course['course_name'] } key={i}>{ course['course_name'] }</Option>
                     )}
                  </Select>
                 </Form.Item>
