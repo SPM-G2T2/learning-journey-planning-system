@@ -5,5 +5,5 @@ export default function Roles() {
         <p>Truly</p>
       </>
     );
-  }
+}
   

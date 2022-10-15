@@ -1,4 +1,5 @@
 import { Form, Input } from 'antd';
+import "antd/dist/antd.css";
 
 interface InputFieldsProps {
     label?: string;
@@ -11,6 +12,7 @@ interface InputFieldsProps {
  * @return {React.FC}: The JSX Code for input field template component.
  */
 export default function InputField(props: InputFieldsProps) {
+
     const { TextArea } = Input;
 
     return (<>
@@ -23,7 +25,7 @@ export default function InputField(props: InputFieldsProps) {
               message: "Please enter a title",
             },
           ]}>
-          <Input/>
+          <Input style={{ width: "30vw" }}/>
         </Form.Item> : 
         <Form.Item label={props.label} name={props.label}
           tooltip="This is a required field"
@@ -33,7 +35,7 @@ export default function InputField(props: InputFieldsProps) {
               message: "Please enter a description",
             },
           ]}>
-          <TextArea/>
+          <TextArea style={{ width: "30vw", maxWidth: "125%" }}/>
         </Form.Item>
         }
       </>)

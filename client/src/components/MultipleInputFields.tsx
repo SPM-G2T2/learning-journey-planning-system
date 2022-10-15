@@ -1,23 +1,26 @@
-import { MinusCircleOutlined } from "@ant-design/icons";
-import { Form, Input, Button } from "antd";
-
-const { TextArea } = Input;
+import {
+    MinusCircleOutlined
+  } from "@ant-design/icons";
+import { Form, Input, Button } from 'antd';
+import "antd/dist/antd.css";
 
 interface InputFieldsProps {
-  label?: string;
-  name?: string;
-}
+    label?: string;
+    name?: string;
+  }
 
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
     sm: { span: 4 },
   },
+
   wrapperCol: {
     xs: { span: 24 },
     sm: { span: 20 },
   },
 };
+
 const formItemLayoutWithOutLabel = {
   wrapperCol: {
     xs: { span: 24, offset: 0 },
@@ -31,6 +34,9 @@ const formItemLayoutWithOutLabel = {
  * @return {React.FC}: The JSX Code for multiple input fields template component.
  */
 export default function MultipleInputFields(props: InputFieldsProps) {
+
+  const { TextArea } = Input;
+  
   return (
     <>
       <Form.List name="Responsibilities">
