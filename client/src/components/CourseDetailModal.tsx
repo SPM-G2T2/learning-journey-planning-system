@@ -1,4 +1,5 @@
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { Steps, Row, Col, Form } from 'antd';
 import { Button, Modal, Space } from 'antd';
 import React from 'react';
 
@@ -8,7 +9,30 @@ const showConfirm = () => {
   confirm({
     title: 'Do you Want to delete these items?',
     icon: <ExclamationCircleOutlined />,
-    content: 'Some descriptions',
+    content: (
+      <div>
+          <p> Insert Image here </p>
+
+          <p>Course Description:
+            <p> Random desc </p>
+          </p>
+
+          <p>Course Type:
+            <p> List the type </p>
+          </p>
+
+          <p> Course Category:
+            <p> Category stuff</p>
+          </p>
+
+          <p> Skills that the course can fulfil:
+            <p> List of skills </p>
+          </p>
+      </div>
+      
+      
+      
+      ),
     onOk() {
       console.log('OK');
     },
@@ -81,5 +105,7 @@ const App: React.FC = () => (
     </Button>
   </Space>
 );
+
+
 
 export default App;
