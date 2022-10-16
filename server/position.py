@@ -6,9 +6,9 @@ import json
 app = Flask(__name__)
 CORS(app)
 # Mac User
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:8889/learning_journey_planning_system'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:8889/learning_journey_planning_system'
 # Window User
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/learning_journey_planning_system'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/learning_journey_planning_system'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_recycle': 299}
 
@@ -170,7 +170,7 @@ def find_by_skillId(skill_id):
     ), 404
 
 
-@app.route("/createPosition", methods=['POST'])
+@app.route("/create_position", methods=['POST'])
 def create_position():
 
     position = request.get_json()

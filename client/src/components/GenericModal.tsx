@@ -43,10 +43,7 @@ export default function GenericModal(props: {
           <h2>
             {props.role
               ? props.role.position_name
-              : "C" +
-                props.course?.course_id +
-                ": " +
-                props.course?.course_name}
+              : props.course?.course_id + ": " + props.course?.course_name}
           </h2>
           <Tag className={styles.status} color="#16C098">
             Active

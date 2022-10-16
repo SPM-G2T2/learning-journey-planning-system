@@ -64,13 +64,13 @@ export default function InputDropdown(props: InputDropdownProps) {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:5000/skill")
+    fetch("http://localhost:5000/skills")
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        console.log(data.data);
         var skillArr: String[] = [];
-        for (var skill of data.data.Skills) {
-          if (skill["Skill_Status"].toUpperCase() === "ACTIVE") {
+        for (var skill of data.data) {
+          if (skill.skill_status.toUpperCase() === "ACTIVE") {
             skillArr.push(skill);
           }
         }
@@ -110,10 +110,10 @@ export default function InputDropdown(props: InputDropdownProps) {
                   <Select style={{ width: "30vw" }}>
                     {skills.map((skill: any, i: number) => (
                       <Option
-                        value={skill["Skill_ID"] + "_" + skill["Skill_Name"]}
+                        value={skill["skill_id"] + "_" + skill["skill_name"]}
                         key={i}
                       >
-                        {skill["Skill_Name"]}
+                        {skill["skill_name"]}
                       </Option>
                     ))}
                   </Select>
@@ -146,10 +146,10 @@ export default function InputDropdown(props: InputDropdownProps) {
                     <Select style={{ width: "30vw" }}>
                       {skills.map((skill: any, i: number) => (
                         <Option
-                          value={skill["Skill_ID"] + "_" + skill["Skill_Name"]}
+                          value={skill["skill_id"] + "_" + skill["skill_name"]}
                           key={i}
                         >
-                          {skill["Skill_Name"]}
+                          {skill["skill_name"]}
                         </Option>
                       ))}
                     </Select>
