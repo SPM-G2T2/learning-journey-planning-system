@@ -31,7 +31,7 @@ export default function Home({ lj }: { lj?: boolean }) {
         <div className={styles.selection}>
           <p className={styles.selectionLabel}>
             Role Selected:{" "}
-            <span className={styles.selectionContent}>Repair engineer</span>
+            <span className={styles.selectionContent}>{selectedRole?.position_name}</span>
           </p>
           <p className={styles.selectionLabel}>
             Skills Selected:{" "}
