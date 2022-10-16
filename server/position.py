@@ -170,7 +170,7 @@ def find_by_skillId(skill_id):
     ), 404
 
 
-@app.route("/createPosition", methods=['POST'])
+@app.route("/create_position", methods=['POST'])
 def create_position():
 
     position = request.get_json()
