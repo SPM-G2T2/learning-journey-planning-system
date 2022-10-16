@@ -62,7 +62,7 @@ export default function Courses({ lj }: { lj?: boolean }) {
     
     console.log(skillId);
 
-    fetch('http://127.0.0.1:5000/filter_courses_by_skill/' + skillId)
+    fetch('http://127.0.0.1:5000/filter_active_courses_by_skill/' + skillId)
     .then((response) => response.json())
     .then((data) => {
       console.log(data.data);
