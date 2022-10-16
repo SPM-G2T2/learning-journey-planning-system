@@ -1,7 +1,5 @@
-// import { useState } from 'react';
 import { Typography, Form, Button, Row, Col, Modal } from 'antd';
-import "antd/dist/antd.css";
-import '../styles/App.css';
+import styles from "../styles/ManageLJPS.module.css";
 
 export default function PreviewRoles(props:any){
     
@@ -123,79 +121,90 @@ export default function PreviewRoles(props:any){
         props.setNext("form");
     }
 
-    return <>
-        <Title level={4}>Review role</Title>
+    return (
+      <>
+        <Title
+          className={`${styles.tabTitleColor} ${styles.tabTitleSpacing}`}
+          level={4}
+        >
+          Review role
+        </Title>
         <div style={{ marginLeft: 10 }}>
-            <Row style={{ marginTop: "5%" }}>
-                <Col span={5}>
-                    <Title level={5}>Title </Title>
-                </Col>
-                <Col span={19}>
-                    <Paragraph> { props.form.Title }</Paragraph>
-                </Col>
-            </Row>
-            <Row style={{ marginBottom: "2%" }}>
-                <Col span={5}>
-                    <Title level={5}>Description </Title>
-                </Col>
-                <Col span={19}>
-                    <Paragraph> { props.form.Description } </Paragraph>
-                </Col>
-            </Row>
-            <Row style={{ marginBottom: "2%" }}>
-                <Col span={5}>
-                    <Title level={5}>Department </Title>
-                </Col>
-                <Col span={19}>
-                    <Paragraph> { props.form.Department } </Paragraph>
-                </Col>
-            </Row>
-            <Row style={{ marginBottom: "2%" }}>
-                <Col span={5}>
-                    <Title level={5}>Responsibilities </Title>
-                </Col>
-                <Col span={19}>
-                    <Paragraph> { props.form.Responsibilities[0] } </Paragraph>
-                </Col>
-            </Row>
-            { props.form.Responsibilities.length > 1 ? props.form.Responsibilities.slice(1).map((eachRes: (any)) => (
+          <Row style={{ marginTop: "5%" }}>
+            <Col span={5}>
+              <Title level={5}>Title </Title>
+            </Col>
+            <Col span={19}>
+              <Paragraph> {props.form.Title}</Paragraph>
+            </Col>
+          </Row>
+          <Row style={{ marginBottom: "2%" }}>
+            <Col span={5}>
+              <Title level={5}>Description </Title>
+            </Col>
+            <Col span={19}>
+              <Paragraph> {props.form.Description} </Paragraph>
+            </Col>
+          </Row>
+          <Row style={{ marginBottom: "2%" }}>
+            <Col span={5}>
+              <Title level={5}>Department </Title>
+            </Col>
+            <Col span={19}>
+              <Paragraph> {props.form.Department} </Paragraph>
+            </Col>
+          </Row>
+          <Row style={{ marginBottom: "2%" }}>
+            <Col span={5}>
+              <Title level={5}>Responsibilities </Title>
+            </Col>
+            <Col span={19}>
+              <Paragraph> {props.form.Responsibilities[0]} </Paragraph>
+            </Col>
+          </Row>
+          {props.form.Responsibilities.length > 1
+            ? props.form.Responsibilities.slice(1).map((eachRes: any) => (
                 <Row style={{ marginBottom: "2%" }}>
-                    <Col span={5}>
-                    </Col>
-                    <Col span={19}>
-                        <Paragraph> { eachRes } </Paragraph>
-                    </Col>
-                </Row> 
-            )) : null }
-            <Row style={{ marginBottom: "2%" }}>
-                <Col span={5}>
-                    <Title level={5}>Skills </Title>
-                </Col>
-                <Col span={19}>
-                    <Paragraph> { props.form.Skills[0].split("_")[1] } </Paragraph>
-                </Col>
-            </Row>
-            { props.form.Skills.length > 1 ? props.form.Skills.slice(1).map((eachSkill: (any)) => (
+                  <Col span={5}></Col>
+                  <Col span={19}>
+                    <Paragraph> {eachRes} </Paragraph>
+                  </Col>
+                </Row>
+              ))
+            : null}
+          <Row style={{ marginBottom: "2%" }}>
+            <Col span={5}>
+              <Title level={5}>Skills </Title>
+            </Col>
+            <Col span={19}>
+              <Paragraph> {props.form.Skills[0].split("_")[1]} </Paragraph>
+            </Col>
+          </Row>
+          {props.form.Skills.length > 1
+            ? props.form.Skills.slice(1).map((eachSkill: any) => (
                 <Row style={{ marginBottom: "2%" }}>
-                    <Col span={5}>
-                    </Col>
-                    <Col span={19}>
-                        <Paragraph> { eachSkill.split("_")[1] } </Paragraph>
-                    </Col>
-                </Row> 
-            )) : null }
+                  <Col span={5}></Col>
+                  <Col span={19}>
+                    <Paragraph> {eachSkill.split("_")[1]} </Paragraph>
+                  </Col>
+                </Row>
+              ))
+            : null}
         </div>
         <Row style={{ justifyContent: "flex-end" }}>
-            <Col style={{ marginRight: 20 }}>
-                <Form.Item>
-                    <Button onClick={goToForm}>Back</Button>
-                </Form.Item>
-            </Col>
-            <Col>
-                <Form.Item>
-                    <Button type="primary" onClick={submitForm}>Confirm</Button>
-                </Form.Item>
-            </Col>
+          <Col style={{ marginRight: 20 }}>
+            <Form.Item>
+              <Button onClick={goToForm}>Back</Button>
+            </Form.Item>
+          </Col>
+          <Col>
+            <Form.Item>
+              <Button type="primary" onClick={submitForm}>
+                Confirm
+              </Button>
+            </Form.Item>
+          </Col>
         </Row>
-    </>
+      </>
+    );
 }

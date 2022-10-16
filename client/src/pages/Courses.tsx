@@ -2,22 +2,9 @@ import { useState, useEffect } from "react";
 import { Steps, Row, Col, Button, Form } from 'antd';
 import RoleCourseCard from '../components/RoleCourseCard';
 import styles from '../styles/ChooseCourse.module.css'
+import { Skill } from "../types/Skill";
+import { Course } from "../types/Course";
 
-type Skill = {
-  skill_id: number
-  skill_name: string
-  skill_desc: string
-  skill_status: string
-}
-
-type Course = {
-  course_id: number
-  course_name: string
-  course_desc: string
-  course_type: string
-  course_category: string
-  course_status: string
-}
 
 export default function Courses({ lj }: { lj?: boolean }) {
 
@@ -117,7 +104,7 @@ export default function Courses({ lj }: { lj?: boolean }) {
           </Col>
           <Col span={19}>
              { courses.map((course) => (
-              <RoleCourseCard/>
+              <RoleCourseCard course={course} key={course.course_id} />
             )) }
           </Col>
         </Row>

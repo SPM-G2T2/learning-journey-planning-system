@@ -125,7 +125,7 @@ def add_skill():
                 "code": 406, 
                 "message": "Duplicate courses detected. Please try again." 
             } 
-        ), 406 
+        ), 406
 
     #2.2 Add skill
     skill_name = string.capwords(data['skill_name'])
@@ -352,6 +352,41 @@ def find_by_skillId(skill_id):
             "message": "Skill not found."
         }
     ), 404
+
+
+#FUNCTION 8: Get Skill by Course Id
+@app.route("/getSkillByCourseId/<int:course_id>", methods=['GET'])
+def find_by_courseId(course_id):
+
+    skilllist = Skill_course.query.filter_by(course_id=course_id).all()
+
+    skills = []
+
+    for item in skilllist:
+
+        skill_id = item.json()['skill_id']
+        # print(skill_id)
+        skill = Skill.query.filter_by(skill_id=skill_id).all()
+        skill_obj=skill[0].json()
+        if skill_obj["skill_status"] == "Active":
+            skills.append(skill_obj)
+
+    # print(skills)
+
+    if skills: 
+        return jsonify( 
+            { 
+                "code": 200, 
+                "data": [skill for skill in skills]
+            } 
+        ) 
+
+    return jsonify( 
+        { 
+            "code": 404, 
+            "message": "Course id invalid." 
+        } 
+    ), 404 
 
 
 if __name__ == '__main__': 

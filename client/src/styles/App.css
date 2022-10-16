@@ -6,16 +6,12 @@
   display: flex;
 }
 
-.logo {
+.icon {
   width: 3vw;
   align-self: center;
-  margin-right: 1vw;
 }
 
-.ant-layout {
-  background-color: #3649F9;
-}
-
+.ant-layout,
 .ant-layout-sider {
   background-color: #3649F9;
 }
@@ -39,7 +35,8 @@
   border-right: 0;
 }
 
-#root .ant-menu-item:hover {
+#root .ant-menu-item:hover,
+.ant-menu-title-content>.menu-item-link:hover {
   color: black;
 }
 
@@ -50,10 +47,6 @@
 
 .ant-menu-title-content>.menu-item-link {
   color: white;
-}
-
-.ant-menu-title-content>.menu-item-link:hover {
-  color: black;
 }
 
 .ant-menu-item-selected .menu-item-link {
@@ -69,32 +62,11 @@
   overflow-y: auto;
 }
 
-h4.ant-typography {
+#root .ant-steps-item-title {
   color: #3649F9;
-  margin-top: 10px;
-  margin-bottom: 20px;
 }
 
-label {
-  font-weight: bold;
-}
-
-.ant-btn-primary {
-  border-color:  #3649F9;
-  border-radius: 10px;
-  background-color: #3649F9;
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-}
-
-.ant-btn-primary:hover, .ant-btn-default, .ant-btn-default:hover, .ant-btn-default::after {
-  border-color:  #3649F9;
-  border-radius: 10px;
-  color: #3649F9;
-  background-color: #FFF;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
-}
-
-.header {
+h1, label {
   font-weight: 700;
 }
 
@@ -112,7 +84,7 @@ label {
   background-color: #3649F9;
 }
 
-.ant-tabs-tab + .ant-tabs-tab {
+.ant-tabs-tab+.ant-tabs-tab {
   margin: 0;
 }
 
@@ -122,38 +94,22 @@ label {
   color: #808080;
 }
 
-.border {
+.ant-btn-primary {
+  border-color: #3649F9;
   border-radius: 10px;
+  background-color: #3649F9;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 }
 
-.card {
-  background-color: #FAFAFA;
-  padding: 1vw;
-  border-radius: 4px;
-}
-
-.btn-color {
-  color: white;
-  background-color: #86B0FF;
-}
-
-.shadow {
-  box-shadow: 0px 1vw 1vw rgba(0, 0, 0, 0.25);
-}
-
-.horizontal {
-  display: flex;
-}
-
-.card-row {
+.ant-btn-primary:hover,
+.ant-btn-default,
+.ant-btn-default:hover,
+.ant-btn-default::after {
+  border-color: #3649F9;
+  border-radius: 10px;
   color: #3649F9;
-  font-size: 0.8vw;
-  line-height: 0.2vw;
-}
-
-#root .ant-steps-item-title {
-  color: #3649F9;
-  font-weight: bold;
+  background-color: #FFF;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
 }
 
 .ant-steps-label-vertical .ant-steps-item-content {
