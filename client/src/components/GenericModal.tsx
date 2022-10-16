@@ -4,9 +4,11 @@ import styles from "../styles/GenericModal.module.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Skill } from "../types/Skill";
+import { Course } from "../types/Course";
 
 export default function GenericModal(props: {
   role?: Role;
+  course?: Course;
   status: boolean;
   handleClose: () => void;
 }) {
@@ -17,6 +19,12 @@ export default function GenericModal(props: {
       .get("http://localhost:5000/position_skills/" + props.role?.position_id)
       .then((resp) => setSkills(resp.data.data))
       .catch((err) => console.log(err));
+
+    axios
+    .get("http://localhost:5000/getSkillByCourseId/" + props.course?.course_id)
+    .then((resp) => setSkills(resp.data.data))
+    .catch((err) => console.log(err));
+
   }, []);
 
   return (
@@ -31,22 +39,27 @@ export default function GenericModal(props: {
         }
       >
         <div className={styles.top}>
-          <h1>{props.role?.position_name}</h1>
+          <h2>{props.role ? props.role.position_name : 'C' + props.course?.course_id + ': ' + props.course?.course_name}</h2>
           <Tag className={styles.status} color="#16C098">
             Active
           </Tag>
         </div>
-        <h2>Role Description: </h2>
-        <p>{props.role?.position_desc}</p>
-        <h2>Role Responsibilities: </h2>
+        <hr className={styles.hr}></hr>
+        <h3>{props.role ? 'Role' : 'Course'} Description: </h3>
+        <p>{props.role?.position_desc} {props.course?.course_desc}</p>
+        <h3>{props.role ? 'Responsibilities:' : null }</h3>
         <ul>
           {props.role?.position_res.split(";").map((res, i) => (
             <li key={i}>{res}</li>
           ))}
         </ul>
-        <h2>Department: </h2>
+        <h3>{props.role ? 'Department:' : null}</h3>
         <p>{props.role?.position_dept}</p>
-        <h2>Skills required for the role: </h2>
+        <h3>{props.course ? 'Type:' : null}</h3>
+        <p>{props.course ? 'The course will be conducted ' + props.course?.course_type.toLowerCase() : null}</p>
+        <h3>{props.course ? 'Category:' : null}</h3>
+        <p>{props.course?.course_category}</p>
+        <h3>Skills required for the {props.role ? 'role' : 'course'}:</h3>
         <ul>
           {skills.map((skill) => (
             <li key={skill.skill_id}>{skill.skill_name}</li>

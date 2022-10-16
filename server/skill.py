@@ -9,10 +9,10 @@ app = Flask(__name__)
 CORS(app)
 
 # Mac User
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:8889/learning_journey_planning_system'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:8889/learning_journey_planning_system'
 
 # Windows User
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/learning_journey_planning_system'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/learning_journey_planning_system'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
 
 db = SQLAlchemy(app) 
@@ -60,6 +60,7 @@ class Skill(db.Model):
     def json(self): 
         return {"skill_id": self.skill_id, "skill_name": self.skill_name, "skill_desc": self.skill_desc, "skill_status": self.skill_status} 
 
+
 #Skill_course DB Model
 class Skill_course(db.Model): 
 
@@ -77,6 +78,7 @@ class Skill_course(db.Model):
 
     def get_courses(self):
         return {"course_id": self.course_id}
+
 
 #FUNCTION 1: Return all courses
 @app.route("/get_all_courses") 
@@ -230,6 +232,7 @@ def filter_courses(skill_id):
         } 
     ), 404 
 
+
 #FUNCTION 4: Filter ACTIVE courses by skill_id
 @app.route("/filter_active_courses_by_skill/<int:skill_id>", methods=['GET']) 
 def filter_active_courses(skill_id): 
@@ -242,10 +245,10 @@ def filter_active_courses(skill_id):
 
         course_id = item.json()['course_id']
         # print(course_id)
-        course = Course.query.filter_by(course_id=course_id, course_status="ACTIVE").all()
-        # print(course[0].json())
-
-        courses.append(course[0].json())
+        course = Course.query.filter_by(course_id=course_id).all()
+        course_obj=course[0].json()
+        if course_obj["course_status"] == "Active":
+            courses.append(course_obj)
 
     # print(courses)
 
@@ -328,6 +331,62 @@ def delete_course_skill(skill_id):
             "message": "Skill successfully edited."
         } 
     ), 201 
+
+
+#FUNCTION 7: Get Skill by Skill ID
+@app.route("/getSkillById/<int:skill_id>", methods=['GET'])
+def find_by_skillId(skill_id):
+
+    skill = Skill.query.filter_by(skill_id=skill_id).first()
+
+    if skill:
+        return jsonify(
+            {
+                "code": 200,
+                "data": skill.json()
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Skill not found."
+        }
+    ), 404
+
+
+#FUNCTION 8: Get Skill by Course Id
+@app.route("/getSkillByCourseId/<int:course_id>", methods=['GET'])
+def find_by_courseId(course_id):
+
+    skilllist = Skill_course.query.filter_by(course_id=course_id).all()
+
+    skills = []
+
+    for item in skilllist:
+
+        skill_id = item.json()['skill_id']
+        # print(skill_id)
+        skill = Skill.query.filter_by(skill_id=skill_id).all()
+        skill_obj=skill[0].json()
+        if skill_obj["skill_status"] == "Active":
+            skills.append(skill_obj)
+
+    # print(skills)
+
+    if skills: 
+        return jsonify( 
+            { 
+                "code": 200, 
+                "data": [skill for skill in skills]
+            } 
+        ) 
+
+    return jsonify( 
+        { 
+            "code": 404, 
+            "message": "Course id invalid." 
+        } 
+    ), 404 
 
 
 if __name__ == '__main__': 

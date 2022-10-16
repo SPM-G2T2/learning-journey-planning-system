@@ -3,9 +3,10 @@ import { useState } from "react";
 import role from "../assets/role.png";
 import styles from "../styles/RoleCourseCard.module.css";
 import { Role } from "../types/Role";
+import { Course } from "../types/Course";
 import GenericModal from "./GenericModal";
 
-export default function RoleCourseCard(props: { role?: Role }) {
+export default function RoleCourseCard(props: { role?: Role , course? : Course }) {
   const [modalStatus, setModalStatus] = useState<boolean>(false);
 
   function handleClose() {
@@ -17,9 +18,9 @@ export default function RoleCourseCard(props: { role?: Role }) {
       <div className={styles.horizontal}>
         <img src={role} alt="role icon" className="icon" />
         <div className={styles.cardRow}>
-          <p className={styles.title}>{props.role?.position_name}</p>
-          <p>Department: {props.role?.position_dept}</p>
-          <p>Description: {props.role?.position_desc}</p>
+          <p className={styles.title}>{props.role ? props.role.position_name : 'C' + props.course?.course_id + ': ' + props.course?.course_name}</p>
+          <p> { props.role ? 'Department' : 'Category' }:{props.role?.position_dept} { props.course?.course_category }</p>
+          <p> { props.role ? 'Description' : 'Type' }: {props.role?.position_desc} { props.course?.course_type }</p>
         </div>
       </div>
       <Button className={styles.more} onClick={() => setModalStatus(true)}>
@@ -27,6 +28,7 @@ export default function RoleCourseCard(props: { role?: Role }) {
       </Button>
       <GenericModal
         role={props.role}
+        course={props.course}
         status={modalStatus}
         handleClose={handleClose}
       />
