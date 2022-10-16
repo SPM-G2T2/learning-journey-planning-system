@@ -1,6 +1,5 @@
 import { MinusCircleOutlined } from "@ant-design/icons";
-import { Form, Input, Button } from 'antd';
-import "antd/dist/antd.css";
+import { Form, Input, Button } from "antd";
 
 interface InputFieldsProps {
     label?: string;

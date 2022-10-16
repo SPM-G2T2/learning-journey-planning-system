@@ -13,7 +13,7 @@ export default function ManageLJPS() {
 
   return (
     <>
-      <h1 className="header">Manage LJPS</h1>
+      <h1>Manage LJPS</h1>
 
       <Tabs
         items={[

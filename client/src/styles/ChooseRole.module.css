@@ -1,0 +1,26 @@
+.content {
+    width: 50vw;
+    margin: auto;
+    margin-top: 3vh;
+}
+
+.selection {
+    text-align: center;
+    color: #3649F9;
+    font-weight: 700;
+    margin: 3vh 0 3vh 0;
+}
+
+.selectionLabel {
+    margin: 0vh 0 1vh 0;
+}
+
+.selectionContent {
+    font-weight: 400;
+}
+
+.bottom {
+    display: flex;
+    justify-content: space-between;
+    margin: 5vh 10vw 0 10vw;
+}

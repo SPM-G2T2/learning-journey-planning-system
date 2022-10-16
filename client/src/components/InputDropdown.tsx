@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { MinusCircleOutlined } from "@ant-design/icons";
 import { Form, Select, Button } from 'antd';
-import "antd/dist/antd.css"
 import axios, { AxiosResponse, AxiosError } from 'axios';
 
 interface InputDropdownProps {
