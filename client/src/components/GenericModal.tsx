@@ -56,7 +56,7 @@ export default function GenericModal(props: {
         <h3>{props.role ? 'Department:' : null}</h3>
         <p>{props.role?.position_dept}</p>
         <h3>{props.course ? 'Type:' : null}</h3>
-        <p>{props.course ? 'The course will be conducted' + props.course?.course_type.toLowerCase() : null}</p>
+        <p>{props.course ? 'The course will be conducted ' + props.course?.course_type.toLowerCase() : null}</p>
         <h3>{props.course ? 'Category:' : null}</h3>
         <p>{props.course?.course_category}</p>
         <h3>Skills required for the {props.role ? 'role' : 'course'}:</h3>
