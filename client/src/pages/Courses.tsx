@@ -104,7 +104,11 @@ export default function Courses({ lj }: { lj?: boolean }) {
           </Col>
           <Col span={19}>
             {courses.map((course) => (
-              <RoleCourseCard course={course} key={course.course_id} />
+              <RoleCourseCard
+                course={course}
+                key={course.course_id}
+                handleClick={() => console.log("hi")}
+              />
             ))}
           </Col>
         </Row>

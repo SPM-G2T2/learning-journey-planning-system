@@ -7,6 +7,8 @@ import { Role } from "../types/Role";
 
 export default function Home({ lj }: { lj?: boolean }) {
   const [roles, setRoles] = useState<Role[]>([]);
+  const [step, setStep] = useState<number>(0);
+  const [selectedRole, setSelectedRole] = useState<Role>();
 
   useEffect(() => {
     axios
@@ -20,7 +22,7 @@ export default function Home({ lj }: { lj?: boolean }) {
       <h1>Create Your Desired Learning Journey</h1>
 
       <div className={styles.content}>
-        <Steps labelPlacement="vertical">
+        <Steps labelPlacement="vertical" current={step}>
           <Steps.Step title="Choose a role" />
           <Steps.Step title="Choose skills" />
           <Steps.Step title="Choose courses" />
@@ -45,14 +47,30 @@ export default function Home({ lj }: { lj?: boolean }) {
           </p>
         </div>
 
-        {roles.map((role) => (
-          <RoleCourseCard role={role} key={role.position_id} />
-        ))}
+        <div>
+          {step === 0 &&
+            roles.map((role) => (
+              <RoleCourseCard
+                role={role}
+                selectedRole={selectedRole}
+                handleClick={() => {
+                  if (selectedRole === role) {
+                    setSelectedRole(undefined);
+                  } else {
+                    setSelectedRole(role);
+                  }
+                }}
+                key={role.position_id}
+              />
+            ))}
+        </div>
       </div>
 
       <div className={styles.bottom}>
         <Pagination total={15} defaultPageSize={3} />
-        <Button type="primary">Next</Button>
+        <Button type="primary" onClick={() => setStep(step + 1)}>
+          Next
+        </Button>
       </div>
     </>
   );

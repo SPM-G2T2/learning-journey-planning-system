@@ -11,6 +11,10 @@
     margin-top: 2vh;
 }
 
+.card:hover, .cardSelected {
+    border: 2px solid #3649F9;
+}
+
 .cardRow {
     color: #3649F9;
     font-size: 1.6vh;
