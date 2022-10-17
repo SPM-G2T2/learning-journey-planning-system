@@ -113,6 +113,27 @@ def get_all_skill():
         ), 404
 
 
+#FUNCTION 6: Get Skill by Skill ID
+@app.route("/getSkillById/<int:skill_id>", methods=['GET'])
+def find_by_skillId(skill_id):
+
+    skill = Skill.query.filter_by(Skill_ID=skill_id).first()
+
+    if skill:
+        return jsonify(
+            {
+                "code": 200,
+                "data": skill.json()
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Skill not found."
+        }
+    ), 404
+
+
 @app.route("/createPosition", methods=['POST'])
 def create_position():
 

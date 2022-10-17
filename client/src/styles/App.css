@@ -59,40 +59,26 @@
   margin: 2.5vh 1.5vw 2.5vh 0;
   border-radius: 2vw;
   padding: 3vw;
-}
-
-.border {
-  border-radius: 10px;
-}
-
-.card {
-  background-color: #FAFAFA;
-  padding: 1vw;
-  border-radius: 4px;
-}
-
-.btn-color {
-  color: white;
-  background-color: #86B0FF;
-}
-
-.shadow {
-  box-shadow: 0px 1vw 1vw rgba(0, 0, 0, 0.25);
-}
-
-.horizontal {
-  display: flex;
-}
-
-.card-row {
-  color: #3649F9;
-  font-size: 0.8vw;
-  line-height: 0.2vw;
+  overflow-y: auto;
 }
 
 #root .ant-steps-item-title {
   color: #3649F9;
-  overflow-y: auto;
+}
+
+.ant-btn-primary {
+  border-color:  #3649F9;
+  border-radius: 10px;
+  background-color: #3649F9;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.ant-btn-primary:hover, .ant-btn-default, .ant-btn-default:hover, .ant-btn-default::after {
+  border-color:  #3649F9;
+  border-radius: 10px;
+  color: #3649F9;
+  background-color: #FFF;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
 }
 
 h1, label {
@@ -139,4 +125,8 @@ h1, label {
   color: #3649F9;
   background-color: #FFF;
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
+}
+
+.ant-steps-label-vertical .ant-steps-item-content {
+  width: 150px;
 }
