@@ -50,11 +50,8 @@ const App = () => (
               </Link>
             </Menu.Item>
           ))}
-          <Menu.Item icon={<SettingOutlined/>} key="LJPS">
-            <Link
-              to="/ljps"
-              className="menu-item-link"
-            >
+          <Menu.Item icon={<SettingOutlined />} key="LJPS">
+            <Link to="/ljps" className="menu-item-link">
               Manage LJPS
             </Link>
           </Menu.Item>
@@ -76,7 +73,7 @@ const App = () => (
         </Button>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/roles" element={<Roles/>} />
+          <Route path="/roles" element={<Roles />} />
           <Route path="/skills" element={<Skills />} />
           <Route path="/courses" element={<Courses />} />
           <Route path="/create/2" element={<Home lj={true} />} />
