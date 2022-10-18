@@ -1,77 +1,87 @@
-import { Button, Pagination, Steps } from "antd";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import RoleCourseCard from "../components/RoleCourseCard";
-import styles from "../styles/ChooseRole.module.css";
-import { Role } from "../types/Role";
+import { Row, Col, Table, Card, Button } from "antd";
+import type { ColumnsType } from 'antd/es/table';
+import glorilla_image from "../assets/glorilla_image.png";
+import styles from "../styles/Home.module.css";
 
-export default function Home({ lj }: { lj?: boolean }) {
-  const [roles, setRoles] = useState<Role[]>([]);
-  const [step, setStep] = useState<number>(0);
-  const [selectedRole, setSelectedRole] = useState<Role>();
+interface DataType {
+  key: string;
+  name: string;
+  age: number;
+  address: string;
+  tags: string[];
+}
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:5000/active_positions")
-      .then((resp) => setRoles(resp.data.data))
-      .catch((err) => console.log(err));
-  }, []);
+export default function Home() {
+
+  const columns: ColumnsType<DataType> = [
+    {
+      title: 'Learning Journey',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: 'Role',
+      dataIndex: 'age',
+      key: 'age',
+    },
+    {
+      title: 'Number of skills required',
+      dataIndex: 'address',
+      key: 'address',
+    },
+    {
+      title: 'Number of missing skills',
+      dataIndex: 'tags',
+      key: 'tags',
+    },
+    {
+      title: 'Number of courses added',
+      dataIndex: 'action',
+      key: 'action',
+    },
+  ];
+  
+  const data: DataType[] = [
+    {
+      key: '1',
+      name: 'John Brown',
+      age: 32,
+      address: 'New York No. 1 Lake Park',
+      tags: ['nice', 'developer'],
+    },
+    {
+      key: '2',
+      name: 'Jim Green',
+      age: 42,
+      address: 'London No. 1 Lake Park',
+      tags: ['loser'],
+    },
+    {
+      key: '3',
+      name: 'Joe Black',
+      age: 32,
+      address: 'Sidney No. 1 Lake Park',
+      tags: ['cool', 'teacher'],
+    },
+  ];
 
   return (
     <>
-      <h1>Create Your Desired Learning Journey</h1>
-
-      <div className={styles.content}>
-        <Steps labelPlacement="vertical" current={step}>
-          <Steps.Step title="Choose a role" />
-          <Steps.Step title="Choose skills" />
-          <Steps.Step title="Choose courses" />
-        </Steps>
-
-        <div className={styles.selection}>
-          <p className={styles.selectionLabel}>
-            Role Selected:{" "}
-            <span className={styles.selectionContent}>{selectedRole?.position_name}</span>
-          </p>
-          <p className={styles.selectionLabel}>
-            Skills Selected:{" "}
-            <span className={styles.selectionContent}>
-              Technical Support, Diagnosis, Parts Inventory
-            </span>
-          </p>
-          <p className={styles.selectionLabel}>
-            Courses Selected:{" "}
-            <span className={styles.selectionContent}>
-              Intro to Technical Support
-            </span>
-          </p>
-        </div>
-
-        <div>
-          {step === 0 &&
-            roles.map((role) => (
-              <RoleCourseCard
-                role={role}
-                selectedRole={selectedRole}
-                handleClick={() => {
-                  if (selectedRole === role) {
-                    setSelectedRole(undefined);
-                  } else {
-                    setSelectedRole(role);
-                  }
-                }}
-                key={role.position_id}
-              />
-            ))}
-        </div>
+    <Row className={styles.row}>
+      <Col className={styles.col}>
+        <img src={glorilla_image} alt="role icon"/>
+      </Col>
+      <Col className={styles.col}>
+        <h1 className={styles.title}>Personalise your own learning journey</h1>
+        <p className={styles.quote}>“You cannot reach where you’re going if you continue to be the same person you have always been.”</p>
+      </Col>
+    </Row>
+    <Card className={styles.card}>
+      <div style={{ display: 'flex', marginTop: '2vh', marginBottom: '5vh' }}>
+        <h1>My Learning Journeys</h1><Button type="primary" style={{ marginLeft: '3vh' }}>Create New</Button>
       </div>
-
-      <div className={styles.bottom}>
-        <Pagination total={15} defaultPageSize={3} />
-        <Button type="primary" onClick={() => setStep(step + 1)}>
-          Next
-        </Button>
-      </div>
+      <Table columns={columns} dataSource={data} pagination={false} className={styles.table}/>
+    </Card>
     </>
   );
 }

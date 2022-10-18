@@ -1,0 +1,21 @@
+.row {
+    margin-bottom: 8vh;
+}
+
+.col {
+    margin-right: 5vh;
+}
+
+.title {
+    padding-top: 2vh;
+}
+
+.quote {
+    font-style: italic;
+}
+
+.card {
+    border-color: #fff;
+    border-radius: 20px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}

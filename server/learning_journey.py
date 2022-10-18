@@ -37,7 +37,7 @@ class Learning_Journey(db.Model):
 
 
 
-@app.route('/learningjourney') # Just a decorator to route to certain url
+@app.route('/learning_journey') # Just a decorator to route to certain url
 def get_all_learningjourney():
     learningjourneyList = Learning_Journey.query.all() #Retrieves all records from the learningjourney table -> Returns a list which we assign to learningjourneyList
     if len(learningjourneyList): 
@@ -57,7 +57,7 @@ def get_all_learningjourney():
         ), 404
 
 
-@app.route("/createLearningjourney", methods=['POST'])
+@app.route("/create_learning_journey", methods=['POST'])
 def create_learningjourney():
 
     learningjourney = request.get_json()

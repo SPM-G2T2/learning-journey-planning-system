@@ -73,10 +73,10 @@ const App = () => (
         </Button>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/roles" element={<Roles />} />
+          <Route path="/roles" element={<Roles lj={true} />} />
           <Route path="/skills" element={<Skills />} />
           <Route path="/courses" element={<Courses />} />
-          <Route path="/create/2" element={<Home lj={true} />} />
+          <Route path="/create/2" element={<Home />} />
           <Route path="/ljps" element={<ManageLJPS />} />
         </Routes>
       </Content>
