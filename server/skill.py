@@ -9,10 +9,10 @@ app = Flask(__name__)
 CORS(app)
 
 # Mac User
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:8889/learning_journey_planning_system'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:8889/learning_journey_planning_system'
 
 # Windows User
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/learning_journey_planning_system'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/learning_journey_planning_system'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
 
 db = SQLAlchemy(app) 
@@ -78,6 +78,22 @@ class Skill_course(db.Model):
 
     def get_courses(self):
         return {"course_id": self.course_id}
+
+
+#Staff_skill DB Model
+class Staff_skill(db.Model): 
+
+    __tablename__ = 'staff_skill' 
+
+    staff_id = db.Column(db.Integer, primary_key=True) 
+    skill_id = db.Column(db.String(20), primary_key=True) 
+
+    def __init__(self, staff_id, skill_id): 
+        self.staff_id = staff_id 
+        self.skill_id = skill_id 
+
+    def json(self): 
+        return {"staff_id": self.staff_id, "skill_id": self.skill_id} 
 
 
 #FUNCTION 1: Return all courses
@@ -387,6 +403,29 @@ def find_by_courseId(course_id):
             "message": "Course id invalid." 
         } 
     ), 404 
+
+
+#FUNCTION 9: Get Staff Skills by Staff ID
+@app.route("/getSkillByStaffId/<int:staff_id>", methods=['GET'])
+def find_by_staffId(staff_id):
+
+    skills = Staff_skill.query.filter_by(staff_id=staff_id).all()
+    
+
+    if skills:
+        skills = [skill.json() for skill in skills]      
+        return jsonify(
+            {
+                "code": 200,
+                "data": skills
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Staff has no registered skills."
+        }
+    ), 404
 
 
 if __name__ == '__main__': 
