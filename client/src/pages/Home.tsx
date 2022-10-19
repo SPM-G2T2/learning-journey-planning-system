@@ -1,67 +1,80 @@
-import { Row, Col, Table, Card, Button } from "antd";
+import { Row, Col, Table, Card, Button, Typography } from "antd";
 import type { ColumnsType } from 'antd/es/table';
 import glorilla_image from "../assets/glorilla_image.png";
 import styles from "../styles/Home.module.css";
 
 interface DataType {
-  key: string;
-  name: string;
-  age: number;
-  address: string;
-  tags: string[];
+  learningJourney: string;
+  role: string;
+  requiredSkills: number;
+  missingSkills: number;
+  addedCourses: number;
 }
 
 export default function Home() {
 
+  const { Text } = Typography;
+
   const columns: ColumnsType<DataType> = [
     {
       title: 'Learning Journey',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'learningJourney',
+      key: 'learningJourney',
     },
     {
       title: 'Role',
-      dataIndex: 'age',
-      key: 'age',
+      dataIndex: 'role',
+      key: 'role',
+      width: '25%',
     },
     {
       title: 'Number of skills required',
-      dataIndex: 'address',
-      key: 'address',
+      dataIndex: 'requiredSkills',
+      key: 'requiredSkills',
     },
     {
       title: 'Number of missing skills',
-      dataIndex: 'tags',
-      key: 'tags',
+      dataIndex: 'missingSkills',
+      key: 'missingSkills',
+      render: (text) => text > 0 ? <Text type="danger">{text}</Text> : <Text type="success">{text}</Text> 
     },
     {
       title: 'Number of courses added',
-      dataIndex: 'action',
+      dataIndex: 'addedCourses',
+      key: 'addedCourses',
+    },
+    {
+      title: '',
       key: 'action',
+      render: () => (
+        <Button>
+          Edit
+        </Button>
+      ),
     },
   ];
   
   const data: DataType[] = [
     {
-      key: '1',
-      name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
-      tags: ['nice', 'developer'],
+      learningJourney: '1',
+      role: 'Frontend Developer',
+      requiredSkills: 8,
+      missingSkills: 4,
+      addedCourses: 5,
     },
     {
-      key: '2',
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
-      tags: ['loser'],
+      learningJourney: '2',
+      role: 'Full Stack Engineer',
+      requiredSkills: 10,
+      missingSkills: 5,
+      addedCourses: 2,
     },
     {
-      key: '3',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
-      tags: ['cool', 'teacher'],
+      learningJourney: '3',
+      role: 'Software Engineer',
+      requiredSkills: 3,
+      missingSkills: 0,
+      addedCourses: 1,
     },
   ];
 
@@ -77,8 +90,8 @@ export default function Home() {
       </Col>
     </Row>
     <Card className={styles.card}>
-      <div style={{ display: 'flex', marginTop: '2vh', marginBottom: '5vh' }}>
-        <h1>My Learning Journeys</h1><Button type="primary" style={{ marginLeft: '3vh' }}>Create New</Button>
+      <div style={{ display: 'flex', marginTop: '2vh', marginBottom: '4vh' }}>
+        <h1>My Learning Journeys</h1><Button type="primary" style={{ marginLeft: '5vh' }}>Create New</Button>
       </div>
       <Table columns={columns} dataSource={data} pagination={false} className={styles.table}/>
     </Card>
