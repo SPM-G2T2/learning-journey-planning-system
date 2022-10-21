@@ -4,6 +4,8 @@ import CreateRoles from "../components/CreateRoles"
 import PreviewRoles from "../components/PreviewRoles"
 import CreateSkills from "../components/CreateSkills"
 import PreviewSkills from "../components/PreviewSkills"
+import Learningjourney from "../components/Learningjourney"
+import { Typography, Form, Button, Row, Col, Modal } from 'antd';
 
 export default function ManageLJPS() {
 
@@ -14,6 +16,7 @@ export default function ManageLJPS() {
   return (
     <>
       <h1>Manage LJPS</h1>
+      <Learningjourney />
 
       <Tabs
         items={[
