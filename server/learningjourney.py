@@ -23,30 +23,29 @@ class Learning_Journey(db.Model):
     position_id = db.Column(db.Integer, nullable=False)
     course_id = db.Column(db.String(20), nullable=False)
 
-    def __init__(self, lj_id, staff_id, skill_id, position_id, course_id): #constructor, initializes the record
-        self.lj_id = lj_id
+    def __init__(self, staff_id, position_id, skill_id, course_id): #constructor, initializes the record
         self.staff_id = staff_id
-        self.skill_id = skill_id
         self.position_id = position_id
+        self.skill_id = skill_id
         self.course_id = course_id
 
 
     def json(self): #returns json representation of the table in dict form
-        return {"lj_id": self.lj_id, "staff_id": self.staff_id, "skill_id": self.skill_id, "position_id": self.position_id, "course_id": self.course_id}
+        return {"lj_id": self.lj_id, "staff_id": self.staff_id, "position_id": self.position_id, "skill_id": self.skill_id, "course_id": self.course_id}
 
     #Fill up columns here
 
 
 
-@app.route('/learningjourney') # Just a decorator to route to certain url
+@app.route('/get_all_learning_journey') # Just a decorator to route to certain url
 def get_all_learningjourney():
-    learningjourneyList = Learning_Journey.query.all() #Retrieves all records from the learningjourney table -> Returns a list which we assign to learningjourneyList
-    if len(learningjourneyList): 
+    learning_journey_list = Learning_Journey.query.all() #Retrieves all records from the learningjourney table -> Returns a list which we assign to learningjourneyList
+    if len(learning_journey_list): 
         return jsonify ( 
         {
             "code": 200, #Return the code + list of learningjourney in JSON representation using jsonify
             "data": {
-            "Learning Journey": [learningjourney.json() for learningjourney in learningjourneyList] #for learningjourney iteration to create JSON representation using learningjourney.json() 
+            "Learning Journey": [learning_journey.json() for learning_journey in learning_journey_list] #for learningjourney iteration to create JSON representation using learningjourney.json() 
                     }
                 }
             )
@@ -58,32 +57,19 @@ def get_all_learningjourney():
         ), 404
 
 
-@app.route("/createLearningjourney", methods=['POST'])
-def create_learningjourney():
+@app.route("/create_learning_journey", methods=['POST'])
+def create_learning_journey():
 
     learningjourney = request.get_json()
     print(type(learningjourney)) #dict 
-    staffID = learningjourney['Staff_ID']
-    learningjourneyID = learningjourney['Lj_ID']
+    
+    staff_id = learningjourney['staff_id']
+    skill_id = learningjourney['skill_id']
+    position_id = learningjourney['position_id']
+    course_id = learningjourney['course_id']
 
-    # if (Learning_Journey.query.filter_by(lj_id=learningjourneyID).first()):
-    #     return jsonify(
-    #         {
-    #             "code": 400,
-    #             "data": {
-    #                 "Learning Journey ID": learningjourneyID
-    #             },
-    #             "message": "Learning Journey already exists."
-    #         }
-    #     ), 400
-
-    Staff_ID = learningjourney['Staff_ID']
-    skill_ID = learningjourney['skill_ID']
-    position_ID = learningjourney['position_ID']
-    course_ID = learningjourney['Course_ID']
-
-    print(skill_ID, position_ID, course_ID)
-    learningjourney = Learning_Journey(Staff_ID,skill_ID, position_ID, course_ID)
+    print(skill_id, position_id, course_id)
+    learningjourney = Learning_Journey(staff_id,position_id, skill_id, course_id)
     print(learningjourney)
 
     try:
