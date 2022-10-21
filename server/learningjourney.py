@@ -23,8 +23,7 @@ class Learning_Journey(db.Model):
     position_id = db.Column(db.Integer, nullable=False)
     course_id = db.Column(db.String(20), nullable=False)
 
-    def __init__(self, lj_id, staff_id, skill_id, position_id, course_id): #constructor, initializes the record
-        self.lj_id = lj_id
+    def __init__(self, staff_id, skill_id, position_id, course_id): #constructor, initializes the record
         self.staff_id = staff_id
         self.skill_id = skill_id
         self.position_id = position_id
@@ -63,8 +62,8 @@ def create_learningjourney():
 
     learningjourney = request.get_json()
     print(type(learningjourney)) #dict 
-    staffID = learningjourney['Staff_ID']
-    learningjourneyID = learningjourney['Lj_ID']
+    # staffID = learningjourney['staff_id']
+    # learningjourneyID = learningjourney['lj_id']
 
     # if (Learning_Journey.query.filter_by(lj_id=learningjourneyID).first()):
     #     return jsonify(
@@ -77,13 +76,13 @@ def create_learningjourney():
     #         }
     #     ), 400
 
-    Staff_ID = learningjourney['Staff_ID']
-    skill_ID = learningjourney['skill_ID']
-    position_ID = learningjourney['position_ID']
-    course_ID = learningjourney['Course_ID']
+    staff_id = learningjourney['staff_id']
+    skill_id = learningjourney['skill_id']
+    position_id = learningjourney['position_id']
+    course_id = learningjourney['course_id']
 
-    print(skill_ID, position_ID, course_ID)
-    learningjourney = Learning_Journey(Staff_ID,skill_ID, position_ID, course_ID)
+    print(skill_id, position_id, course_id)
+    learningjourney = Learning_Journey(staff_id, skill_id, position_id, course_id)
     print(learningjourney)
 
     try:
