@@ -19,9 +19,9 @@ class Learning_Journey(db.Model):
 
     lj_id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     staff_id = db.Column(db.Integer, nullable=False)
-    skill_id = db.Column(db.Integer, nullable=False)
+    skill_id = db.Column(db.Integer, primary_key=True, nullable=False)
     position_id = db.Column(db.Integer, nullable=False)
-    course_id = db.Column(db.String(20), nullable=False)
+    course_id = db.Column(db.String(20), primary_key=True, nullable=False)
 
     def __init__(self, staff_id, position_id, skill_id, course_id): #constructor, initializes the record
         self.staff_id = staff_id
@@ -100,7 +100,7 @@ def get_learning_journey_by_staff_ID(staffID):
             {
                 "code": 200, #Return the code + list of learning journeys that the staff has in JSON representation using jsonify
                 "data": {
-                    "Positions": [lj.json() for lj in ljList]
+                    "Learning journeys": [lj.json() for lj in ljList]
                 }
             }
         )
