@@ -50,4 +50,4 @@ def get_staff_by_staffID(staffID):
     ), 404
 
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)
+    app.run(port=5006, debug=True)

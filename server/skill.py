@@ -390,4 +390,4 @@ def find_by_courseId(course_id):
 
 
 if __name__ == '__main__': 
-    app.run(port=5000, debug=True) 
+    app.run(port=5002, debug=True) 
