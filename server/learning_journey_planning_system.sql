@@ -111,5 +111,5 @@ FOREIGN KEY (staff_id) REFERENCES staff (staff_id),
 FOREIGN KEY (position_id) REFERENCES position (position_id),
 FOREIGN KEY (skill_id) REFERENCES skill (skill_id),
 FOREIGN KEY (course_id) REFERENCES course (course_id),
-PRIMARY KEY (lj_id, staff_id)
+PRIMARY KEY (lj_id, skill_id, course_id)
 );
