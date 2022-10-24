@@ -16,7 +16,7 @@ export default function GenericModal(props: {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/position_skills/" + props.role?.position_id)
+      .get("http://localhost:5000/positions/get_skills_by_position" + props.role?.position_id)
       .then((resp) => setSkills(resp.data.data))
       .catch((err) => console.log(err));
 
