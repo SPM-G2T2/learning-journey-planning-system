@@ -41,15 +41,6 @@ def get_active_positions():
 
 @position.route('<int:position_id>/skills')
 def get_skills_by_position(position_id):
-    # positionSkills = PositionSkill.query.filter_by(position_id=position_id).all()
-
-    # skills = []
-
-    # for positionSkill in positionSkills:
-    #     skill = Skill.query.filter_by(skill_id=positionSkill.json()["skill_id"], skill_status="Active").first()
-    #     if skill:
-    #         skills.append(skill.json())
-
     skills = db.session.query(Skill).filter(PositionSkill.skill_id==Skill.skill_id, PositionSkill.position_id==position_id).all()
 
     if skills:
