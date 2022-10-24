@@ -6,9 +6,9 @@ import json
 app = Flask(__name__)
 CORS(app)
 # Mac User
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:8889/learning_journey_planning_system'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:8889/learning_journey_planning_system'
 # Window User
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/learning_journey_planning_system'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/learning_journey_planning_system'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_recycle': 299}
 
@@ -107,6 +107,25 @@ def get_active_positions():
         }
     ), 404
 
+
+@app.route("/position/<int:position_id>")
+def get_position_by_id(position_id):
+    position = Position.query.filter_by(position_id=position_id).first()
+    if position:
+        return jsonify (
+            {
+                "code": 200,
+                "data": position.json()
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "There are no Positions."
+        }
+    ), 404
+
+
 @app.route("/skills")
 def get_all_skill():
     skillList = Skill.query.all() 
@@ -124,8 +143,28 @@ def get_all_skill():
         }
     ), 404
 
+
 @app.route('/position_skills/<int:position_id>')
 def get_position_skills(position_id):
+    positionSkills = PositionSkill.query.filter_by(position_id=position_id).all()
+
+    if positionSkills:
+        return jsonify (
+            {
+                "code": 200,
+                "data": [positionSkill.json() for positionSkill in positionSkills]
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "There are no Skills."
+        }
+    ), 404
+
+
+@app.route('/position_active_skills/<int:position_id>')
+def get_position_active_skills(position_id):
     positionSkills = PositionSkill.query.filter_by(position_id=position_id).all()
 
     skills = []
