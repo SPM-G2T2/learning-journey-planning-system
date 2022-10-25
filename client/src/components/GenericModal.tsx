@@ -16,13 +16,13 @@ export default function GenericModal(props: {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/positions/get_skills_by_position" + props.role?.position_id)
+      .get("http://localhost:5000/positions/" + props.role?.position_id + "/skills")
       .then((resp) => setSkills(resp.data.data))
       .catch((err) => console.log(err));
 
     axios
       .get(
-        "http://localhost:5000/getSkillByCourseId/" + props.course?.course_id
+        "http://localhost:5000/courses/" + props.course?.course_id + "/skills"
       )
       .then((resp) => setSkills(resp.data.data))
       .catch((err) => console.log(err));

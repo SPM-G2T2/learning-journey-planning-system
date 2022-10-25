@@ -40,7 +40,7 @@ export default function InputDropdown(props: InputDropdownProps) {
   useEffect(() => {
     const submitSkill = async () => {
       axios
-        .get("http://127.0.0.1:5000/get_all_courses")
+        .get("http://127.0.0.1:5000/courses/all")
         .then((response: AxiosResponse) => {
           console.log(response.data.data.courses);
           var courseArr: String[] = [];
@@ -64,7 +64,7 @@ export default function InputDropdown(props: InputDropdownProps) {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:5000/skills")
+    fetch("http://localhost:5000/skills/all")
       .then((response) => response.json())
       .then((data) => {
         console.log(data.data);

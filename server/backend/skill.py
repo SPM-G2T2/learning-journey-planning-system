@@ -74,7 +74,7 @@ def get_courses_by_skill(skill_id):
 
 
 #FUNCTION 4: Filter ACTIVE courses by skill_id
-@skill.route("<int:skill_id>/active_courses") 
+@skill.route("<int:skill_id>/courses/active") 
 def get_active_courses_by_skill(skill_id): 
 
     courselist = SkillCourse.query.filter_by(skill_id=skill_id).all()
