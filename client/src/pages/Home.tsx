@@ -1,10 +1,11 @@
-import { Row, Col, Table, Card, Button, Typography, Tag} from "antd";
+import { Row, Col, Table, Card, Button, Typography, Tag } from "antd";
 import type { ColumnsType } from 'antd/es/table';
 import glorilla_image from "../assets/glorilla_image.png";
 import styles from "../styles/Home.module.css";
 import { useEffect, useState } from "react";
 
 interface DataType {
+  key: number;
   learningJourney: number;
   role: String;
   roleStatus: String;
@@ -105,7 +106,7 @@ export default function Home() {
   // ];
 
   useEffect(() => {
-    const loadAsyncStuff = async () => {
+    const loadAsync = async () => {
       try {
         const responseForLJ = await fetch("http://localhost:5007/get_learning_journey_by_staff_ID/" + staffID);
         const jsonForLJ = await responseForLJ.json();
@@ -115,13 +116,9 @@ export default function Home() {
         var tableDataArr: any = [];
 
         for (let [key, val] of Object.entries(jsonForLJ.data)) {
-            console.log(key);
-            console.log(val);
+            console.log(key + " " + val);
             let ljID = key;
             let values:any = val;
-            console.log(ljID);
-            console.log(values.position.position_name);
-            console.log(values.course.length)
             
             const responseForPS = await fetch("http://localhost:5001/position_skills/" + values.position.position_id);
             const jsonForPS = await responseForPS.json();
@@ -130,7 +127,7 @@ export default function Home() {
             for (let data of jsonForPS.data) {
               uniquePositionSkills.push(data.skill_id);
             }
-            console.log(uniquePositionSkills);
+            // console.log(uniquePositionSkills);
 
             const responseForStaffSkills = await fetch("http://localhost:5006/get_staff_skills/" + staffID);
             const jsonForStaffSkills = await responseForStaffSkills.json();
@@ -139,7 +136,7 @@ export default function Home() {
             for (let data of jsonForStaffSkills.data) {
               uniqueStaffSkills.push(data.skill_id);
             }
-            console.log(uniqueStaffSkills);
+            // console.log(uniqueStaffSkills);
 
             let countMissingSkills = 0;
             for (let skill of uniquePositionSkills) {
@@ -150,6 +147,7 @@ export default function Home() {
             }
     
             let oneTableData = {
+              key: Number(ljID),
               learningJourney: Number(ljID),
               role: values.position.position_name,
               roleStatus: values.position.position_status,
@@ -161,21 +159,20 @@ export default function Home() {
             }
             tableDataArr.push(oneTableData);
         }
-        console.log(tableDataArr);
+        // console.log(tableDataArr);
         setTableData(tableDataArr);
-        console.log(tableData);
+        // console.log(tableData);
 
       } catch (error) {
         console.log(error);
       } 
     };
-    loadAsyncStuff();
+    loadAsync();
   }, []);
 
-  console.log(ljData);
-  console.log(tableData);
+  // console.log(ljData);
+  // console.log(tableData);
     
-
   return (
     <>
     <Row className={styles.row}>
