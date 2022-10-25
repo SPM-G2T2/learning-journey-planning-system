@@ -28,7 +28,7 @@ export default function PreviewSkills(props: any) {
 
   const submitSkill = async () => {
     axios
-      .post("http://127.0.0.1:5000/add_skill", skill)
+      .post("http://127.0.0.1:5000/skills/add", skill)
       .then((response: AxiosResponse) => {
         console.log(response.status);
         success();

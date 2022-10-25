@@ -17,7 +17,7 @@ export default function Courses({ lj }: { lj?: boolean }) {
     for (let skillId of skillIds) {
       console.log(skillId);
 
-      fetch("http://127.0.0.1:5000/getSkillById/" + skillId)
+      fetch("http://127.0.0.1:5000/skills/" + skillId)
         .then((response) => response.json())
         .then((data) => {
           console.log(data.data);
@@ -45,7 +45,7 @@ export default function Courses({ lj }: { lj?: boolean }) {
   const getCourseBySkill = (skillId: number) => {
     console.log(skillId);
 
-    fetch("http://127.0.0.1:5000/filter_active_courses_by_skill/" + skillId)
+    fetch("http://127.0.0.1:5000/skills/" + skillId + "/courses/active")
       .then((response) => response.json())
       .then((data) => {
         console.log(data.data);
