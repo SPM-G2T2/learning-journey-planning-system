@@ -17,7 +17,7 @@ def get_all_skills():
             {
                 "data": [skill.json() for skill in skills]
             }
-        ), 201
+        )
     return jsonify(
         {
             "message": "There are no skills."
@@ -33,7 +33,7 @@ def get_skill_by_id(skill_id):
             {
                 "data": skill.json()
             }
-        ), 201
+        )
     return jsonify(
         {
             "message": "Skill not found."
@@ -66,7 +66,7 @@ def get_courses_by_skill(skill_id):
             {
                 "data": [course for course in courses]
             } 
-        ), 201
+        )
     return jsonify( 
         {
             "message": "Skill ID invalid." 
@@ -98,7 +98,7 @@ def get_active_courses_by_skill(skill_id):
             {
                 "data": [course for course in courses]
             } 
-        ), 201
+        )
     return jsonify( 
         {
             "message": "Skill ID invalid." 

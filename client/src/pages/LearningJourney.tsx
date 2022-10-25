@@ -81,30 +81,6 @@ export default function Home() {
     },
   ];
 
-  // var tableData: DataType[] = [
-    // {
-    //   learningJourney: 1,
-    //   role: 'Frontend Developer',
-    //   requiredSkills: 8,
-    //   missingSkills: 4,
-    //   addedCourses: 5,
-    // },
-    // {
-    //   learningJourney: 2,
-    //   role: 'Full Stack Engineer',
-    //   requiredSkills: 10,
-    //   missingSkills: 5,
-    //   addedCourses: 2,
-    // },
-    // {
-    //   learningJourney: 3,
-    //   role: 'Software Engineer',
-    //   requiredSkills: 3,
-    //   missingSkills: 0,
-    //   addedCourses: 1,
-    // },
-  // ];
-
   useEffect(() => {
     const loadAsync = async () => {
       try {

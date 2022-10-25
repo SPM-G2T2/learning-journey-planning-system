@@ -13,7 +13,7 @@ def get_all_courses():
             {
                 "data": [course.json() for course in courses]
             } 
-        ), 201
+        )
     return jsonify( 
         {
             "message": "There are no courses." 
@@ -44,7 +44,7 @@ def get_skills_by_course(course_id):
             {
                 "data": [skill for skill in skills]
             } 
-        ), 201
+        )
     return jsonify( 
         {
             "message": "Course ID is invalid." 

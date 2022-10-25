@@ -17,7 +17,7 @@ def get_all_learning_journeys():
             {
                 "data": [learning_journey.json() for learning_journey in learning_journeys]
             }
-        ), 201
+        )
     return jsonify(
         {
             "message": "There are no learning journeys."
@@ -48,7 +48,6 @@ def create_learning_journey():
                 "message": "An error occurred creating the learning journey."
             }
         ), 500
- 
     return jsonify(
         {
             "data": learningjourney.json()
@@ -77,7 +76,7 @@ def get_learning_journeys_by_staff(staff_id):
             {
                 "data": sorted_learning_journeys
             }
-        ), 201
+        )
     return jsonify(
         {
             "message": "This staff does not have any learning journey."

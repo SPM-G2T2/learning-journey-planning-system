@@ -14,7 +14,7 @@ def get_skills_by_staff(staff_id):
             {
                 "data": [staff.json() for staff in staffs]
             }
-        ), 201
+        )
     return jsonify(
         {
             "message": "Staff not found."
