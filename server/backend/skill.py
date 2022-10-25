@@ -1,5 +1,7 @@
 from flask import Blueprint, request, jsonify
 
+from . import db
+
 from .model import Skill, Course, SkillCourse
 from sqlalchemy import func
 import string
@@ -15,7 +17,7 @@ def get_all_skills():
             {
                 "data": [skill.json() for skill in skills]
             }
-        )
+        ), 201
     return jsonify(
         {
             "message": "There are no skills."
@@ -31,7 +33,7 @@ def get_skill_by_id(skill_id):
             {
                 "data": skill.json()
             }
-        )
+        ), 201
     return jsonify(
         {
             "message": "Skill not found."
@@ -62,10 +64,9 @@ def get_courses_by_skill(skill_id):
     if courses: 
         return jsonify( 
             {
-                "data": [course for courses in courses]
+                "data": [course for course in courses]
             } 
-        ) 
-
+        ), 201
     return jsonify( 
         {
             "message": "Skill ID invalid." 
@@ -95,10 +96,9 @@ def get_active_courses_by_skill(skill_id):
     if courses: 
         return jsonify( 
             {
-                "data": [courses for courses in courses]
+                "data": [course for course in courses]
             } 
-        ) 
-
+        ), 201
     return jsonify( 
         {
             "message": "Skill ID invalid." 
@@ -182,7 +182,7 @@ def add_skill():
     
     return jsonify( 
         {
-            "message": "Skill successfully created and assigned"
+            "message": "Skill successfully created and assigned."
         } 
     ), 201 
 
@@ -237,10 +237,8 @@ def delete_skill_course(skill_id):
                     "message": "An error occurred editing the skill." 
                 } 
             ), 500 
-
     return jsonify( 
         {
             "message": "Skill successfully edited."
         } 
     ), 201 
-

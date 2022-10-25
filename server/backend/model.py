@@ -4,21 +4,21 @@ from . import db
 class Position(db.Model):
     __tablename__ = "position"
 
-    position_id = db.Column(db.Integer, primary_key=True) # autoincrement=True default behavior for primary key Integer columns, also don't need to specify nullable=False for primary key
+    position_id = db.Column(db.Integer, primary_key=True) 
     position_name = db.Column(db.String(50), nullable=False)
     position_desc = db.Column(db.String(255), nullable=False)
     position_dept = db.Column(db.String(20), nullable=False)
     position_res = db.Column(db.String(1000), nullable=False)
     position_status = db.Column(db.String(10), nullable=False)
 
-    def __init__(self, position_name, position_desc, position_dept, position_res, position_status): # constructor, initializes the record
+    def __init__(self, position_name, position_desc, position_dept, position_res, position_status):
         self.position_name = position_name
         self.position_desc = position_desc
         self.position_dept = position_dept
         self.position_res = position_res
         self.position_status = position_status
 
-    def json(self): # returns json representation of the table in dict form
+    def json(self): 
         return { "position_id": self.position_id, "position_name": self.position_name, "position_desc": self.position_desc, "position_dept": self.position_dept, "position_res": self.position_res, "position_status": self.position_status }
 
 
@@ -59,7 +59,7 @@ class Course(db.Model):
         self.course_category = course_category
 
     def json(self): 
-        return {"course_id": self.course_id, "course_name": self.course_name, "course_desc": self.course_desc, "course_status": self.course_status, "course_type": self.course_type, "course_category": self.course_category} 
+        return { "course_id": self.course_id, "course_name": self.course_name, "course_desc": self.course_desc, "course_status": self.course_status, "course_type": self.course_type, "course_category": self.course_category } 
 
 
 class PositionSkill(db.Model):
@@ -73,7 +73,7 @@ class PositionSkill(db.Model):
         self.skill_id = skill_id
 
     def json(self):
-        return {"position_id": self.position_id, "skill_id": self.skill_id}
+        return { "position_id": self.position_id, "skill_id": self.skill_id }
 
 
 class SkillCourse(db.Model): 
@@ -87,7 +87,7 @@ class SkillCourse(db.Model):
         self.course_id = course_id 
 
     def json(self): 
-        return {"skill_id": self.skill_id, "course_id": self.course_id}
+        return { "skill_id": self.skill_id, "course_id": self.course_id }
 
 
 class StaffSkill(db.Model):
@@ -96,9 +96,28 @@ class StaffSkill(db.Model):
     staff_id = db.Column(db.Integer, primary_key=True)
     skill_id = db.Column(db.Integer, primary_key=True)
 
-    def __init__(self, Staff_ID, Skill_ID):
+    def __init__(self, staff_id, skill_id):
         self.staff_id = staff_id
         self.skill_id = skill_id
 
     def json(self):
-        return {"staff_id": self.staff_id, "skill_id": self.skill_id}
+        return { "staff_id": self.staff_id, "skill_id": self.skill_id }
+
+
+class LearningJourney(db.Model):
+    __tablename__ = "learning_journey"
+
+    lj_id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
+    staff_id = db.Column(db.Integer, nullable=False)
+    position_id = db.Column(db.Integer, nullable=False)
+    skill_id = db.Column(db.Integer, primary_key=True, nullable=False)
+    course_id = db.Column(db.String(20), primary_key=True, nullable=False)
+
+    def __init__(self, staff_id, position_id, skill_id, course_id):
+        self.staff_id = staff_id
+        self.position_id = position_id
+        self.skill_id = skill_id
+        self.course_id = course_id
+
+    def json(self): 
+        return { "lj_id": self.lj_id, "staff_id": self.staff_id, "position_id": self.position_id, "skill_id": self.skill_id, "course_id": self.course_id }

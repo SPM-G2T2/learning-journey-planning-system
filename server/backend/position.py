@@ -15,7 +15,7 @@ def get_all_positions():
             {
                 "data": [position.json() for position in positions]
             }
-        )
+        ), 201
     return jsonify(
         {
             "message": "There are no positions."
@@ -31,7 +31,7 @@ def get_active_positions():
             {
                 "data": [position.json() for position in positions]
             }
-        )
+        ), 201
     return jsonify(
         {
             "message": "There are no positions."
@@ -48,7 +48,7 @@ def get_skills_by_position(position_id):
             {
                 "data": [skill.json() for skill in skills]
             }
-        )
+        ), 201
     return jsonify(
         {
             "message": "There are no skills."

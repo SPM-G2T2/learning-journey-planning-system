@@ -13,7 +13,7 @@ def get_all_courses():
             {
                 "data": [course.json() for course in courses]
             } 
-        )
+        ), 201
     return jsonify( 
         {
             "message": "There are no courses." 
@@ -21,7 +21,6 @@ def get_all_courses():
     ), 404 
 
 
-#FUNCTION 8: Get Skill by Course Id
 @course.route("<int:course_id>/skills")
 def get_skills_by_course(course_id):
 
@@ -45,10 +44,9 @@ def get_skills_by_course(course_id):
             {
                 "data": [skill for skill in skills]
             } 
-        ) 
-
+        ), 201
     return jsonify( 
         {
-            "message": "Course id invalid." 
+            "message": "Course ID is invalid." 
         } 
     ), 404 
