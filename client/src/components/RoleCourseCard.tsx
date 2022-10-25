@@ -1,18 +1,65 @@
 import { Button } from "antd";
-import role from "../assets/role.png"
+import { useState } from "react";
+import role from "../assets/role.png";
+import styles from "../styles/RoleCourseCard.module.css";
+import { Role } from "../types/Role";
+import { Course } from "../types/Course";
+import GenericModal from "./GenericModal";
 
-export default function RoleCourseCard() {
+export default function RoleCourseCard(props: {
+  role?: Role;
+  selectedRole?: Role;
+  handleClick: () => void;
+  course?: Course;
+}) {
+  const [modalStatus, setModalStatus] = useState<boolean>(false);
+
+  function handleClose() {
+    setModalStatus(false);
+  }
+  const [isActive, setActive] = useState(false);
+
+  const toggleClass = () => {
+    setActive(!isActive);
+  };
   return (
-    <div style={{ width: "50vw", justifyContent:"space-between", marginBottom: "1vw" }} className="horizontal card">
-      <div className="horizontal">
-        <img src={role} alt="role icon" className="icon"/>
-        <div className="card-row" style={{margin:"1vw 0 0 1.5vw"}}>
-          <p style={{fontSize:"1vw", fontWeight:"700"}}>Role</p>
-          <p>Department:</p>
-          <p>Description:</p>
+    <div
+      // className={`${styles.horizontal} ${styles.card} ${
+      //   props.role === props.selectedRole && styles.cardSelected
+      // }`}
+      className={`${styles.horizontal} ${styles.card} ${
+        props.role === props.selectedRole && styles.cardSelected
+      }${isActive ? styles.cardSelected: null}`} 
+      onClick={props.handleClick}
+    >
+      <div className={styles.horizontal}>
+        <img src={role} alt="role icon" className="icon" />
+        <div className={styles.cardRow}>
+          <p className={styles.title}>
+            {props.role
+              ? props.role.position_name: props.course?.course_id +": " + props.course?.course_name}
+          </p>
+          <p>
+            {" "}
+            {props.role ? "Department" : "Category"}:{props.role?.position_dept}{" "}
+            {props.course?.course_category}
+          </p>
+          <p>
+            {" "}
+            {props.role ? "Description" : "Type"}: {props.role?.position_desc}{" "}
+            {props.course?.course_type}
+          </p>
         </div>
       </div>
-      <Button className="border btn-color">Read More</Button>
+      <Button className={styles.more} onClick={() => setModalStatus(true)}>
+        Read More
+      </Button>
+      <GenericModal
+        role={props.role}
+        course={props.course}
+        status={modalStatus}
+        handleClose={handleClose}
+      />
     </div>
   );
 }

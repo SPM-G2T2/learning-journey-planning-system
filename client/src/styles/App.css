@@ -66,22 +66,8 @@
   color: #3649F9;
 }
 
-.ant-btn-primary {
-  border-color:  #3649F9;
-  border-radius: 10px;
-  background-color: #3649F9;
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-}
-
-.ant-btn-primary:hover, .ant-btn-default, .ant-btn-default:hover, .ant-btn-default::after {
-  border-color:  #3649F9;
-  border-radius: 10px;
-  color: #3649F9;
-  background-color: #FFF;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
-}
-
-h1, label {
+h1,
+label {
   font-weight: 700;
 }
 
