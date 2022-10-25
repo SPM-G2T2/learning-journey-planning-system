@@ -195,7 +195,7 @@ def get_learning_journey_by_staff_ID(staffID):
         return jsonify(
             {
                 "code": 200, #Return the code + list of learning journeys that the staff has in JSON representation using jsonify
-                "data": [learningJourneyData]
+                "data": learningJourneyData
             }
         )
     return jsonify(

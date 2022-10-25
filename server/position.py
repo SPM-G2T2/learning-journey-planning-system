@@ -72,6 +72,20 @@ class Skill(db.Model):
     def json(self): 
         return { "skill_id": self.skill_id, "skill_name": self.skill_name, "skill_desc": self.skill_desc, "skill_status": self.skill_status } 
 
+class Staff_skills(db.Model):
+    __tablename__ = "staff_skills"
+
+    Staff_ID = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
+    Skill_ID = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
+
+    def __init__(self, Staff_ID, Skill_ID): #constructor, initializes the record
+        self.Staff_ID = Staff_ID
+        self.Skill_ID = Skill_ID
+
+    def json(self): #returns json representation of the table in dict form
+        return {"Staff_ID": self.Staff_ID, "Skill_ID": self.Skill_ID}
+
+    #Fill up columns here
 
 @app.route("/positions")
 def get_all_positions():
@@ -187,6 +201,7 @@ def get_position_active_skills(position_id):
             "message": "There are no Skills."
         }
     ), 404
+
 
 #FUNCTION 6: Get Skill by Skill ID
 @app.route("/getSkillById/<int:skill_id>", methods=['GET'])

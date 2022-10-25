@@ -1,17 +1,18 @@
-import { Row, Col, Table, Card, Button, Typography } from "antd";
+import { Row, Col, Table, Card, Button, Typography, Tag} from "antd";
 import type { ColumnsType } from 'antd/es/table';
 import glorilla_image from "../assets/glorilla_image.png";
 import styles from "../styles/Home.module.css";
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { PositionSkill } from "../../src/types/PositionSkill";
 
 interface DataType {
   learningJourney: number;
-  role: string;
+  role: String;
+  roleStatus: String;
   requiredSkills: number;
   missingSkills: number;
   addedCourses: number;
+  editAction: String;
+  deleteAction: number;
 }
 
 export default function Home() {
@@ -19,8 +20,6 @@ export default function Home() {
   const [staffID] = useState(1);
   const [ljData, setLjData] = useState();
   const [tableData, setTableData] = useState<DataType[]>([]);
-  const [countSkills, setCountSkills] = useState();
-  // const [requiredSkills, setRequiredSkills] = useState<PositionSkill[]>([]);
 
   const { Text } = Typography;
 
@@ -29,12 +28,19 @@ export default function Home() {
       title: 'Learning Journey',
       dataIndex: 'learningJourney',
       key: 'learningJourney',
+      width: '10%',
     },
     {
       title: 'Role',
       dataIndex: 'role',
       key: 'role',
       width: '20%',
+    },
+    {
+      title: 'Role Status',
+      dataIndex: 'roleStatus',
+      key: 'roleStatus',
+      render: (status) => status === "Active" ? <Tag color="green">{status}</Tag> : <Tag color="red">{status}</Tag> 
     },
     {
       title: 'Number of skills required',
@@ -54,18 +60,20 @@ export default function Home() {
     },
     {
       title: '',
-      key: 'action',
-      render: () => (
+      dataIndex: 'editAction',
+      key: 'editAction',
+      render: (status) => status === "Active" ? (
         <Button>
           Edit
         </Button>
-      ),
+      ) : null,
     },
     {
       title: '',
-      key: 'action',
-      render: () => (
-        <Button className={styles.deleteButton}>
+      dataIndex: 'deleteAction',
+      key: 'deleteAction',
+      render: (LJID) => (
+        <Button className={styles.deleteButton} onClick={() => console.log(LJID)}>
           Delete
         </Button>
       ),
@@ -96,55 +104,77 @@ export default function Home() {
     // },
   // ];
 
-  function getPositionSkills(positionID: number) {
-    axios
-    .get("http://localhost:5001/position_skills/" + positionID)
-    .then((resp) => {
-      console.log(resp.data.data)
-      setCountSkills(resp.data.data.length)
-      // setRequiredSkills((oldRequiredSkills) => [...oldRequiredSkills, resp.data.data]);
-    })
-    .catch((err) => console.log(err));
-  }
-
   useEffect(() => {
-    axios
-      .get("http://localhost:5007/get_learning_journey_by_staff_ID/" + staffID)
-      .then(async (resp) => {
-        console.log(resp.data.data);
-        setLjData(resp.data.data);
-        
-        for (let data of resp.data.data) {
-          console.log(data)
-          console.log(typeof(data))
-          let ljID = Object.keys(data)[0];
-          let values:any = Object.values(data)[0];
-          console.log(ljID);
-          console.log(values.position.position_name);
-          console.log(values.course.length)
-          
-          getPositionSkills(values.position.position_id);
-          console.log(countSkills);
+    const loadAsyncStuff = async () => {
+      try {
+        const responseForLJ = await fetch("http://localhost:5007/get_learning_journey_by_staff_ID/" + staffID);
+        const jsonForLJ = await responseForLJ.json();
+        console.log(jsonForLJ);
+        setLjData(jsonForLJ.data);
 
-          let oneTableData = {
-            learningJourney: Number(ljID),
-            role: values.position.position_name,
-            requiredSkills: 0,
-            missingSkills: 0,
-            addedCourses: values.course.length
-          }
-          setTableData((oldData) => [...oldData, oneTableData]);
-          console.log(tableData);
+        var tableDataArr: any = [];
+
+        for (let [key, val] of Object.entries(jsonForLJ.data)) {
+            console.log(key);
+            console.log(val);
+            let ljID = key;
+            let values:any = val;
+            console.log(ljID);
+            console.log(values.position.position_name);
+            console.log(values.course.length)
+            
+            const responseForPS = await fetch("http://localhost:5001/position_skills/" + values.position.position_id);
+            const jsonForPS = await responseForPS.json();
+            console.log(jsonForPS.data);
+            let uniquePositionSkills = [];
+            for (let data of jsonForPS.data) {
+              uniquePositionSkills.push(data.skill_id);
+            }
+            console.log(uniquePositionSkills);
+
+            const responseForStaffSkills = await fetch("http://localhost:5006/get_staff_skills/" + staffID);
+            const jsonForStaffSkills = await responseForStaffSkills.json();
+            console.log(jsonForStaffSkills.data);
+            let uniqueStaffSkills = [];
+            for (let data of jsonForStaffSkills.data) {
+              uniqueStaffSkills.push(data.skill_id);
+            }
+            console.log(uniqueStaffSkills);
+
+            let countMissingSkills = 0;
+            for (let skill of uniquePositionSkills) {
+              console.log(skill)
+              if (!uniqueStaffSkills.includes(skill)) {
+                countMissingSkills++;
+              }
+            }
+    
+            let oneTableData = {
+              learningJourney: Number(ljID),
+              role: values.position.position_name,
+              roleStatus: values.position.position_status,
+              requiredSkills: jsonForPS.data.length,
+              missingSkills: countMissingSkills,
+              addedCourses: values.course.length,
+              editAction: values.position.position_status,
+              deleteAction: Number(ljID)
+            }
+            tableDataArr.push(oneTableData);
         }
+        console.log(tableDataArr);
+        setTableData(tableDataArr);
+        console.log(tableData);
 
-      })
-      .catch((err) => console.log(err));
-
+      } catch (error) {
+        console.log(error);
+      } 
+    };
+    loadAsyncStuff();
   }, []);
 
   console.log(ljData);
   console.log(tableData);
-
+    
 
   return (
     <>
