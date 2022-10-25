@@ -204,7 +204,6 @@ def get_learning_journey_by_staff_ID(staffID):
             "message": "This staff does not have any learning journeys."
         }
     ), 404
-    return "hello"
 
 
 if __name__ == '__main__':
