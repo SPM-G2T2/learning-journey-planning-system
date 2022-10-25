@@ -108,7 +108,7 @@ export default function Home() {
   useEffect(() => {
     const loadAsync = async () => {
       try {
-        const responseForLJ = await fetch("http://localhost:5007/get_learning_journey_by_staff_ID/" + staffID);
+        const responseForLJ = await fetch("http://localhost:5000/learning_journeys/" + staffID + "/learning_journeys");
         const jsonForLJ = await responseForLJ.json();
         console.log(jsonForLJ);
         setLjData(jsonForLJ.data);
@@ -120,7 +120,7 @@ export default function Home() {
             let ljID = key;
             let values:any = val;
             
-            const responseForPS = await fetch("http://localhost:5001/position_skills/" + values.position.position_id);
+            const responseForPS = await fetch("http://localhost:5000/positions/" +  values.position.position_id + "/skills");
             const jsonForPS = await responseForPS.json();
             console.log(jsonForPS.data);
             let uniquePositionSkills = [];
@@ -129,7 +129,7 @@ export default function Home() {
             }
             // console.log(uniquePositionSkills);
 
-            const responseForStaffSkills = await fetch("http://localhost:5006/get_staff_skills/" + staffID);
+            const responseForStaffSkills = await fetch("http://localhost:5000/staff/" + staffID + "/skills");
             const jsonForStaffSkills = await responseForStaffSkills.json();
             console.log(jsonForStaffSkills.data);
             let uniqueStaffSkills = [];
