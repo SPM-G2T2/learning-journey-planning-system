@@ -2,6 +2,8 @@ import { Button, Tag } from "antd";
 import { useState } from "react";
 import role1 from "../assets/role1.png";
 import role2 from "../assets/role2.png";
+import course1 from "../assets/course1.png";
+import course2 from "../assets/course2.png";
 import styles from "../styles/RoleCourseCard.module.css";
 import { Role } from "../types/Role";
 import { Course } from "../types/Course";
@@ -28,12 +30,12 @@ export default function RoleCourseCard(props: {
       onClick={props.handleClick}
     >
       <div className={styles.horizontal}>
-        { (Math.floor(Math.random() * 2) + 1) === 1 ? <img src={role1} alt="role icon" /> : <img src={role2} alt="role icon" />}
+        { props.role ? ((Math.floor(Math.random() * 2) + 1) === 1 ? <img src={role1} alt="role icon" /> : <img src={role2} alt="role icon" />): (props.course?.course_category === "Technical" ? <img src={course1} alt="role icon" /> : <img src={course2} alt="role icon" />)}
         <div className={styles.cardRow}>
           <p className={styles.title}>
             {props.role
               ? props.role.position_name
-              : "C" +
+              :
                 props.course?.course_id +
                 ": " +
                 props.course?.course_name}
@@ -47,8 +49,9 @@ export default function RoleCourseCard(props: {
           </p>
           <p style={{ color: '#374A59' }}>
             {" "}
-            {props.role ? "Description" : "Type"}: {props.role?.position_desc}{" "}
-            {props.course?.course_type}
+            Description:
+            {props.role?.position_desc} {" "}
+            {props.course?.course_desc}
           </p>
         </div>
       </div>

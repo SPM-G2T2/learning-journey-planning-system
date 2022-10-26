@@ -50,7 +50,7 @@ export default function GenericModal(props: {
           </Tag>
         </div>
         <hr className={styles.hr}></hr>
-        <h3>{props.role ? "Role" : "Course"} Description: </h3>
+        <h3>Description: </h3>
         <p>
           {props.role?.position_desc} {props.course?.course_desc}
         </p>
@@ -65,9 +65,7 @@ export default function GenericModal(props: {
         <h3>{props.course ? "Type:" : null}</h3>
         <p>
           {props.course
-            ? "The course will be conducted " +
-              props.course?.course_type.toLowerCase()
-            : null}
+            ? "The course will be conducted " + (props.course.course_type === 'Internal' ? 'in-house' : 'off-site') : null}
         </p>
         <h3>{props.course ? "Category:" : null}</h3>
         <p>{props.course?.course_category}</p>
