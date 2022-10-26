@@ -31,6 +31,11 @@
     font-weight: 700;
 }
 
+.edit {
+    width: 5vw;
+    margin-right: 4vh;
+}
+
 .more {
     color: black;
     background-color: #86B0FF;

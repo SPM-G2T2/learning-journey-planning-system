@@ -10,7 +10,7 @@ import { Course } from "../types/Course";
 import GenericModal from "./GenericModal";
 
 export default function RoleCourseCard(props: {
-  view?: boolean;
+  edit?: boolean;
   role?: Role;
   selectedRole?: Role;
   handleClick?: () => void;
@@ -39,8 +39,8 @@ export default function RoleCourseCard(props: {
                 props.course?.course_id +
                 ": " +
                 props.course?.course_name}
-              {props.view && props.role?.position_status === "Active" ? <Tag className={styles.activeStatus}>Active</Tag> : null}
-              {props.view && props.role?.position_status === "Retired" ? <Tag className={styles.inactiveStatus}>Retired</Tag> : null}
+              {props.edit && props.role?.position_status === "Active" ? <Tag className={styles.activeStatus}>Active</Tag> : null}
+              {props.edit && props.role?.position_status === "Retired" ? <Tag className={styles.inactiveStatus}>Retired</Tag> : null}
           </p> 
           <p style={{ color: '#374A59', fontWeight: 'bold' }}>
             {" "}
@@ -49,15 +49,20 @@ export default function RoleCourseCard(props: {
           </p>
           <p style={{ color: '#374A59' }}>
             {" "}
-            Description:
-            {props.role?.position_desc} {" "}
+            Description: {" "}
+            {props.role?.position_desc}
             {props.course?.course_desc}
           </p>
         </div>
       </div>
+      { props.edit ? 
+      <Button className={styles.edit}>
+        Edit
+      </Button>
+      :
       <Button className={styles.more} onClick={() => setModalStatus(true)}>
         Read More
-      </Button>
+      </Button>}
       <GenericModal
         role={props.role}
         course={props.course}
