@@ -23,7 +23,7 @@ export default function RoleCourseCard(props: {
   return (
     <div
       className={`${styles.horizontal} ${styles.card} ${
-        props.role === props.selectedRole && styles.cardSelected
+        props.role === props.selectedRole && styles.cardSelected 
       }`}
       onClick={props.handleClick}
     >

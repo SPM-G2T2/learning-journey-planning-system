@@ -16,14 +16,14 @@
     margin-top: 2vh;
 }
 
-.card:hover, .cardSelected {
+.cardSelected {
     border: 2px solid #3649F9;
 }
 
 .cardRow {
     font-size: 1.8vh;
     line-height: 1vh;
-    margin: 3vh 0 0 1.5vw;
+    margin: 4vh 0 0 1.5vw;
 }
 
 .title {
@@ -41,6 +41,7 @@
 .activeStatus {
     align-self: center;
     margin: 0 0 1vh 1vw;
+    border-color: #16C098;
     background-color: #16C098;
     color: #FFF;
     font-weight: 400;
@@ -49,6 +50,7 @@
 .inactiveStatus {
     align-self: center;
     margin: 0 0 1vh 1vw;
+    border-color:  #FF3131;
     background-color: #FF3131;
     color: #FFF;
     font-weight: 400;
