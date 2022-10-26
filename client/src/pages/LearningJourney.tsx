@@ -2,6 +2,7 @@ import { Row, Col, Table, Card, Button, Typography, Tag } from "antd";
 import type { ColumnsType } from 'antd/es/table';
 import glorilla_image from "../assets/glorilla_image.png";
 import styles from "../styles/Home.module.css";
+import DeleteLJBtn from "../components/LjDelete"
 import { useEffect, useState } from "react";
 
 interface DataType {
@@ -74,9 +75,7 @@ export default function Home() {
       dataIndex: 'deleteAction',
       key: 'deleteAction',
       render: (LJID) => (
-        <Button className={styles.deleteButton} onClick={() => console.log(LJID)}>
-          Delete
-        </Button>
+        <DeleteLJBtn ljid = {LJID}></DeleteLJBtn>
       ),
     },
   ];
@@ -156,7 +155,7 @@ export default function Home() {
         <img src={glorilla_image} alt="role icon"/>
       </Col>
       <Col className={styles.col}>
-        <h1 className={styles.title}>Personalise your own learning journey</h1>
+        <h1 className={styles.title}>Personalise your own learning journey</h1> 
         <p className={styles.quote}>“You cannot reach where you’re going if you continue to be the same person you have always been.”</p>
       </Col>
     </Row>
