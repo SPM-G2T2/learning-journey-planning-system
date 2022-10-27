@@ -30,4 +30,4 @@ jobs:
     - name: Run our unit tests
       run: |
         cd server/tests 
-        python unit_test
+        python test
