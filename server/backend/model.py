@@ -107,7 +107,7 @@ class StaffSkill(db.Model):
 class LearningJourney(db.Model):
     __tablename__ = "learning_journey"
 
-    lj_id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
+    lj_id = db.Column(db.Integer, primary_key=True, nullable=False)
     staff_id = db.Column(db.Integer, nullable=False)
     position_id = db.Column(db.Integer, nullable=False)
     skill_id = db.Column(db.Integer, primary_key=True, nullable=False)
