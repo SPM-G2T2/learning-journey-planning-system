@@ -74,8 +74,8 @@ export default function Home() {
       title: '',
       dataIndex: 'deleteAction',
       key: 'deleteAction',
-      render: (LJID) => (
-        <DeleteLJBtn ljid = {LJID}></DeleteLJBtn>
+      render: (jsonForLJ) => (
+        <DeleteLJBtn ljid={jsonForLJ}></DeleteLJBtn>
       ),
     },
   ];
@@ -130,7 +130,7 @@ export default function Home() {
               missingSkills: countMissingSkills,
               addedCourses: values.course.length,
               editAction: values.position.position_status,
-              deleteAction: Number(ljID)
+              deleteAction: [ Number(ljID), jsonForLJ.data[ljID] ]
             }
             tableDataArr.push(oneTableData);
         }
