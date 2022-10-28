@@ -113,7 +113,8 @@ class LearningJourney(db.Model):
     skill_id = db.Column(db.Integer, primary_key=True, nullable=False)
     course_id = db.Column(db.String(20), primary_key=True, nullable=False)
 
-    def __init__(self, staff_id, position_id, skill_id, course_id):
+    def __init__(self, lj_id, staff_id, position_id, skill_id, course_id):
+        self.lj_id = lj_id
         self.staff_id = staff_id
         self.position_id = position_id
         self.skill_id = skill_id
