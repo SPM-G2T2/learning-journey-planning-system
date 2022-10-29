@@ -24,10 +24,13 @@
 .deleteButton, .deleteButton:focus {
     border-color: #FF3131;
     background-color: #FF3131;
+    margin: 15px;
     color: #FFF
 }
 
 .deleteButton:hover {
+    background-color: #FFF;
     border-color: #FF3131;
+    background-color: #FFF;
     color: #FF3131
 }
