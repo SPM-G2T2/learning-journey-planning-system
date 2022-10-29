@@ -2,22 +2,19 @@ import { Typography, Form, Button, Switch, Row, Modal } from "antd";
 import React, { useState } from 'react';
 import axios, { AxiosResponse, AxiosError } from "axios";
 import styles from "../styles/Home.module.css"
+import { PropertySafetyFilled } from "@ant-design/icons";
 
 export default function DeleteLJBtn(props: any){
-
-    console.log(props.ljid[0]); // lj_id
-    console.log(props.ljid[1]); // lj_id details
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const showModal = () => {
-        // getCourses()
         setIsModalOpen(true);
     };
 
     const handleOk = () => {
         var url = "http://127.0.0.1:5000/learning_journeys/";
-        url += props.ljid;
+        url += props.ljid[0];
         url += "/deleteLearningjourney"
         console.log(url)
 
@@ -55,8 +52,8 @@ export default function DeleteLJBtn(props: any){
     const successModal = () => {
         Modal.success({
             content: "Learning Journey has been succesfully deleted!",
+            onOk: () => {window.location.reload()}
         });
-        window.location.reload()
     };
 
     const errorModal = () => {
@@ -65,35 +62,24 @@ export default function DeleteLJBtn(props: any){
         });
     };
 
+    // SKILLS STRING
+    var skillsString = "";
+    var skills = props.ljid[1].skill;
+    for (var i = 0; i < skills.length; i++) {
+        skillsString += skills[i].skill_name + ", ";
+    };
+    skillsString = skillsString.slice(0, skillsString.length - 2);
+    // SKILLS STRING
 
-    // async function getCourses() {
-    //     const url = "http://127.0.0.1:5000/learning_journeys/" + props.ljid + "/filterLearningjourneyById";
-    //     // console.log(url)
-    //     let learningJourneys;
-    //     const res = await fetch(url);
-    //     learningJourneys = await res.json();
-    //     learningJourneys = learningJourneys.data;
+    // COURSES STRING
+    var courseString = "";
+    var courses = props.ljid[1].course;
+    for (var i = 0; i < courses.length; i++) {
+        courseString += courses[i].course_name + ", ";
+    };
+    courseString = courseString.slice(0, courseString.length - 2)
+    // COURSES STRING
 
-    //     var courseString = ""
-        
-    //     for (var i = 0; i < learningJourneys.length; i++) {
-    //         var courseId = learningJourneys[i].course_id;
-    //         // console.log(courseId);
-    //         const course_url = "http://127.0.0.1:5000/courses/" + courseId + "/filterCourseById";
-    //         // console.log(course_url);
-    //         let course;
-    //         const course_res = await fetch(course_url);
-    //         course = await course_res.json();
-    //         course = course.data.course_name;
-    //         courseString += course + ", ";
-    //     };
-
-    //     courseString = courseString.slice(0, courseString.length - 2);
-    //     console.log(courseString);
-    //     return courseString;
-    // }
-
-    // console.log(getCourses());
 
 
     return (
@@ -102,7 +88,10 @@ export default function DeleteLJBtn(props: any){
             Delete
         </Button>
         <Modal title="Confirm Deletion?" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-            <p>Learning Journey ID: {props.ljid[0]}</p>
+            <p style={{ fontWeight: '600'}}>Learning Journey ID: <span style={{ fontWeight: 'normal'}}>{props.ljid[0]}</span></p>
+            <p style={{ fontWeight: '600'}}>Role: <span style={{ fontWeight: 'normal'}}>{props.ljid[1].position[0].position_name}</span></p>
+            <p style={{ fontWeight: '600'}}>Skills: <span style={{ fontWeight: 'normal'}}>{skillsString}</span></p>
+            <p style={{ fontWeight: '600'}}>Courses: <span style={{ fontWeight: 'normal'}}>{courseString}</span></p>
         </Modal>
     </>
     );
