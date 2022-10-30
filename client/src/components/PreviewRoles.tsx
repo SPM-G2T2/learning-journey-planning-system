@@ -49,7 +49,7 @@ export default function PreviewRoles(props: any) {
       var positionId = null;
 
       // insert into position table
-      fetch("http://localhost:5000/create_position", {
+      fetch("http://localhost:5000/positions/create", {
         headers: {
           "Content-Type": "application/json",
         },
@@ -81,7 +81,7 @@ export default function PreviewRoles(props: any) {
                 skill_id: skill.split("_")[0],
               };
 
-              fetch("http://localhost:5000/create_position_skill", {
+              fetch("http://localhost:5000/positions/assign_skill", {
                 headers: {
                   "Content-Type": "application/json",
                 },

@@ -11,13 +11,13 @@ export default function Courses({ lj }: { lj?: boolean }) {
   const [skillName, setSkillName] = useState<String[]>([]);
   const [showCourses, setShowCourses] = useState<Course[]>([]);
   // To change based on props from prev step
-  const skillIds = [2,3,4,5];
+  const skillIds = [2,3,4,5,6];
 
   useEffect(() => {
     for (let skillId of skillIds) {
       console.log(skillId);
 
-      fetch("http://127.0.0.1:5000/getSkillById/" + skillId)
+      fetch("http://127.0.0.1:5000/skills/" + skillId)
         .then((response) => response.json())
         .then((data) => {
           console.log(data.data);
@@ -45,7 +45,7 @@ export default function Courses({ lj }: { lj?: boolean }) {
   const getCourseBySkill = (skillId: number) => {
     console.log(skillId);
 
-    fetch("http://127.0.0.1:5000/filter_active_courses_by_skill/" + skillId)
+    fetch("http://127.0.0.1:5000/skills/" + skillId + "/courses/active")
       .then((response) => response.json())
       .then((data) => {
         console.log(data.data);
@@ -55,10 +55,16 @@ export default function Courses({ lj }: { lj?: boolean }) {
   };
 
 const showCourseswhenclick = (x:any)=> {
+//   if(showCourses.includes(x)){
+//     showCourses.filter(function(item) {
+//  return item !== x
+// }) 
+//   }
 const index = showCourses.indexOf(x)
 if(index> -1){
   showCourses.splice(index, 1);
   console.log("minused")
+
 }
   else(setShowCourses((showCourses) => [...showCourses,x]));
   
