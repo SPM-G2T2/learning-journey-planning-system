@@ -1,37 +1,67 @@
-import { Tag, Button, Card } from "antd";
+import { Button } from "antd";
+import { useState } from "react";
 import role from "../assets/role.png";
+import styles from "../styles/SkillCard.module.css";
+import { Skill } from "../types/Skill";
+import GenericModal from "./GenericModal";
+import bg from "../assets/skill.png"
 
-export default function CourseCard() {
+export default function SkillCard(props: {
+  skill?: Skill;
+  // role?: Role;
+  // selectedRole?: Role;
+  // handleClick: () => void;
+  // course?: Course;
+}) {
+  const [modalStatus, setModalStatus] = useState<boolean>(false);
+
+  function handleClose() {
+    setModalStatus(false);
+  }
+
   return (
-    <Card
-      bordered={false}
-      style={{ width: 280, borderRadius: 10, background: "#FAFAFA" }}
+    <div
+      // className={`${styles.horizontal} ${styles.card} ${
+      //   props.role === props.selectedRole && styles.cardSelected
+      // }`}
+      // onClick={props.handleClick}
+      style={{ backgroundImage: `url(${bg})`, border:"1px solid black", backgroundSize:"cover", width:"240px", height:"224px", borderRadius:"16px"}}
     >
-      <Tag
-        color="#F3A1A9"
-        style={{
-          borderRadius: 5,
-          fontSize: 13,
-          fontWeight: "Bold",
-          color: "#FF0000",
-          marginTop: -20,
-          marginLeft: 180,
-        }}
-      >
-        Missing
-      </Tag>
-      <p>
+      {/* hi
+      <p>hello</p>
+      <p>hello</p>
+      <p>hello</p> */}
+      {/* <div className={styles.horizontal}>
         <img src={role} alt="role icon" className="icon" />
-      </p>
-      <p
-        className="card-row"
-        style={{ fontSize: 18, fontWeight: "Bold", marginTop: 20 }}
-      >
-        Role Name
-      </p>
-      <Button className="border btn-color" style={{ fontWeight: "500" }}>
+        <div className={styles.cardRow}>
+          <p className={styles.title}>
+            {props.role
+              ? props.role.position_name
+              : "C" +
+                props.course?.course_id +
+                ": " +
+                props.course?.course_name}
+          </p>
+          <p>
+            {" "}
+            {props.role ? "Department" : "Category"}:{props.role?.position_dept}{" "}
+            {props.course?.course_category}
+          </p>
+          <p>
+            {" "}
+            {props.role ? "Description" : "Type"}: {props.role?.position_desc}{" "}
+            {props.course?.course_type}
+          </p>
+        </div>
+      </div>
+      <Button className={styles.more} onClick={() => setModalStatus(true)}>
         Read More
-      </Button>
-    </Card>
+      </Button> */}
+      <GenericModal
+        skill={props.skill}
+        status={modalStatus}
+        handleClose={handleClose}
+      />
+    </div>
   );
 }

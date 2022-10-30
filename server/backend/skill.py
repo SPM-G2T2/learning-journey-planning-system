@@ -241,4 +241,4 @@ def delete_skill_course(skill_id):
         {
             "message": "Skill successfully edited."
         } 
-    ), 201 
+    )

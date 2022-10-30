@@ -107,11 +107,11 @@ class StaffSkill(db.Model):
 class LearningJourney(db.Model):
     __tablename__ = "learning_journey"
 
-    lj_id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
+    lj_id = db.Column(db.Integer, primary_key=True)
     staff_id = db.Column(db.Integer, nullable=False)
     position_id = db.Column(db.Integer, nullable=False)
-    skill_id = db.Column(db.Integer, primary_key=True, nullable=False)
-    course_id = db.Column(db.String(20), primary_key=True, nullable=False)
+    skill_id = db.Column(db.Integer, primary_key=True)
+    course_id = db.Column(db.String(20), primary_key=True)
 
     def __init__(self, staff_id, position_id, skill_id, course_id):
         self.staff_id = staff_id

@@ -1,6 +1,7 @@
 import { Row, Col, Button, Pagination, Steps } from "antd";
 import Header from '../components/RolesHeader';
-import CourseCard from "../components/SkillCard";
+import SkillCard from "../components/SkillCard";
+import bg from "../assets/skill.png"
 
 export default function Roles2({ lj }: { lj?: boolean }) {
   return (
@@ -47,36 +48,41 @@ export default function Roles2({ lj }: { lj?: boolean }) {
             </Col>
           </Row>
         </div>
-        <Row gutter={[50, 40]}>
-          <Col span={8}>
-            <CourseCard />
-          </Col>
-          <Col span={8}>
-            <CourseCard />
-          </Col>
-          <Col span={8}>
-            <CourseCard />
-          </Col>
-          <Col span={8}>
-            <CourseCard />
-          </Col>
-          <Col span={8}>
-            <CourseCard />
-          </Col>
-          <Col span={8}>
-            <CourseCard />
-          </Col>
-        </Row>
+        <SkillCard />
+        <SkillCard />
+        <img src={bg} alt="" style={{border:"1px solid black", width:"240px", height:"224px", borderRadius:"10px"}}/>
       </div>
       <Row style={{ marginTop: "6vh", fontWeight: 700 }}>
         <Col span={12} style={{ textAlign: "right" }}>
           <Pagination defaultCurrent={1} total={50} />
         </Col>
         <Col offset={4} span={3} style={{ textAlign: "right" }}>
-          <Button type="default" style={{ fontSize: 14, fontWeight: 500, color: "black", background: "", borderRadius: 5 }}>Back</Button>
+          <Button
+            type="default"
+            style={{
+              fontSize: 14,
+              fontWeight: 500,
+              color: "black",
+              background: "",
+              borderRadius: 5,
+            }}
+          >
+            Back
+          </Button>
         </Col>
         <Col offset={1} span={3} style={{ textAlign: "left" }}>
-          <Button className="border btn-color" style={{ fontSize: 14, fontWeight: 500, color: "black", background: "", borderRadius: 5 }}>Next</Button>
+          <Button
+            className="border btn-color"
+            style={{
+              fontSize: 14,
+              fontWeight: 500,
+              color: "black",
+              background: "",
+              borderRadius: 5,
+            }}
+          >
+            Next
+          </Button>
         </Col>
       </Row>
     </>

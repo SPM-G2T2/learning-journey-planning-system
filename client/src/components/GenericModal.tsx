@@ -9,6 +9,7 @@ import { Course } from "../types/Course";
 export default function GenericModal(props: {
   role?: Role;
   course?: Course;
+  skill?: Skill;
   status: boolean;
   handleClose: () => void;
 }) {
