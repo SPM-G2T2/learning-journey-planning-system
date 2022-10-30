@@ -1,7 +1,9 @@
 import {
-  AppstoreOutlined,
-  BarChartOutlined,
-  SettingOutlined,
+  HomeOutlined,
+  TeamOutlined,
+  TrophyOutlined,
+  BookOutlined,
+  EditOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import { Button, Layout, Menu } from "antd";
@@ -32,15 +34,15 @@ const App = () => (
           All-in-One LJPS
         </div>
         <Menu mode="inline" defaultSelectedKeys={["Home"]}>
-          <Menu.Item icon={<AppstoreOutlined />} key="Home">
+          <Menu.Item icon={<HomeOutlined />} key="Home">
             <Link to="/" className="menu-item-link">
               Home
             </Link>
           </Menu.Item>
           {[
-            [<BarChartOutlined />, "Roles"],
-            [<BarChartOutlined />, "Skills"],
-            [<SettingOutlined />, "Courses"],
+            [<TeamOutlined />, "Roles"],
+            [<TrophyOutlined />, "Skills"],
+            [<BookOutlined />, "Courses"],
           ].map((navItem) => (
             <Menu.Item icon={navItem[0]} key={navItem[1] as string}>
               <Link
@@ -51,7 +53,7 @@ const App = () => (
               </Link>
             </Menu.Item>
           ))}
-          <Menu.Item icon={<SettingOutlined />} key="LJPS">
+          <Menu.Item icon={<EditOutlined />} key="LJPS">
             <Link to="/ljps" className="menu-item-link">
               Manage LJPS
             </Link>

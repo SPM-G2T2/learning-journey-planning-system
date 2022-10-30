@@ -1,4 +1,4 @@
-import { Button, Modal, Tag } from "antd";
+import { Button, Modal, Tag, Badge } from "antd";
 import { Role } from "../types/Role";
 import styles from "../styles/GenericModal.module.css";
 import { useEffect, useState } from "react";
@@ -51,7 +51,7 @@ export default function GenericModal(props: {
           </Tag>
         </div>
         <hr className={styles.hr}></hr>
-        <h3>{props.role ? "Role" : "Course"} Description: </h3>
+        <h3>Description: </h3>
         <p>
           {props.role?.position_desc} {props.course?.course_desc}
         </p>
@@ -66,18 +66,19 @@ export default function GenericModal(props: {
         <h3>{props.course ? "Type:" : null}</h3>
         <p>
           {props.course
-            ? "The course will be conducted " +
-              props.course?.course_type.toLowerCase()
-            : null}
+            ? "The course will be conducted " + (props.course.course_type === 'Internal' ? 'in-house' : 'off-site') : null}
         </p>
         <h3>{props.course ? "Category:" : null}</h3>
         <p>{props.course?.course_category}</p>
         <h3>Skills required for the {props.role ? "role" : "course"}:</h3>
-        <ul>
+        {/* <ul>
           {skills.map((skill) => (
             <li key={skill.skill_id}>{skill.skill_name}</li>
           ))}
-        </ul>
+        </ul> */}
+        {skills.map((skill) => (
+            <Badge key={skill.skill_id} count={skill.skill_name} className={styles.badge}></Badge>
+          ))}
       </Modal>
     </>
   );

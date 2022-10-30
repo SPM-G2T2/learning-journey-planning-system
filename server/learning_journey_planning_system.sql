@@ -102,7 +102,7 @@ PRIMARY KEY (staff_id, skill_id)
 
 DROP TABLE IF EXISTS learning_journey;
 CREATE TABLE IF NOT EXISTS learning_journey (
-lj_id int NOT NULL auto_increment,
+lj_id int NOT NULL,
 staff_id int NOT NULL,
 position_id int NOT NULL,
 skill_id int NOT NULL,
