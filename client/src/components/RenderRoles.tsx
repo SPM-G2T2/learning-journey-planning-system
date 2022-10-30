@@ -30,7 +30,7 @@ export default function RenderRoles(props: any) {
             <Button type="primary" onClick={() => props.setRolesStep("form")}>Create role</Button>
           </Col>
         </Row>
-      {roles.map((role) => (
+      {roles && roles.map((role) => (
         <RoleCourseCard role={role} edit={true}/>
       ))}
       </div>

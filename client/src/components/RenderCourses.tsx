@@ -27,7 +27,7 @@ export default function RenderCourses(props: any) {
             <Input placeholder="Enter search" className={styles.search}/>
           </Col>
         </Row>
-      {courses.map((course) => (
+      {courses && courses.map((course) => (
         <RoleCourseCard course={course} edit={true}/>
       ))}
       </div>

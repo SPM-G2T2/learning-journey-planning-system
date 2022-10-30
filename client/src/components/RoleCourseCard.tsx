@@ -12,10 +12,10 @@ import GenericModal from "./GenericModal";
 export default function RoleCourseCard(props: {
   edit?: boolean;
   role?: Role;
+  course?: Course;
   selectedRole?: Role;
   selectedCourse?: Course;
   handleClick?: () => void;
-  course?: Course;
 }) {
   const [modalStatus, setModalStatus] = useState<boolean>(false);
 
@@ -25,9 +25,8 @@ export default function RoleCourseCard(props: {
 
   return (
     <div
-      className={`${styles.horizontal} ${styles.card} ${
-        (props.role === props.selectedRole || props.course === props.selectedCourse) ? styles.cardSelected : null
-      }`}
+      className={`${styles.horizontal} ${styles.card} ${props.course && props.course === props.selectedCourse && styles.cardSelected}}
+      ${props.role && props.role === props.selectedRole && styles.cardSelected}`}
       onClick={props.handleClick}
     >
       <div className={styles.horizontal}>
