@@ -2,7 +2,7 @@ import { Row, Col, Table, Card, Button, Typography, Tag } from "antd";
 import type { ColumnsType } from 'antd/es/table';
 import glorilla_image from "../assets/glorilla_image.png";
 import styles from "../styles/Home.module.css";
-import DeleteLJBtn from "../components/LjDelete"
+import DeleteLJBtn from "../components/DeleteLearningJourney"
 import { useEffect, useState } from "react";
 
 interface DataType {
@@ -75,7 +75,7 @@ export default function Home() {
       dataIndex: 'deleteAction',
       key: 'deleteAction',
       render: (jsonForLJ) => (
-        <DeleteLJBtn ljid={jsonForLJ}></DeleteLJBtn>
+        <DeleteLJBtn lj={jsonForLJ}></DeleteLJBtn>
       ),
     },
   ];
