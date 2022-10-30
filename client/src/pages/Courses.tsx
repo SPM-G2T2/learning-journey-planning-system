@@ -55,11 +55,6 @@ export default function Courses({ lj }: { lj?: boolean }) {
   };
 
 const showCourseswhenclick = (x:any)=> {
-//   if(showCourses.includes(x)){
-//     showCourses.filter(function(item) {
-//  return item !== x
-// }) 
-//   }
 const index = showCourses.indexOf(x)
 if(index> -1){
   showCourses.splice(index, 1);
