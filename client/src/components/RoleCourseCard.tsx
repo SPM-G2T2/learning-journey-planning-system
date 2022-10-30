@@ -13,6 +13,7 @@ export default function RoleCourseCard(props: {
   edit?: boolean;
   role?: Role;
   selectedRole?: Role;
+  selectedCourse?: Course;
   handleClick?: () => void;
   course?: Course;
 }) {
@@ -25,7 +26,7 @@ export default function RoleCourseCard(props: {
   return (
     <div
       className={`${styles.horizontal} ${styles.card} ${
-        props.role === props.selectedRole && styles.cardSelected 
+        (props.role === props.selectedRole || props.course === props.selectedCourse) ? styles.cardSelected : null
       }`}
       onClick={props.handleClick}
     >
@@ -39,8 +40,8 @@ export default function RoleCourseCard(props: {
                 props.course?.course_id +
                 ": " +
                 props.course?.course_name}
-              {props.edit && props.role?.position_status === "Active" ? <Tag className={styles.activeStatus}>Active</Tag> : null}
-              {props.edit && props.role?.position_status === "Retired" ? <Tag className={styles.inactiveStatus}>Retired</Tag> : null}
+              {props.edit && (props.role?.position_status || props.course?.course_status) === "Active" ? <Tag className={styles.activeStatus}>Active</Tag> : null}
+              {props.edit && (props.role?.position_status || props.course?.course_status) === "Retired" ? <Tag className={styles.inactiveStatus}>Retired</Tag> : null}
           </p> 
           <p style={{ color: '#374A59', fontWeight: 'bold' }}>
             {" "}
@@ -55,7 +56,7 @@ export default function RoleCourseCard(props: {
           </p>
         </div>
       </div>
-      { props.edit ? 
+      { props.edit && props.role ? 
       <Button className={styles.edit}>
         Edit
       </Button>
