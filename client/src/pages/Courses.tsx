@@ -61,7 +61,7 @@ const showCourseswhenclick = (x:any)=> {
 // }) 
 //   }
 const index = showCourses.indexOf(x)
-if(index> -1){
+if (index> -1){
   showCourses.splice(index, 1);
   console.log("minused")
 
@@ -125,13 +125,14 @@ console.log(showCourses)
             ))}
           </Col>
           <Col span={19}>
-            {courses.map((course) => (
-              <RoleCourseCard
-                course={course}
-                key={course.course_id}
-                handleClick={() => showCourseswhenclick(`${course.course_name}`)}           
-              />
-            ))}
+            { courses ? 
+                courses.map((course) => (
+                  <RoleCourseCard
+                    course={course}
+                    key={course.course_id}
+                    handleClick={() => showCourseswhenclick(`${course.course_name}`)}           
+                  />
+                )) : null }
           </Col>
         </Row>
 

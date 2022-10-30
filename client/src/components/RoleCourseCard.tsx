@@ -13,6 +13,7 @@ export default function RoleCourseCard(props: {
   edit?: boolean;
   role?: Role;
   selectedRole?: Role;
+  selectedCourse?: Course;
   handleClick?: () => void;
   course?: Course;
 }) {
@@ -31,9 +32,7 @@ export default function RoleCourseCard(props: {
       // className={`${styles.horizontal} ${styles.card} ${
       //   props.role === props.selectedRole && styles.cardSelected
       // }`}
-      className={`${styles.horizontal} ${styles.card} ${
-        props.role === props.selectedRole
-      }${isActive ? styles.cardSelected: null}`}
+      className={`${styles.horizontal} ${styles.card} ${ props.role === props.selectedRole  || props.course === props.selectedCourse ?  styles.cardSelected : null}`}
       onClick={props.handleClick}
     >
       <div className={styles.horizontal}>
