@@ -21,13 +21,16 @@
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
-.deleteButton {
+.deleteButton, .deleteButton:focus {
     border-color: #FF3131;
     background-color: #FF3131;
+    margin: 15px;
     color: #FFF
 }
 
 .deleteButton:hover {
+    background-color: #FFF;
     border-color: #FF3131;
+    background-color: #FFF;
     color: #FF3131
 }

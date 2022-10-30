@@ -82,3 +82,63 @@ def get_learning_journeys_by_staff(staff_id):
             "message": "This staff does not have any learning journey."
         }
     ), 404
+
+
+@learning_journey.route("/<int:lj_id>/deleteLearningjourney", methods=['POST'])
+def delete_learningjourney(lj_id):
+    
+    lj_to_delete = LearningJourney.query.filter_by(lj_id=lj_id).all()
+
+    for lj in lj_to_delete:
+        try:   
+            db.session.delete(lj)
+            db.session.commit()
+        
+        except: 
+            return jsonify( 
+                { 
+                    "code": 500, 
+                    "data": {}, 
+                    "message": "An error occurred while deleting the learning journey." 
+                } 
+            ), 500 
+    
+    return jsonify( 
+        { 
+            "code": 201, 
+            "message": "Learning Journey Successfully Deleted"
+        } 
+    ), 201
+
+
+@learning_journey.route("/<int:lj_id>/filterLearningjourneyById", methods=['GET'])
+def filter_learningjourney_by_id(lj_id):
+    
+    learning_journeys = LearningJourney.query.filter_by(lj_id=lj_id).all()
+
+    if learning_journeys:
+        return jsonify ( 
+            {
+                "data": [learning_journey.json() for learning_journey in learning_journeys]
+            }
+        )
+    return jsonify(
+        {
+            "message": "An error occured filtering the learning journey's by LJID."
+        }
+        ), 404
+
+
+@learning_journey.route("/edit", methods=['PUT'])
+def edit_learningjourney():
+
+    front_end_json = request.get_json()
+    print(front_end_json["params"]["ljid"])
+
+    lj_id = front_end_json["params"]["ljid"]
+    role = front_end_json["params"]["role"]
+    courses = front_end_json["params"]["courses"]
+    skills = front_end_json["params"]["skills"]
+
+    return front_end_json
+
