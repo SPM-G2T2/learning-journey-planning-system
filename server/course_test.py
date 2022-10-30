@@ -1,6 +1,5 @@
 import unittest
 
-from requests import request
 import json
 from main import app
 from backend import db
@@ -22,7 +21,6 @@ class TestCourse(unittest.TestCase):
         ctx.push()
         with ctx:
             db.create_all()
-            db.session.add()
             
     def tearDown(self):
         db.session.remove()
