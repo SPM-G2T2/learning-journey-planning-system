@@ -102,7 +102,7 @@ PRIMARY KEY (staff_id, skill_id)
 
 DROP TABLE IF EXISTS learning_journey;
 CREATE TABLE IF NOT EXISTS learning_journey (
-lj_id int NOT NULL auto_increment,
+lj_id int NOT NULL,
 staff_id int NOT NULL,
 position_id int NOT NULL,
 skill_id int NOT NULL,
@@ -111,5 +111,5 @@ FOREIGN KEY (staff_id) REFERENCES staff (staff_id),
 FOREIGN KEY (position_id) REFERENCES position (position_id),
 FOREIGN KEY (skill_id) REFERENCES skill (skill_id),
 FOREIGN KEY (course_id) REFERENCES course (course_id),
-PRIMARY KEY (lj_id, staff_id)
+PRIMARY KEY (lj_id, skill_id, course_id)
 );

@@ -1,15 +1,19 @@
-import { Button } from "antd";
+import { Button, Tag } from "antd";
 import { useState } from "react";
-import role from "../assets/role.png";
+import role1 from "../assets/role1.png";
+import role2 from "../assets/role2.png";
+import course1 from "../assets/course1.png";
+import course2 from "../assets/course2.png";
 import styles from "../styles/RoleCourseCard.module.css";
 import { Role } from "../types/Role";
 import { Course } from "../types/Course";
 import GenericModal from "./GenericModal";
 
 export default function RoleCourseCard(props: {
+  edit?: boolean;
   role?: Role;
   selectedRole?: Role;
-  handleClick: () => void;
+  handleClick?: () => void;
   course?: Course;
 }) {
   const [modalStatus, setModalStatus] = useState<boolean>(false);
@@ -28,32 +32,44 @@ export default function RoleCourseCard(props: {
       //   props.role === props.selectedRole && styles.cardSelected
       // }`}
       className={`${styles.horizontal} ${styles.card} ${
-        props.role === props.selectedRole && styles.cardSelected
+        props.role === props.selectedRole
       }${isActive ? styles.cardSelected: null}`} 
       onClick={props.handleClick}
     >
       <div className={styles.horizontal}>
-        <img src={role} alt="role icon" className="icon" />
+        { props.role ? ((Math.floor(Math.random() * 2) + 1) === 1 ? <img src={role1} alt="role icon" className={styles.image}/> : <img src={role2} alt="role icon" className={styles.image}/>): (props.course?.course_category === "Technical" ? <img src={course1} alt="role icon" className={styles.image}/> : <img src={course2} alt="role icon" className={styles.image}/>)}
         <div className={styles.cardRow}>
           <p className={styles.title}>
             {props.role
-              ? props.role.position_name: props.course?.course_id +": " + props.course?.course_name}
-          </p>
-          <p>
+              ? props.role.position_name
+              :
+                props.course?.course_id +
+                ": " +
+                props.course?.course_name}
+              {props.edit && props.role?.position_status === "Active" ? <Tag className={styles.activeStatus}>Active</Tag> : null}
+              {props.edit && props.role?.position_status === "Retired" ? <Tag className={styles.inactiveStatus}>Retired</Tag> : null}
+          </p> 
+          <p style={{ color: '#374A59', fontWeight: 'bold' }}>
             {" "}
-            {props.role ? "Department" : "Category"}:{props.role?.position_dept}{" "}
+            {props.role ? "Department" : "Category"}: {props.role?.position_dept}{" "}
             {props.course?.course_category}
           </p>
-          <p>
+          <p style={{ color: '#374A59' }}>
             {" "}
-            {props.role ? "Description" : "Type"}: {props.role?.position_desc}{" "}
-            {props.course?.course_type}
+            Description: {" "}
+            {props.role?.position_desc}
+            {props.course?.course_desc}
           </p>
         </div>
       </div>
+      { props.edit ? 
+      <Button className={styles.edit}>
+        Edit
+      </Button>
+      :
       <Button className={styles.more} onClick={() => setModalStatus(true)}>
         Read More
-      </Button>
+      </Button>}
       <GenericModal
         role={props.role}
         course={props.course}

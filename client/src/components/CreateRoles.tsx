@@ -1,4 +1,4 @@
-import { Typography, Form, Button, Switch, Row } from "antd";
+import { Typography, Form, Button, Switch, Row, Col } from "antd";
 import InputField from "./InputField";
 import MultipleInputFields from "./MultipleInputFields";
 import InputDropdown from "./InputDropdown";
@@ -55,11 +55,20 @@ export default function CreateRoles(props: any) {
           <Switch />
         </Form.Item>
         <Row style={{ justifyContent: "flex-end" }}>
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Create role
-            </Button>
-          </Form.Item>
+          <Col style={{ marginRight: "1vw" }}>
+            <Form.Item>
+              <Button onClick={() => props.setRolesStep("view")}>
+                Cancel
+              </Button>
+            </Form.Item>
+          </Col>
+          <Col>
+            <Form.Item>
+              <Button type="primary" htmlType="submit">
+                Create role
+              </Button>
+            </Form.Item>
+          </Col>
         </Row>
       </Form>
     </>

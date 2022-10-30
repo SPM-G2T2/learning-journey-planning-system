@@ -12,7 +12,7 @@ export default function Home({ lj }: { lj?: boolean }) {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/active_positions")
+      .get("http://localhost:5000/positions/active")
       .then((resp) => setRoles(resp.data.data))
       .catch((err) => console.log(err));
   }, []);
