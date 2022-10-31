@@ -20,6 +20,7 @@ def get_all_courses():
         } 
     ), 404 
 
+
 @course.route("all_active")
 def get_all_active_courses():
     courses = Course.query.filter_by(course_status="Active").all()
