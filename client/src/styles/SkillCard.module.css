@@ -1,0 +1,36 @@
+.card {
+    background-image: url(../assets/skill.png);
+    background-size: cover;
+    width: 20vw;
+    height: 32vh;
+    border-radius: 1.3vw;
+    padding: 1vw;
+    position: relative;
+}
+
+.title {
+    font-size: 2vh;
+    font-weight: 700;
+}
+
+.status {
+    margin-left: 0.5vw;
+}
+
+.Active {
+    color: #008767;
+    background-color: #16C098;
+    border: #16C098;
+}
+
+.Retired {
+    color: #FF0000;
+    background-color: #F3A1A9;
+    border: #F3A1A9;
+}
+
+.more {
+    position: absolute;
+    right: 2vw;
+    bottom: 4vh;
+}

@@ -1,7 +1,5 @@
 import { Row, Col, Button, Pagination, Steps } from "antd";
-import Header from '../components/RolesHeader';
-import SkillCard from "../components/SkillCard";
-import bg from "../assets/skill.png"
+import Header from "../components/RolesHeader";
 
 export default function Roles2({ lj }: { lj?: boolean }) {
   return (
@@ -48,9 +46,6 @@ export default function Roles2({ lj }: { lj?: boolean }) {
             </Col>
           </Row>
         </div>
-        <SkillCard />
-        <SkillCard />
-        <img src={bg} alt="" style={{border:"1px solid black", width:"240px", height:"224px", borderRadius:"10px"}}/>
       </div>
       <Row style={{ marginTop: "6vh", fontWeight: 700 }}>
         <Col span={12} style={{ textAlign: "right" }}>
