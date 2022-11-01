@@ -190,18 +190,19 @@ def add_skill():
 @skill.route("<int:skill_id>/delete_skill", methods=['POST'])
 def delete_skill(skill_id):
 
-    # Delete skill from skill table
+    # Edit skill from skill table "Active" -> "Retired"
     
     skill_table_delete = Skill.query.filter_by(skill_id=skill_id).first()
 
+    skill_table_delete.skill_status = "Retired"
+
     try:
-            db.session.delete(skill_table_delete)
-            db.session.commit()
+        db.session.commit()
         
     except: 
         return jsonify( 
             {
-                "message": "An error occurred deleting the skill." 
+                "message": "An error occurred editing the skill." 
             } 
         ), 500 
 
