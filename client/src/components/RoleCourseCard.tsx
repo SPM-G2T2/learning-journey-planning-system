@@ -36,7 +36,7 @@ export default function RoleCourseCard(props: {
       <div className={styles.horizontal}>
         { props.role ? ((Math.floor(Math.random() * 2) + 1) === 1 ? <img src={role1} alt="role icon" className={styles.image}/> : <img src={role2} alt="role icon" className={styles.image}/>): (props.course?.course_category === "Technical" ? <img src={course1} alt="role icon" className={styles.image}/> : <img src={course2} alt="role icon" className={styles.image}/>)}
         <div className={styles.cardRow}>
-          <p className={styles.title}>
+          <p className={styles.title} style={{lineHeight: '14px'}}>
             {props.role
               ? props.role.position_name
               :
