@@ -1,14 +1,17 @@
-import { Button, Pagination, Steps } from "antd";
+import { Button, Col, Pagination, Row, Steps } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import RoleCourseCard from "../components/RoleCourseCard";
+import SkillCard from "../components/SkillCard";
 import styles from "../styles/ChooseRole.module.css";
 import { Role } from "../types/Role";
+import { Skill } from "../types/Skill";
 
 export default function Home({ lj }: { lj?: boolean }) {
-  const [roles, setRoles] = useState<Role[]>([]);
   const [step, setStep] = useState<number>(0);
+  const [roles, setRoles] = useState<Role[]>([]);
   const [selectedRole, setSelectedRole] = useState<Role>();
+  const [skills, setSkills] = useState<Skill[][]>([]);
 
   useEffect(() => {
     axios
@@ -22,7 +25,7 @@ export default function Home({ lj }: { lj?: boolean }) {
       <h1>Create Your Desired Learning Journey</h1>
 
       <div className={styles.content}>
-        <Steps labelPlacement="vertical" current={step}>
+        <Steps labelPlacement="vertical" current={step} className={styles.step}>
           <Steps.Step title="Choose a role" />
           <Steps.Step title="Choose skills" />
           <Steps.Step title="Choose courses" />
@@ -31,7 +34,9 @@ export default function Home({ lj }: { lj?: boolean }) {
         <div className={styles.selection}>
           <p className={styles.selectionLabel}>
             Role Selected:{" "}
-            <span className={styles.selectionContent}>{selectedRole?.position_name}</span>
+            <span className={styles.selectionContent}>
+              {selectedRole?.position_name}
+            </span>
           </p>
           <p className={styles.selectionLabel}>
             Skills Selected:{" "}
@@ -63,12 +68,53 @@ export default function Home({ lj }: { lj?: boolean }) {
                 key={role.position_id}
               />
             ))}
+
+          {step === 1 &&
+            skills.map((row) => (
+              <Row className={styles.skill}>
+                {row.map((skill) => (
+                  <Col key={skill.skill_id}>
+                    <SkillCard skill={skill} lj={true} />
+                  </Col>
+                ))}
+              </Row>
+            ))}
         </div>
       </div>
 
       <div className={styles.bottom}>
         <Pagination total={15} defaultPageSize={3} />
-        <Button type="primary" onClick={() => setStep(step + 1)}>
+        <Button
+          type="primary"
+          onClick={() => {
+            if (step === 0) {
+              axios
+                .get(
+                  "http://localhost:5000/positions/" +
+                    selectedRole?.position_id +
+                    "/skills/active"
+                )
+                .then((resp) => {
+                  const rows = [];
+                  let row = [];
+                  for (let col of resp.data.data) {
+                    if (row.length === 3) {
+                      rows.push(row);
+                      row = [];
+                    }
+                    row.push(col);
+                  }
+                  if (row.length > 0) {
+                    rows.push(row);
+                  }
+                  setSkills(rows);
+                })
+                .catch((err) => console.log(err));
+            } else if (step === 1) {
+            }
+            setStep(step + 1);
+          }}
+        >
           Next
         </Button>
       </div>

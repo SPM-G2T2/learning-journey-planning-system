@@ -19,7 +19,7 @@ interface DataType {
 
 export default function Home() {
 
-  const [staffID] = useState(1);
+  const [staffID] = useState(140001);
   const [ljData, setLjData] = useState();
   const [tableData, setTableData] = useState<DataType[]>([]);
 
@@ -83,7 +83,7 @@ export default function Home() {
   useEffect(() => {
     const loadAsync = async () => {
       try {
-        const responseForLJ = await fetch("http://localhost:5000/learning_journeys/" + staffID + "/learning_journeys");
+        const responseForLJ = await fetch("http://localhost:5000/staff/" + staffID + "/learning_journeys");
         const jsonForLJ = await responseForLJ.json();
         console.log(jsonForLJ);
         setLjData(jsonForLJ.data);
