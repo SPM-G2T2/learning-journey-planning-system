@@ -1,23 +1,23 @@
-import { Row, Col, Input, Button } from 'antd';
+import { Row, Col, Input } from 'antd';
 import { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "../styles/RenderRoleCourseCard.module.css";
 import RoleCourseCard from "../components/RoleCourseCard";
-import { Role } from "../types/Role";
+import { Course } from "../types/Course";
 
 
-export default function RenderRoles(props: any) {
+export default function RenderCourses(props: any) {
 
-  const [roles, setRoles] = useState<Role[]>([]);
+  const [courses, setCourses] = useState<Course[]>([]);
 
   useEffect(() => {
     axios
-    .get("http://localhost:5000/positions/all")
-    .then((resp) => setRoles(resp.data.data))
+    .get("http://localhost:5000/courses/all")
+    .then((resp) => setCourses(resp.data.data))
     .catch((err) => console.log(err));
   }, []);
 
-  console.log(roles);
+  console.log(courses);
 
   return (
     <>
@@ -26,12 +26,9 @@ export default function RenderRoles(props: any) {
           <Col span={8}>
             <Input placeholder="Enter search" className={styles.search}/>
           </Col>
-          <Col span={4} offset={12}>
-            <Button type="primary" onClick={() => props.setRolesStep("form")}>Create role</Button>
-          </Col>
         </Row>
-      {roles && roles.map((role) => (
-        <RoleCourseCard role={role} edit={true}/>
+      {courses && courses.map((course) => (
+        <RoleCourseCard course={course} edit={true}/>
       ))}
       </div>
     </>

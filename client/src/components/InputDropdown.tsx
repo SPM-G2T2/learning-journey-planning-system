@@ -42,9 +42,9 @@ export default function InputDropdown(props: InputDropdownProps) {
       axios
         .get("http://127.0.0.1:5000/courses/all")
         .then((response: AxiosResponse) => {
-          console.log(response.data.data.courses);
+          console.log(response.data.data);
           var courseArr: String[] = [];
-          for (const course of response.data.data.courses) {
+          for (const course of response.data.data) {
             // console.log(course.course_name)
             // console.log(course.course_id)
             courseArr.push(course);
