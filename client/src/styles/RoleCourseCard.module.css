@@ -13,9 +13,8 @@
     padding: 1vw;
     border-radius: 10px;
     justify-content: space-between;
-    margin-top: 2vh;
     width: 50vw;
-    margin: auto;
+    margin: 2vh auto 0 auto;
 }
 
 .cardSelected {
