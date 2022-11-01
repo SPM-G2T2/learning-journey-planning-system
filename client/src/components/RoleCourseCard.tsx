@@ -22,7 +22,11 @@ export default function RoleCourseCard(props: {
   function handleClose() {
     setModalStatus(false);
   }
+  const [isActive, setActive] = useState(false);
 
+  const toggleClass = () => {
+    setActive(!isActive);
+  };
   return (
     <div
       className={`${styles.horizontal} ${styles.card} ${props.course && props.course === props.selectedCourse && styles.cardSelected}}
@@ -32,7 +36,7 @@ export default function RoleCourseCard(props: {
       <div className={styles.horizontal}>
         { props.role ? ((Math.floor(Math.random() * 2) + 1) === 1 ? <img src={role1} alt="role icon" className={styles.image}/> : <img src={role2} alt="role icon" className={styles.image}/>): (props.course?.course_category === "Technical" ? <img src={course1} alt="role icon" className={styles.image}/> : <img src={course2} alt="role icon" className={styles.image}/>)}
         <div className={styles.cardRow}>
-          <p className={styles.title}>
+          <p className={styles.title} style={{lineHeight: '14px'}}>
             {props.role
               ? props.role.position_name
               :
@@ -51,7 +55,7 @@ export default function RoleCourseCard(props: {
             {props.role ? "Department" : "Category"}: {props.role?.position_dept}{" "}
             {props.course?.course_category}
           </p>
-          <p style={{ color: '#374A59' }}>
+          <p style={{ color: '#374A59', lineHeight: '12px' }}>
             {" "}
             Description: {" "}
             {props.role && props.role?.position_desc.length > 50
