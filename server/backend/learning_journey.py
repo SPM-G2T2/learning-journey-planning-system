@@ -53,4 +53,3 @@ def create_learning_journey():
             "data": learningjourney.json()
         }
     ), 201
-

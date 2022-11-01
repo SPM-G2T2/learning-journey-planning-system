@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Tabs } from "antd";
 import RenderRoles from "../components/RenderRoles";
+import RenderCourses from "../components/RenderCourses";
 import CreateRoles from "../components/CreateRoles";
 import PreviewRoles from "../components/PreviewRoles";
 import CreateSkills from "../components/CreateSkills";
@@ -41,7 +42,7 @@ export default function ManageLJPS() {
           {
             label: "Courses",
             key: "course",
-            children: "Content of Courses",
+            children: <RenderCourses/>,
           },
         ]}
       />
