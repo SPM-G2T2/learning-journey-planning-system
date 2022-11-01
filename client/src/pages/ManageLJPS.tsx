@@ -39,6 +39,17 @@ export default function ManageLJPS() {
                 <PreviewSkills form={form} setNext={setSkillsStep} />
               ),
           },
+          //  To shift later 
+          {
+            label: "Edit Skills",
+            key: "edit skills",
+            children:
+              skillsStep === "form" ? (
+                <CreateSkills setForm={setForm} setNext={setSkillsStep} />
+              ) : (
+                <PreviewSkills form={form} setNext={setSkillsStep} />
+              ),
+          },
           {
             label: "Courses",
             key: "course",
