@@ -1,6 +1,8 @@
 from flask import Blueprint, jsonify
 
-from .model import StaffSkill
+from . import db
+
+from .model import StaffSkill, Position, Skill, Course, LearningJourney
 
 staff = Blueprint("staff", __name__)
 
