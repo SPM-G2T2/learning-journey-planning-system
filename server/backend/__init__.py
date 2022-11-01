@@ -10,12 +10,13 @@ def create_app():
     app.config['SECRET_KEY'] = '1234567890'
 
     # Mac
-    authDetails = "root:root@localhost:8889"
+    # authDetails = "root:root@localhost:8889"
 
     # Windows
     # authDetails = "root@localhost:3306"
     
-    app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+mysqlconnector://{authDetails}/learning_journey_planning_system"
+    # app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+mysqlconnector://{authDetails}/learning_journey_planning_system"
+    app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+mysqlconnector://admin:spm-ljps2022@learning-journey-planning-system.czgju3uctwbf.ap-southeast-1.rds.amazonaws.com:3306/learning_journey_planning_system"
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_recycle': 299}
     

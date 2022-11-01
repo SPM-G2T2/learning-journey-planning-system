@@ -36,11 +36,15 @@ export default function RoleCourseCard(props: {
             {props.role
               ? props.role.position_name
               :
-                props.course?.course_id +
+                props.course &&
+                props.course.course_name.length > 30 ? props.course?.course_id +
+                ": " +
+                props.course?.course_name.substring(0, 30) + " ..." : props.course?.course_id +
                 ": " +
                 props.course?.course_name}
               {props.edit && (props.role?.position_status || props.course?.course_status) === "Active" ? <Tag className={styles.activeStatus}>Active</Tag> : null}
-              {props.edit && (props.role?.position_status || props.course?.course_status) === "Retired" ? <Tag className={styles.inactiveStatus}>Retired</Tag> : null}
+              {props.edit && (props.role?.position_status || props.course?.course_status) === "Pending" ? <Tag className={styles.pendingStatus}>Pending</Tag> : null}
+              {props.edit && (props.role?.position_status || props.course?.course_status) === "Retired" ? <Tag className={styles.retiredStatus}>Retired</Tag> : null}
           </p> 
           <p style={{ color: '#374A59', fontWeight: 'bold' }}>
             {" "}
@@ -50,8 +54,12 @@ export default function RoleCourseCard(props: {
           <p style={{ color: '#374A59' }}>
             {" "}
             Description: {" "}
-            {props.role?.position_desc}
-            {props.course?.course_desc}
+            {props.role && props.role?.position_desc.length > 50
+            ? props.role?.position_desc.substring(0, 50) + " ..."
+            : props.role?.position_desc}
+             {props.course && props.course?.course_desc.length > 50
+            ? props.course?.course_desc.substring(0, 50) + " ..."
+            : props.course?.course_desc}
           </p>
         </div>
       </div>
