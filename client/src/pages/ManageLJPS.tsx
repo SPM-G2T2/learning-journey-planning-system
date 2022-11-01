@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Tabs } from "antd";
 import RenderRoles from "../components/RenderRoles";
+import RenderSkills from "../components/RenderSkills";
 import RenderCourses from "../components/RenderCourses";
 import CreateRoles from "../components/CreateRoles";
 import PreviewRoles from "../components/PreviewRoles";
@@ -9,7 +10,7 @@ import PreviewSkills from "../components/PreviewSkills";
 
 export default function ManageLJPS() {
   const [rolesStep, setRolesStep] = useState("view");
-  const [skillsStep, setSkillsStep] = useState("form");
+  const [skillsStep, setSkillsStep] = useState("view");
   const [form, setForm] = useState(null);
 
   return (
@@ -33,11 +34,12 @@ export default function ManageLJPS() {
             label: "Skills",
             key: "skills",
             children:
-              skillsStep === "form" ? (
-                <CreateSkills setForm={setForm} setNext={setSkillsStep} />
+              skillsStep === "view" ? <RenderSkills setSkillsStep={setSkillsStep}/> :
+              (skillsStep === "form" ? (
+                <CreateSkills setSkillsStep={setSkillsStep} setForm={setForm} setNext={setSkillsStep} />
               ) : (
                 <PreviewSkills form={form} setNext={setSkillsStep} />
-              ),
+              )),
           },
           {
             label: "Courses",
