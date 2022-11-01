@@ -5,11 +5,12 @@ import RoleCourseCard from "../components/RoleCourseCard";
 import { Course } from "../types/Course";
 import styles from "../styles/RenderHRCard.module.css";
 
-export default function Roles() {
+export default function Courses() {
 
     const [courses, setCourses] = useState<Course[]>([]);
     const [searchedCourses, setSearchedCourses] = useState<Course[]>([]);
     const [search, setSearch] = useState<boolean>(false);
+
     useEffect(() => {
       axios
       .get("http://localhost:5000/courses/active")
@@ -47,7 +48,7 @@ export default function Roles() {
       <div style={{  width: '50vw', margin: 'auto', marginTop: '10vh' }}>
         <Row style={{ marginBottom: '5vh' }}>
           <b>
-            {courses.length} Courses Displayed
+            {search ? searchedCourses.length : courses.length} Courses Displayed
           </b>
         </Row>
       { search ? searchedCourses && searchedCourses.map((searchedCourse) => (
