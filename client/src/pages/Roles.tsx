@@ -22,7 +22,7 @@ export default function Roles() {
         <Col>
           <h1>Available Roles</h1>
         </Col>
-        <Col style={{paddingTop: '0.5vh'}} offset={1}>
+        <Col style={{paddingTop: '0.2vh'}} offset={1}>
           <Input placeholder="Enter search" className={styles.search}/>
         </Col>
       </Row>
