@@ -1,7 +1,7 @@
 import { Row, Col, Input } from 'antd';
 import { useState, useEffect } from "react";
 import axios from "axios";
-import styles from "../styles/RenderRoleCourseCard.module.css";
+import styles from "../styles/RenderHRCard.module.css";
 import RoleCourseCard from "../components/RoleCourseCard";
 import { Course } from "../types/Course";
 

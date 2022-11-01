@@ -1,7 +1,7 @@
 import { Row, Col, Input, Button } from 'antd';
 import { useState, useEffect } from "react";
 import axios from "axios";
-import styles from "../styles/RenderRoleCourseCard.module.css";
+import styles from "../styles/RenderHRCard.module.css";
 import RoleCourseCard from "../components/RoleCourseCard";
 import { Role } from "../types/Role";
 
@@ -22,7 +22,7 @@ export default function RenderRoles(props: any) {
   return (
     <>
       <div className={styles.container}>
-        <Row style={{ width: '100%', marginBottom: '5vh' }}>
+        <Row style={{ width: '50vw', margin: '0 auto 8vh auto' }}>
           <Col span={8}>
             <Input placeholder="Enter search" className={styles.search}/>
           </Col>
