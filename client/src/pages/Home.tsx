@@ -1,4 +1,4 @@
-import { Button, Pagination, Steps } from "antd";
+import { Button, Col, Pagination, Row, Steps } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import RoleCourseCard from "../components/RoleCourseCard";
@@ -11,7 +11,7 @@ export default function Home({ lj }: { lj?: boolean }) {
   const [step, setStep] = useState<number>(0);
   const [roles, setRoles] = useState<Role[]>([]);
   const [selectedRole, setSelectedRole] = useState<Role>();
-  const [skills, setSkills] = useState<Skill[]>([]);
+  const [skills, setSkills] = useState<Skill[][]>([]);
 
   useEffect(() => {
     axios
@@ -25,7 +25,7 @@ export default function Home({ lj }: { lj?: boolean }) {
       <h1>Create Your Desired Learning Journey</h1>
 
       <div className={styles.content}>
-        <Steps labelPlacement="vertical" current={step}>
+        <Steps labelPlacement="vertical" current={step} className={styles.step}>
           <Steps.Step title="Choose a role" />
           <Steps.Step title="Choose skills" />
           <Steps.Step title="Choose courses" />
@@ -70,8 +70,14 @@ export default function Home({ lj }: { lj?: boolean }) {
             ))}
 
           {step === 1 &&
-            skills.map((skill) => (
-              <SkillCard skill={skill} lj={true} key={skill.skill_id} />
+            skills.map((row) => (
+              <Row className={styles.skill}>
+                {row.map((skill) => (
+                  <Col key={skill.skill_id}>
+                    <SkillCard skill={skill} lj={true} />
+                  </Col>
+                ))}
+              </Row>
             ))}
         </div>
       </div>
@@ -88,7 +94,21 @@ export default function Home({ lj }: { lj?: boolean }) {
                     selectedRole?.position_id +
                     "/skills/active"
                 )
-                .then((resp) => setSkills(resp.data.data))
+                .then((resp) => {
+                  const rows = [];
+                  let row = [];
+                  for (let col of resp.data.data) {
+                    if (row.length === 3) {
+                      rows.push(row);
+                      row = [];
+                    }
+                    row.push(col);
+                  }
+                  if (row.length > 0) {
+                    rows.push(row);
+                  }
+                  setSkills(rows);
+                })
                 .catch((err) => console.log(err));
             } else if (step === 1) {
             }
