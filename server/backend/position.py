@@ -51,7 +51,24 @@ def get_skills_by_position(position_id):
         )
     return jsonify(
         {
-            "message": "There are no skills."
+            "message": "There are no skills for this position."
+        }
+    ), 404
+
+
+@position.route('<int:position_id>/skills/active')
+def get_active_skills_by_position(position_id):
+    skills = db.session.query(Skill).filter(PositionSkill.skill_id==Skill.skill_id, PositionSkill.position_id==position_id, Skill.skill_status=="Active").all()
+
+    if skills:
+        return jsonify (
+            {
+                "data": [skill.json() for skill in skills]
+            }
+        )
+    return jsonify(
+        {
+            "message": "There are no active skills for this position."
         }
     ), 404
 
