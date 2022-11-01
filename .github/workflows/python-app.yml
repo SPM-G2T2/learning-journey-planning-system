@@ -35,3 +35,4 @@ jobs:
       run: |
         cd server
         python course_test.py
+        python position_test.py

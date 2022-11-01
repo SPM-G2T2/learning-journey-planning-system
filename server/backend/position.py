@@ -34,7 +34,7 @@ def get_active_positions():
         )
     return jsonify(
         {
-            "message": "There are no positions."
+            "message": "There are no active positions."
         }
     ), 404
 
