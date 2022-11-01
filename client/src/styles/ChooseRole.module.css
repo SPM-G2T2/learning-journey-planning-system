@@ -1,5 +1,5 @@
 .content {
-    width: 64vw;
+    width: 66vw;
     margin: auto;
     margin-top: 3vh;
 }
@@ -25,7 +25,6 @@
 }
 
 .skill {
-    justify-content: space-between;
     margin-bottom: 4vh;
 }
 

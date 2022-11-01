@@ -34,5 +34,6 @@ jobs:
     - name: Run our unit tests
       run: |
         cd server
-        python course_test.py
         python position_test.py
+        python skill_test.py
+        python course_test.py

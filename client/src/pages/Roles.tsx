@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import RoleCourseCard from "../components/RoleCourseCard";
 import { Role } from "../types/Role";
-import styles from "../styles/RenderRoleCourseCard.module.css";
+import styles from "../styles/RenderHRCard.module.css";
 
 export default function Roles() {
 
