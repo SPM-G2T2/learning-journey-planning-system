@@ -6,6 +6,7 @@ import CreateRoles from "../components/CreateRoles";
 import PreviewRoles from "../components/PreviewRoles";
 import CreateSkills from "../components/CreateSkills";
 import PreviewSkills from "../components/PreviewSkills";
+import EditSkills from "../components/EditSkills";
 
 export default function ManageLJPS() {
   const [rolesStep, setRolesStep] = useState("view");
@@ -45,7 +46,7 @@ export default function ManageLJPS() {
             key: "edit skills",
             children:
               skillsStep === "form" ? (
-                <CreateSkills setForm={setForm} setNext={setSkillsStep} />
+                <EditSkills setForm={setForm} setNext={setSkillsStep} />
               ) : (
                 <PreviewSkills form={form} setNext={setSkillsStep} />
               ),
