@@ -1,7 +1,20 @@
 import { Row, Col, Button, Pagination, Steps } from "antd";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import Header from "../components/RolesHeader";
+import SkillCard from "../components/SkillCard";
+import { Skill } from "../types/Skill";
 
 export default function Roles2({ lj }: { lj?: boolean }) {
+  const [skills, setSkills] = useState<Skill[]>([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/skills/active")
+      .then((resp) => setSkills(resp.data.data))
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
     <>
       <Header />
@@ -47,6 +60,7 @@ export default function Roles2({ lj }: { lj?: boolean }) {
           </Row>
         </div>
       </div>
+      <Row>{skills && skills.map((skill) => <SkillCard skill={skill} lj={true}/>)}</Row>
       <Row style={{ marginTop: "6vh", fontWeight: 700 }}>
         <Col span={12} style={{ textAlign: "right" }}>
           <Pagination defaultCurrent={1} total={50} />
