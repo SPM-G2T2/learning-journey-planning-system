@@ -24,8 +24,6 @@ def create_app():
     
     # app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+mysqlconnector://{authDetails}/learning_journey_planning_system"
     app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+mysqlconnector://admin:{password}@learning-journey-planning-system.czgju3uctwbf.ap-southeast-1.rds.amazonaws.com:3306/learning_journey_planning_system"
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_recycle': 299}
     
     db.init_app(app)
 
