@@ -39,9 +39,13 @@ export default function SkillCard(props: {
       {props.skill.skill_desc.length > 200
         ? props.skill.skill_desc.substring(0, 200) + " ..."
         : props.skill.skill_desc}
+      {props.lj ? 
       <Button className={styles.more} onClick={() => setModalStatus(true)}>
         Read More
-      </Button>
+      </Button> :  
+      <Button className={styles.edit}>
+        Edit
+      </Button>}
       <GenericModal
         skill={props.skill}
         status={modalStatus}

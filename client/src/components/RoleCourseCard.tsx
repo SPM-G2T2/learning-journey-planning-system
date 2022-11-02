@@ -22,7 +22,11 @@ export default function RoleCourseCard(props: {
   function handleClose() {
     setModalStatus(false);
   }
+  const [isActive, setActive] = useState(false);
 
+  const toggleClass = () => {
+    setActive(!isActive);
+  };
   return (
     <div
       className={`${styles.horizontal} ${styles.card} ${props.course && props.course === props.selectedCourse && styles.cardSelected}}
@@ -32,26 +36,34 @@ export default function RoleCourseCard(props: {
       <div className={styles.horizontal}>
         { props.role ? ((Math.floor(Math.random() * 2) + 1) === 1 ? <img src={role1} alt="role icon" className={styles.image}/> : <img src={role2} alt="role icon" className={styles.image}/>): (props.course?.course_category === "Technical" ? <img src={course1} alt="role icon" className={styles.image}/> : <img src={course2} alt="role icon" className={styles.image}/>)}
         <div className={styles.cardRow}>
-          <p className={styles.title}>
+          <p className={styles.title} style={{lineHeight: '14px'}}>
             {props.role
               ? props.role.position_name
               :
-                props.course?.course_id +
+                props.course &&
+                props.course.course_name.length > 30 ? props.course?.course_id +
+                ": " +
+                props.course?.course_name.substring(0, 30) + " ..." : props.course?.course_id +
                 ": " +
                 props.course?.course_name}
               {props.edit && (props.role?.position_status || props.course?.course_status) === "Active" ? <Tag className={styles.activeStatus}>Active</Tag> : null}
-              {props.edit && (props.role?.position_status || props.course?.course_status) === "Retired" ? <Tag className={styles.inactiveStatus}>Retired</Tag> : null}
+              {props.edit && (props.role?.position_status || props.course?.course_status) === "Pending" ? <Tag className={styles.pendingStatus}>Pending</Tag> : null}
+              {props.edit && (props.role?.position_status || props.course?.course_status) === "Retired" ? <Tag className={styles.retiredStatus}>Retired</Tag> : null}
           </p> 
           <p style={{ color: '#374A59', fontWeight: 'bold' }}>
             {" "}
             {props.role ? "Department" : "Category"}: {props.role?.position_dept}{" "}
             {props.course?.course_category}
           </p>
-          <p style={{ color: '#374A59' }}>
+          <p style={{ color: '#374A59', lineHeight: '12px' }}>
             {" "}
             Description: {" "}
-            {props.role?.position_desc}
-            {props.course?.course_desc}
+            {props.role && props.role?.position_desc.length > 50
+            ? props.role?.position_desc.substring(0, 50) + " ..."
+            : props.role?.position_desc}
+             {props.course && props.course?.course_desc.length > 50
+            ? props.course?.course_desc.substring(0, 50) + " ..."
+            : props.course?.course_desc}
           </p>
         </div>
       </div>
