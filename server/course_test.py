@@ -30,6 +30,10 @@ class TestCourse(unittest.TestCase):
         response = self.client.get("/courses/all")
         self.assertEquals(response.json, {"message": "There are no courses."})
 
+    def test_get_all_active_courses(self):
+        response = self.client.get("/courses/active")
+        self.assertEquals(response.json, {"message": "There are no active courses."})
+
     def test_get_skills_by_course(self, course_id="1"):
         response = self.client.get("/courses/" + course_id + "/skills")
         self.assertEquals(response.json, {"message": "There are no skills taught in this course."})
