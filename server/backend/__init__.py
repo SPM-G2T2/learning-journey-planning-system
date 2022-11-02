@@ -9,12 +9,8 @@ db = SQLAlchemy()
 def create_app():
     app = Flask(__name__)
     CORS(app)
-    app.config['SECRET_KEY'] = '1234567890'
 
-    password = os.environ.get("PASSWORD")
-
-    if not password:
-        raise ValueError("No Password Set")
+    password = os.environ["PASSWORD"]
 
     # Mac
     # authDetails = "root:root@localhost:8889"
