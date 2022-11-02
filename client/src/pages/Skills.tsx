@@ -5,7 +5,7 @@ import Header from "../components/RolesHeader";
 import SkillCard from "../components/SkillCard";
 import { Skill } from "../types/Skill";
 
-export default function Roles2({ lj }: { lj?: boolean }) {
+export default function Skills() {
   const [skills, setSkills] = useState<Skill[]>([]);
 
   useEffect(() => {
@@ -60,7 +60,14 @@ export default function Roles2({ lj }: { lj?: boolean }) {
           </Row>
         </div>
       </div>
-      <Row>{skills && skills.map((skill) => <SkillCard skill={skill} lj={true}/>)}</Row>
+      <Row gutter={[16, 24]}>
+        {skills &&
+          skills.map((skill) => (
+            <Col span={8}>
+              <SkillCard skill={skill} lj={false} />
+            </Col>
+          ))}
+      </Row>
       <Row style={{ marginTop: "6vh", fontWeight: 700 }}>
         <Col span={12} style={{ textAlign: "right" }}>
           <Pagination defaultCurrent={1} total={50} />
