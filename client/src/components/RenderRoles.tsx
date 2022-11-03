@@ -31,7 +31,7 @@ export default function RenderRoles(props: any) {
           </Col>
         </Row>
       {roles && roles.map((role) => (
-        <RoleCourseCard role={role} edit={true}/>
+        <RoleCourseCard role={role} purpose="edit"/>
       ))}
       </div>
     </>

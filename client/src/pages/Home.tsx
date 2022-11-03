@@ -12,10 +12,14 @@ export default function Home({ lj }: { lj?: boolean }) {
   const [roles, setRoles] = useState<Role[]>([]);
   const [selectedRole, setSelectedRole] = useState<Role>();
   const [skills, setSkills] = useState<Skill[][]>([]);
+  const [staffSkillIDs, setStaffSkillIDs] = useState<Set<number>>();
+  const [selectedSkills, setSelectedSkills] =
+    useState<Set<{ skill_id: number; skill_name: string }>>();
+  const staffID = 140001;
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/positions/active")
+      .get("http://localhost:5000/positions/all")
       .then((resp) => setRoles(resp.data.data))
       .catch((err) => console.log(err));
   }, []);
@@ -52,34 +56,49 @@ export default function Home({ lj }: { lj?: boolean }) {
           </p>
         </div>
 
-        <div>
-          {step === 0 &&
-            roles.map((role) => (
-              <RoleCourseCard
-                role={role}
-                selectedRole={selectedRole}
-                handleClick={() => {
-                  if (selectedRole === role) {
-                    setSelectedRole(undefined);
-                  } else {
-                    setSelectedRole(role);
-                  }
-                }}
-                key={role.position_id}
-              />
-            ))}
+        {step === 0 &&
+          roles.map(
+            (role) =>
+              (role.position_status === "Active" ||
+                role.position_id === selectedRole?.position_id) && (
+                <RoleCourseCard
+                  role={role}
+                  purpose="lj"
+                  selectedRole={selectedRole}
+                  handleClick={() => {
+                    if (selectedRole === role) {
+                      setSelectedRole(undefined);
+                    } else {
+                      setSelectedRole(role);
+                    }
+                  }}
+                  key={role.position_id}
+                />
+              )
+          )}
 
-          {step === 1 &&
-            skills.map((row) => (
-              <Row className={styles.skill}>
-                {row.map((skill) => (
-                  <Col key={skill.skill_id}>
-                    <SkillCard skill={skill} lj={true} />
-                  </Col>
-                ))}
-              </Row>
-            ))}
-        </div>
+        {step === 1 &&
+          staffSkillIDs &&
+          skills.map((row, i) => (
+            <Row key={i}>
+              {row.map(
+                (skill) =>
+                  (skill.skill_status === "Active" ||
+                    selectedSkills?.has({
+                      skill_id: skill.skill_id,
+                      skill_name: skill.skill_name,
+                    })) && (
+                    <Col className={styles.skill} key={skill.skill_id}>
+                      <SkillCard
+                        skill={skill}
+                        purpose="lj"
+                        staffSkillIDs={staffSkillIDs}
+                      />
+                    </Col>
+                  )
+              )}
+            </Row>
+          ))}
       </div>
 
       <div className={styles.bottom}>
@@ -92,7 +111,7 @@ export default function Home({ lj }: { lj?: boolean }) {
                 .get(
                   "http://localhost:5000/positions/" +
                     selectedRole?.position_id +
-                    "/skills/active"
+                    "/skills"
                 )
                 .then((resp) => {
                   const rows = [];
@@ -109,6 +128,11 @@ export default function Home({ lj }: { lj?: boolean }) {
                   }
                   setSkills(rows);
                 })
+                .catch((err) => console.log(err));
+
+              axios
+                .get("http://localhost:5000/staff/" + staffID + "/skill_ids")
+                .then((resp) => setStaffSkillIDs(new Set(resp.data.data)))
                 .catch((err) => console.log(err));
             } else if (step === 1) {
             }

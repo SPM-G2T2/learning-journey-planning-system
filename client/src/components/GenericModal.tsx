@@ -17,6 +17,9 @@ export default function GenericModal(props: {
   role?: Role;
   course?: Course;
   skill?: Skill;
+  purpose: "view" | "lj" | "edit";
+  missing?: boolean;
+  retired: boolean;
   status: boolean;
   handleClose: () => void;
 }) {
@@ -99,11 +102,19 @@ export default function GenericModal(props: {
       >
         <p className={styles.title}>
           {generic?.title}
-          <Tag
-            className={`${styles.status} ${styles[generic?.status as string]}`}
-          >
-            {generic?.status}
-          </Tag>
+          {props.missing && (
+            <Tag className={`${styles.status} ${styles.Retired}`}>Missing</Tag>
+          )}
+          {props.retired && (
+            <Tag className={`${styles.status} ${styles.Retired}`}>Retired</Tag>
+          )}
+          {props.purpose === "edit" && (
+            <Tag
+              className={`${styles.status} ${styles[generic?.status as string]}`}
+            >
+              {generic?.status}
+            </Tag>
+          )}
         </p>
         <hr className={styles.hr}></hr>
 
@@ -144,7 +155,7 @@ export default function GenericModal(props: {
           </>
         )}
 
-        {(props.role || props.course) &&
+        {!props.skill &&
           skills.map((skill) => (
             <Badge
               key={skill.skill_id}

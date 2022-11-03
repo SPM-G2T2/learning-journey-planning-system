@@ -33,7 +33,7 @@ export default function Roles() {
           </b>
         </Row>
       {roles && roles.map((role) => (
-        <RoleCourseCard role={role}/>
+        <RoleCourseCard role={role} purpose="view"/>
       ))}
       </div>
     </>

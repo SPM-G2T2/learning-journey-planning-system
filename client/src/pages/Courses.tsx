@@ -106,6 +106,7 @@ export default function Courses({ lj }: { lj?: boolean }) {
             {courses.map((course) => (
               <RoleCourseCard
                 course={course}
+                purpose="view"
                 key={course.course_id}
                 handleClick={() => console.log("hi")}
               />

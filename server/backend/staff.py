@@ -1,23 +1,25 @@
 from flask import Blueprint, jsonify
 
-from .model import StaffSkill
+from . import db
+
+from .model import StaffSkill, Position, Skill, Course, LearningJourney
 
 staff = Blueprint("staff", __name__)
 
 
-@staff.route("<string:staff_id>/skills")
-def get_skills_by_staff(staff_id):
+@staff.route("<string:staff_id>/skill_ids")
+def get_skill_ids_by_staff(staff_id):
 
-    staffs = StaffSkill.query.filter_by(staff_id=staff_id).all()
-    if staffs:
+    staffSkills = StaffSkill.query.filter_by(staff_id=staff_id).all()
+    if staffSkills:
         return jsonify(
             {
-                "data": [staff.json() for staff in staffs]
+                "data": [staffSkill.skill_id for staffSkill in staffSkills]
             }
         )
     return jsonify(
         {
-            "message": "Staff not found."
+            "message": "Staff has no skills."
         }
     ), 404
 

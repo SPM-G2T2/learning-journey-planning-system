@@ -104,12 +104,12 @@ export default function Home() {
             }
             // console.log(uniquePositionSkills);
 
-            const responseForStaffSkills = await fetch("http://localhost:5000/staff/" + staffID + "/skills");
+            const responseForStaffSkills = await fetch("http://localhost:5000/staff/" + staffID + "/skill_ids");
             const jsonForStaffSkills = await responseForStaffSkills.json();
             console.log(jsonForStaffSkills.data);
             let uniqueStaffSkills = [];
-            for (let data of jsonForStaffSkills.data) {
-              uniqueStaffSkills.push(data.skill_id);
+            for (let skillId of jsonForStaffSkills.data) {
+              uniqueStaffSkills.push(skillId);
             }
             // console.log(uniqueStaffSkills);
 
