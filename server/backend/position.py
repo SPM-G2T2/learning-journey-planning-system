@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 
+import json
 from . import db
 
 from .model import Position, Skill, PositionSkill
@@ -47,6 +48,24 @@ def get_skills_by_position(position_id):
         return jsonify (
             {
                 "data": [skill.json() for skill in skills]
+            }
+        )
+    return jsonify(
+        {
+            "message": "There are no skills for this position."
+        }
+    ), 404
+
+
+@position.route('<int:position_id>/skill_ids')
+def get_skill_ids_by_position(position_id):
+    skills = db.session.query(Skill.skill_id).filter(PositionSkill.skill_id==Skill.skill_id, PositionSkill.position_id==position_id).all()
+    print(type(skills))
+
+    if skills:
+        return jsonify (
+            {
+                "data": [skill[0] for skill in skills]
             }
         )
     return jsonify(
@@ -114,13 +133,10 @@ def create_position():
 
 
 @position.route("assign_skill", methods=['POST'])
-def create_position_skill():
+def create_position_skill(position_id, skill_id):
 
-    position = request.get_json()
-    print(type(position)) #dict 
-    positionID = position['position_id']
-    skillID = position['skill_id']
-
+    positionID = position_id
+    skillID = skill_id
 
     print(positionID, skillID)
     position = PositionSkill(positionID, skillID)
@@ -141,3 +157,79 @@ def create_position_skill():
             "data": position.json()
         }
     ), 201
+
+
+@position.route("unassign_skill", methods=['DELETE'])
+def delete_position_skill(position_id, skill_id):
+
+    positionID = position_id
+    skillID = skill_id
+
+    position_to_delete = PositionSkill.query.filter_by(position_id=positionID, skill_id=skillID).delete()
+ 
+    try:
+        db.session.delete(position_to_delete)
+        db.session.commit()
+    except:
+        return jsonify(
+            {
+                "message": "An error occurred deleting the position and skill."
+            }
+        ), 500
+ 
+    return jsonify(
+        {
+            "message": "Position and Skill have been successfully deleted."
+        }
+    )
+
+
+@position.route("edit", methods=['PUT'])
+def edit_position():
+
+    position = request.get_json()
+    print(type(position)) #dict 
+    positionID = position['position_id']
+    positionName = position['position_name']
+    positionDesc = position['position_desc']
+    positionDept = position['position_dept']
+    positionRes = position['position_res']
+    positionStatus = position['position_status']
+    skillIDs = position['skill_ids']
+
+    print(skillIDs)
+
+    position_to_edit = Position.query.filter_by(position_id=positionID).first()
+    position_to_edit.position_name = positionName
+    position_to_edit.position_desc = positionDesc
+    position_to_edit.position_dept = positionDept
+    position_to_edit.position_res = positionRes
+    position_to_edit.position_status = positionStatus
+    
+    current_skills_response = get_skill_ids_by_position(positionID)
+    # print(json.loads(current_skills_response.data)['data'])
+    current_skills = json.loads(current_skills_response.data)['data']
+    # if not in skillIDs => to delete
+    # if not in current_skills => to add
+    for skill_to_add in skillIDs:
+        if skill_to_add not in current_skills:
+            create_position_skill(positionID, skill_to_add)
+    
+    for skill_to_delete in current_skills:
+        if skill_to_delete not in skillIDs:
+            delete_position_skill(positionID, skill_to_delete)
+ 
+    try:
+        db.session.commit()
+    except:
+        return jsonify(
+            {
+                "message": "An error occurred editting the position."
+            }
+        ), 500
+ 
+    return jsonify(
+        {
+            "message": "Position has been successfully editted."
+        }
+    )
