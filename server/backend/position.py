@@ -3,6 +3,7 @@ from flask import Blueprint, request, jsonify
 import json
 from . import db
 
+from sqlalchemy import func
 from .model import Position, Skill, PositionSkill
 
 position = Blueprint("position", __name__)
@@ -106,18 +107,27 @@ def create_position():
             }
         ), 400
 
+    max_position_id = db.session.query(func.max(Position.position_id)).first()
+    print(max_position_id)
+
+    positionID = max_position_id[0] + 1
     positionDesc = position['position_desc']
     positionDept = position['position_dept']
     positionRes = position['position_res']
     positionStatus = position['position_status']
+    positionSkills = position['position_skills']
 
-    print(positionName, positionDesc, positionDept, positionRes, positionStatus)
-    position = Position(positionName, positionDesc, positionDept, positionRes, positionStatus)
+    print(positionID, positionName, positionDesc, positionDept, positionRes, positionStatus)
+    position = Position(positionID, positionName, positionDesc, positionDept, positionRes, positionStatus)
     print(position)
- 
+
     try:
         db.session.add(position)
         db.session.commit()
+
+        for skillID in positionSkills:
+            create_position_skill(positionID, skillID)
+
     except:
         return jsonify(
             {

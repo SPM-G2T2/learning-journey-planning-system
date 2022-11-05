@@ -45,7 +45,6 @@ export default function CreateRoles(props: any) {
       }
 
       loadAsync();
-      console.log(form);
     }
    }, []);
 

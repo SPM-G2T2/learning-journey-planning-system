@@ -33,11 +33,17 @@ export default function PreviewRoles(props: any) {
     return false;
   }
 
+  var reformatSkills = [];
+  for (var skill of props.form.Skills) {
+    reformatSkills.push(skill.split("_")[0]);
+  };
+
   const position = {
     position_name: props.form.Title,
     position_desc: props.form.Description,
     position_dept: props.form.Department,
     position_res: responsibilities.substring(0, responsibilities.length - 1),
+    position_skills: reformatSkills,
     position_status: active,
   };
   console.log(position);
@@ -46,9 +52,7 @@ export default function PreviewRoles(props: any) {
     if (containsDuplicates(skillsArr)) {
       warningForDuplicateSkill();
     } else {
-      var positionId = null;
-
-      // insert into position table
+      // insert into Position and PositionSkill table
       fetch("http://localhost:5000/positions/create", {
         headers: {
           "Content-Type": "application/json",
@@ -68,38 +72,7 @@ export default function PreviewRoles(props: any) {
             error();
           }
         })
-        .then((data) => {
-          console.log(data);
-          if (data.code === 201) {
-            positionId = data.data.position_id;
-            console.log(positionId);
-
-            // insert into position skill table
-            for (var skill of props.form.Skills) {
-              const Position_Skill = {
-                position_id: positionId,
-                skill_id: skill.split("_")[0],
-              };
-
-              fetch("http://localhost:5000/positions/assign_skill", {
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                method: "POST",
-                body: JSON.stringify(Position_Skill),
-              })
-                .then((response) => {
-                  if (response.status === 201) {
-                    return response.json();
-                  } else if (response.status === 500) {
-                    console.log("An error occurred adding the position.");
-                  }
-                })
-                .then((data) => console.log(data))
-                .then((error) => console.log(error));
-            }
-          }
-        })
+        .then((data) => console.log(data))
         .then((error) => console.log(error));
     }
   };
