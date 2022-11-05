@@ -26,7 +26,7 @@ def get_all_skills():
 
 
 @skill.route("active")
-def get_all_active_courses():
+def get_all_active_skills():
     skills = Skill.query.filter_by(skill_status="Active").all()
 
     if skills: 

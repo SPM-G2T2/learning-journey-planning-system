@@ -29,3 +29,7 @@ class TestSkill(unittest.TestCase):
     def test_get_all_skills(self):
         response = self.client.get("/skills/all")
         self.assertEquals(response.json, {"message": "There are no skills."})
+
+    def test_get_all_active_skills(self):
+        response = self.client.get("/skills/active")
+        self.assertEquals(response.json, {"message": "There are no active skills."})
