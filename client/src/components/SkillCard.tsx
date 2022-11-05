@@ -5,6 +5,7 @@ import { Skill } from "../types/Skill";
 import GenericModal from "./GenericModal";
 
 export default function SkillCard(props: {
+  editClicked: (editSkill: Skill | undefined) => void;
   skill: Skill;
   lj: boolean;
   // role?: Role;
@@ -42,10 +43,10 @@ export default function SkillCard(props: {
       {props.lj ? 
       <Button className={styles.more} onClick={() => setModalStatus(true)}>
         Read More
-      </Button> :  
-      <Button className={styles.edit}>
-        Edit
-      </Button>}
+      </Button>:
+      <Button className={styles.edit} onClick={() => props.editClicked(props.skill) }>
+            Edit
+      </Button> }
       <GenericModal
         skill={props.skill}
         status={modalStatus}

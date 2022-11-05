@@ -13,6 +13,7 @@ export default function ManageLJPS() {
   const [rolesStep, setRolesStep] = useState("view");
   const [skillsStep, setSkillsStep] = useState("view");
   const [form, setForm] = useState(null);
+  const [values, setValues] = useState(null);
 
   return (
     <>
@@ -35,23 +36,12 @@ export default function ManageLJPS() {
             label: "Skills",
             key: "skills",
             children:
-              skillsStep === "view" ? <RenderSkills setSkillsStep={setSkillsStep}/> :
+              skillsStep === "view" ? <RenderSkills setSkillsStep={setSkillsStep} setValues={setValues}/> :
               (skillsStep === "form" ? (
-                <CreateSkills setSkillsStep={setSkillsStep} setForm={setForm} setNext={setSkillsStep} />
+                <CreateSkills setSkillsStep={setSkillsStep} setForm={setForm} setNext={setSkillsStep} setValues={values} />
               ) : (
-                <PreviewSkills form={form} setNext={setSkillsStep} />
+                <PreviewSkills form={form} setNext={setSkillsStep} values={values}/>
               )),
-          },
-          //  To shift later 
-          {
-            label: "Edit Skills",
-            key: "edit skills",
-            children:
-              skillsStep === "form" ? (
-                <EditSkills setForm={setForm} setNext={setSkillsStep} />
-              ) : (
-                <PreviewSkills form={form} setNext={setSkillsStep} />
-              ),
           },
           {
             label: "Courses",
