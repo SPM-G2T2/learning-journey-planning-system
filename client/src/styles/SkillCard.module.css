@@ -1,12 +1,13 @@
 .card {
     background-image: url(../assets/skill.png);
     background-size: cover;
-    width: 20vw;
-    height: 32vh;
+    width: 50vw;
+    height: 20vh;
     border-radius: 1.3vw;
     padding: 1vw;
     position: relative;
     margin: 0 1vw 0 1vw;
+    font-size: 2vh;
 }
 
 .title {
@@ -41,6 +42,6 @@
 .edit {
     position: absolute;
     right: 2vw;
-    bottom: 4vh;
+    bottom: 1vh;
     width: 5vw;
 }
