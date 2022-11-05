@@ -7,7 +7,6 @@ import CreateRoles from "../components/CreateRoles";
 import PreviewRoles from "../components/PreviewRoles";
 import CreateSkills from "../components/CreateSkills";
 import PreviewSkills from "../components/PreviewSkills";
-import EditSkills from "../components/EditSkills";
 
 export default function ManageLJPS() {
   const [rolesStep, setRolesStep] = useState("view");
