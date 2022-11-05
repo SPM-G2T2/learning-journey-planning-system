@@ -40,7 +40,7 @@ console.log(props.setSkills)
 
   console.log(skills);
 
-  function handleChange(event: any) {
+  function handleChange(event: any) { 
     console.log(event.target.value);
     console.log(event.target.value.length);
     var tempSearchedSkills: Skill[][] = [];
