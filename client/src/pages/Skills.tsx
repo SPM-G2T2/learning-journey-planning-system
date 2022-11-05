@@ -6,34 +6,65 @@ import { Skill } from "../types/Skill";
 import styles from "../styles/RenderHRCard.module.css";
 
 export default function Skills() {
-  const [step] = useState<number>(0);
-  const [skills, setSkills] = useState<Skill[]>([]);
-  const [searchedSkills, setSearchedSkills] = useState<Skill[]>([]);
+
+  const [skills, setSkills] = useState<Skill[][]>([]);
+  const [countSkills, setCountSkills] = useState();
+  const [searchedSkills, setSearchedSkills] = useState<Skill[][]>([]);
+  const [countSearchedSkills, setCountSearchedSkills] = useState<number>();
   const [search, setSearch] = useState<boolean>(false);
   
   useEffect(() => {
     axios
       .get("http://localhost:5000/skills/active")
-      .then((resp) => setSkills(resp.data.data))
+      .then((resp) => {
+        const rows = [];
+        let row = [];
+        for (let col of resp.data.data) {
+            if (row.length === 3) {
+                rows.push(row);
+                row = [];
+            }
+            row.push(col);
+        }
+        if (row.length > 0) {
+            rows.push(row);
+        }
+        setSkills(rows);
+        setCountSkills(resp.data.data.length);
+        })
       .catch((err) => console.log(err));
   }, []);
 
-    function handleChange(event: any) {
-      console.log(event.target.value);
-      console.log(event.target.value.length);
-      var tempSearchedRoles = [];
-      for (let skill of skills) {
-          if (skill.skill_name.toLowerCase().includes(event.target.value.toLowerCase())) {
-            tempSearchedRoles.push(skill);
-          }
-      }
-      setSearchedSkills(tempSearchedRoles);
-      console.log(searchedSkills);
-      setSearch(true);
-      if (event.target.value.length === 0) {
-          setSearch(false);
-      } 
+  function handleChange(event: any) {
+    console.log(event.target.value);
+    console.log(event.target.value.length);
+    var tempSearchedSkills: Skill[][] = [];
+    var tempRow: Skill[] = [];
+    var count: number = 0;
+    for (let row of skills) { 
+        for (let skill of row) {
+            if (skill.skill_name.toLowerCase().includes(event.target.value.toLowerCase())) {
+                if (tempRow.length === 3) {
+                    tempSearchedSkills.push(tempRow);
+                    count += 3;
+                    tempRow = [];
+                }
+                tempRow.push(skill);
+            }
+        }
     }
+    if (tempRow.length > 0) {
+        tempSearchedSkills.push(tempRow);
+        count += tempRow.length;
+    }
+    setSearchedSkills(tempSearchedSkills);
+    console.log(searchedSkills);
+    setSearch(true);
+    setCountSearchedSkills(count);
+    if (event.target.value.length === 0) {
+        setSearch(false);
+    } 
+  }
 
     return (
     <>
@@ -45,19 +76,28 @@ export default function Skills() {
           <Input placeholder="Enter search" className={styles.search} onChange={handleChange}/>
         </Col>
       </Row>
-      <div style={{  width: '50vw', margin: 'auto', marginTop: '10vh' }}>
+      <div style={{  width: '66vw', margin: 'auto', marginTop: '10vh' }}>
         <Row style={{ marginBottom: '5vh' }}>
           <b>
-            {search ? searchedSkills.length : skills.length} Roles Displayed
+            {search ? countSearchedSkills : countSkills} Skills Displayed
           </b>
         </Row>
-      <Row gutter={[0, 30]}>
-      { search ? searchedSkills && searchedSkills.map((searchedSkill) => (
-        <SkillCard skill={searchedSkill} lj={false}/>
-      )) : skills && skills.map((skill) => (
-        <SkillCard skill={skill} lj={false}/>
-      )) }
-      </Row>
+       {search ? searchedSkills && searchedSkills.map((row) => (
+            <Row className={styles.skill}>
+                {row.map((skill: Skill) => (
+                <Col key={skill.skill_id}>
+                    <SkillCard skill={skill} lj={false}/>
+                </Col>
+                ))}
+            </Row>)) : skills && skills.map((row) => (
+            <Row className={styles.skill}>
+                {row.map((skill) => (
+                <Col key={skill.skill_id}>
+                    <SkillCard skill={skill} lj={false}/>
+                </Col>
+                ))}
+            </Row>
+            ))}
       </div>
     </>
   );
