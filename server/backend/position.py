@@ -110,7 +110,11 @@ def create_position():
     max_position_id = db.session.query(func.max(Position.position_id)).first()
     print(max_position_id)
 
-    positionID = max_position_id[0] + 1
+    if max_position_id[0] == None:
+        positionID = 1
+    else:
+        positionID = max_position_id[0] + 1
+
     positionDesc = position['position_desc']
     positionDept = position['position_dept']
     positionRes = position['position_res']
@@ -142,7 +146,7 @@ def create_position():
     ), 201
 
 
-@position.route("assign_skill", methods=['POST'])
+# @position.route("assign_skill", methods=['POST'])
 def create_position_skill(position_id, skill_id):
 
     positionID = position_id
@@ -169,7 +173,7 @@ def create_position_skill(position_id, skill_id):
     ), 201
 
 
-@position.route("unassign_skill", methods=['DELETE'])
+# @position.route("unassign_skill", methods=['DELETE'])
 def delete_position_skill(position_id, skill_id):
 
     positionID = position_id
@@ -229,18 +233,21 @@ def edit_position():
     position_to_edit.position_status = positionStatus
     
     current_skills_response = get_skill_ids_by_position(positionID)
+    print(current_skills_response)
     # print(json.loads(current_skills_response.data)['data'])
+    # if type(current_skills_response) == dict:
     current_skills = json.loads(current_skills_response.data)['data']
+    current_skills_set = set(current_skills)
     # if not in skillIDs => to delete
     # if not in current_skills => to add
     for skill_to_add in skillIDs:
-        if skill_to_add not in current_skills:
+        if skill_to_add not in current_skills_set:
             create_position_skill(positionID, skill_to_add)
     
     for skill_to_delete in current_skills:
         if skill_to_delete not in skillIDs:
             delete_position_skill(positionID, skill_to_delete)
- 
+
     try:
         db.session.commit()
     except:
