@@ -6,6 +6,7 @@ export default function PreviewRoles(props: any) {
   const { Paragraph } = Typography;
 
   console.log(props.form);
+  console.log(props.values);
 
   var responsibilities = "";
   for (var resp of props.form.Responsibilities) {
@@ -35,51 +36,94 @@ export default function PreviewRoles(props: any) {
 
   var reformatSkills = [];
   for (var skill of props.form.Skills) {
-    reformatSkills.push(skill.split("_")[0]);
+    reformatSkills.push(parseInt(skill.split("_")[0]));
   };
 
-  const position = {
-    position_name: props.form.Title,
-    position_desc: props.form.Description,
-    position_dept: props.form.Department,
-    position_res: responsibilities.substring(0, responsibilities.length - 1),
-    position_skills: reformatSkills,
-    position_status: active,
-  };
+  var position = {}
+  if (props.values === null) {
+    position = {
+      position_name: props.form.Title,
+      position_desc: props.form.Description,
+      position_dept: props.form.Department,
+      position_res: responsibilities.substring(0, responsibilities.length - 1),
+      position_skills: reformatSkills,
+      position_status: active,
+    };
+  } else {
+    position = {
+      position_id: props.values.position_id,
+      position_name: props.form.Title,
+      position_desc: props.form.Description,
+      position_dept: props.form.Department,
+      position_res: responsibilities.substring(0, responsibilities.length - 1),
+      position_skills: reformatSkills,
+      position_status: active,
+    };
+  }
+ 
   console.log(position);
 
   const submitForm = () => {
+
     if (containsDuplicates(skillsArr)) {
       warningForDuplicateSkill();
+
     } else {
-      // insert into Position and PositionSkill table
-      fetch("http://localhost:5000/positions/create", {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify(position),
-      })
-        .then((response) => {
-          if (response.status === 201) {
-            success();
-            return response.json();
-          } else if (response.status === 400) {
-            console.log("Position Name already exists.");
-            warningForRoleName();
-          } else if (response.status === 500) {
-            console.log("An error occurred creating the position.");
-            error();
-          }
-        })
-        .then((data) => console.log(data))
-        .then((error) => console.log(error));
+
+        if (props.values === null) {
+          // insert into Position and PositionSkill table
+          fetch("http://localhost:5000/positions/create", {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            method: "POST",
+            body: JSON.stringify(position),
+          })
+            .then((response) => {
+              if (response.status === 201) {
+                success();
+                return response.json();
+              } else if (response.status === 400) {
+                console.log("Position Name already exists.");
+                warningForRoleName();
+              } else if (response.status === 500) {
+                console.log("An error occurred creating the position.");
+                error();
+              }
+            })
+          .then((data) => console.log(data))
+          .then((error) => console.log(error));
+        } else {
+
+          fetch("http://localhost:5000/positions/edit", {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            method: "PUT",
+            body: JSON.stringify(position),
+          })
+            .then((response) => {
+              if (response.status === 200) {
+                success();
+                return response.json();
+              } else if (response.status === 400) {
+                console.log("Position Name already exists.");
+                warningForRoleName();
+              } else if (response.status === 500) {
+                console.log("An error occurred updating the position.");
+                error();
+              }
+            })
+          .then((data) => console.log(data))
+          .then((error) => console.log(error));
+
+        }
     }
   };
 
   const success = () => {
     Modal.success({
-      content: "Role has been successfully created!",
+      content: props.values === null ? "Role has been successfully created!" : "Role has been successfully updated!",
     });
     goToForm();
   };
@@ -99,12 +143,16 @@ export default function PreviewRoles(props: any) {
 
   const error = () => {
     Modal.error({
-      content: "An error occurred creating the role! Please try again later.",
+      content: props.values === null ? "An error occurred creating the role! Please try again later." : "An error occurred updating the role! Please try again later.",
     });
   };
 
   const goToForm = () => {
-    props.setNext("form");
+    if (props.values === null) {
+      props.setNext("form");
+    } else {
+      props.setNext("view");
+    }
   };
 
   return (

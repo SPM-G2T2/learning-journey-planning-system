@@ -35,7 +35,7 @@ export default function CreateRoles(props: any) {
             Department: props.setValues.position_dept, 
             Responsibilities: props.setValues.position_res.split(";"),
             Skills: reformatSkills,
-            Active: props.setValues.position_status
+            Active: props.setValues.position_status === "Active" ? true : false
           });
 
         } catch (error) {

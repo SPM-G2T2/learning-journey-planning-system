@@ -28,7 +28,7 @@ export default function ManageLJPS() {
               (rolesStep === "form" ? (
                 <CreateRoles setRolesStep={setRolesStep} setForm={setForm} setNext={setRolesStep} setValues={values}/>
               ) : (
-                <PreviewRoles form={form} setNext={setRolesStep} />
+                <PreviewRoles form={form} setNext={setRolesStep} values={values}/>
               )),
           },
           {

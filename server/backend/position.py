@@ -201,11 +201,23 @@ def edit_position():
     print(type(position)) #dict 
     positionID = position['position_id']
     positionName = position['position_name']
+
+    positions = Position.query.filter_by(position_name=positionName)
+    print(positions)
+
+    for position in positions:
+        if position.position_id != positionID:
+            return jsonify(
+                {
+                    "message": "Position Name already exists."
+                }
+            ), 400
+
     positionDesc = position['position_desc']
     positionDept = position['position_dept']
     positionRes = position['position_res']
     positionStatus = position['position_status']
-    skillIDs = position['skill_ids']
+    skillIDs = position['position_skills']
 
     print(skillIDs)
 
