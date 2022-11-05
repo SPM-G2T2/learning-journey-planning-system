@@ -275,6 +275,15 @@ def edit_skill():
 
     print(new_skill_courses)
 
+    #check if edited name is duplicated
+
+    if (Skill.query.filter_by(skill_name = string.capwords(new_skill_name)).first()): 
+        return jsonify( 
+            {
+                "message": "skill already exists." 
+            } 
+        ), 400 
+
     #Edit skill in skill table
 
     skill_to_edit = Skill.query.filter_by(skill_id=skill_id).first()
