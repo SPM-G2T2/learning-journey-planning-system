@@ -94,7 +94,7 @@ export default function PreviewRoles(props: any) {
           .then((data) => console.log(data))
           .then((error) => console.log(error));
         } else {
-
+          // Update Position and PositionSkill table
           fetch("http://localhost:5000/positions/edit", {
             headers: {
               "Content-Type": "application/json",

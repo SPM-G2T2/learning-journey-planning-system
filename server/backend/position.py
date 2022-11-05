@@ -205,8 +205,8 @@ def edit_position():
     positions = Position.query.filter_by(position_name=positionName)
     print(positions)
 
-    for position in positions:
-        if position.position_id != positionID:
+    for position_in_db in positions:
+        if position_in_db.position_id != positionID:
             return jsonify(
                 {
                     "message": "Position Name already exists."
