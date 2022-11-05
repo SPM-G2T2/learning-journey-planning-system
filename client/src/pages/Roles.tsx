@@ -10,7 +10,10 @@ export default function Roles() {
     const [roles, setRoles] = useState<Role[]>([]);
     const [searchedRoles, setSearchedRoles] = useState<Role[]>([]);
     const [search, setSearch] = useState<boolean>(false);
-  
+
+    const callback = () => {
+    }
+    
     useEffect(() => {
       axios
       .get("http://localhost:5000/positions/active")
@@ -52,9 +55,9 @@ export default function Roles() {
           </b>
         </Row>
       { search ? searchedRoles && searchedRoles.map((searchedRole) => (
-        <RoleCourseCard role={searchedRole} edit={false}/>
+        <RoleCourseCard role={searchedRole} edit={false} editClicked={callback}  />
       )) : roles && roles.map((role) => (
-        <RoleCourseCard role={role} edit={false}/>
+        <RoleCourseCard role={role} edit={false} editClicked={callback}  />
       )) }
       </div>
     </>

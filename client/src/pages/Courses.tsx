@@ -11,6 +11,9 @@ export default function Courses() {
     const [searchedCourses, setSearchedCourses] = useState<Course[]>([]);
     const [search, setSearch] = useState<boolean>(false);
 
+    const callback = () => {
+    }
+
     useEffect(() => {
       axios
       .get("http://localhost:5000/courses/active")
@@ -52,9 +55,9 @@ export default function Courses() {
           </b>
         </Row>
       { search ? searchedCourses && searchedCourses.map((searchedCourse) => (
-        <RoleCourseCard course={searchedCourse} edit={false}/>
+        <RoleCourseCard course={searchedCourse} edit={false} editClicked={callback}  />
       )) : courses && courses.map((course) => (
-        <RoleCourseCard course={course} edit={false}/>
+        <RoleCourseCard course={course} edit={false} editClicked={callback}  />
       )) }
       </div>
     </>

@@ -10,6 +10,7 @@ import { Course } from "../types/Course";
 import GenericModal from "./GenericModal";
 
 export default function RoleCourseCard(props: {
+  editClicked: (editRole: Role | undefined) => void;
   edit?: boolean;
   role?: Role;
   course?: Course;
@@ -17,6 +18,7 @@ export default function RoleCourseCard(props: {
   selectedCourse?: Course;
   handleClick?: () => void;
 }) {
+
   const [modalStatus, setModalStatus] = useState<boolean>(false);
 
   function handleClose() {
@@ -27,6 +29,7 @@ export default function RoleCourseCard(props: {
   const toggleClass = () => {
     setActive(!isActive);
   };
+
   return (
     <div
       className={`${styles.horizontal} ${styles.card} ${props.course && props.course === props.selectedCourse && styles.cardSelected}}
@@ -68,7 +71,7 @@ export default function RoleCourseCard(props: {
         </div>
       </div>
       { props.edit && props.role ? 
-      <Button className={styles.edit}>
+      <Button className={styles.edit} onClick={() => props.editClicked(props.role) }>
         Edit
       </Button>
       :

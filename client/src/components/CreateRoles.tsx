@@ -1,12 +1,53 @@
 import { Typography, Form, Button, Switch, Row, Col } from "antd";
+import { useEffect } from "react";
 import InputField from "./InputField";
 import MultipleInputFields from "./MultipleInputFields";
 import InputDropdown from "./InputDropdown";
 import styles from "../styles/ManageLJPS.module.css";
 
 export default function CreateRoles(props: any) {
+
+  console.log(props.setValues);
+
   const { Title } = Typography;
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    console.log(props.setValues);
+    if (props.setValues !== null) {
+
+      const loadAsync = async () => {
+
+        try {
+          const response = await fetch("http://localhost:5000/positions/" + props.setValues.position_id + "/skills");
+          const skills = await response.json();
+          console.log(skills.data);
+
+          var reformatSkills: string[] = [];
+
+          for (let skill of skills.data) {
+            reformatSkills.push(skill.skill_id + "_" + skill.skill_name);
+          }
+
+          form.setFieldsValue({
+            Title: props.setValues.position_name,
+            Description: props.setValues.position_desc,
+            Department: props.setValues.position_dept, 
+            Responsibilities: props.setValues.position_res.split(";"),
+            Skills: reformatSkills,
+            Active: props.setValues.position_status
+          });
+
+        } catch (error) {
+          console.log(error);
+        }
+       
+      }
+
+      loadAsync();
+      console.log(form);
+    }
+   }, []);
 
   const onFinishFailed = (errorInfo: any) => {
     console.log("Errors:", errorInfo);
@@ -30,7 +71,7 @@ export default function CreateRoles(props: any) {
         className={`${styles.tabTitleColor} ${styles.tabTitleSpacing}`}
         level={4}
       >
-        Create a new role
+        {props.setValues === null ? 'Create a new role' : 'Edit role'}
       </Title>
       <Form
         name="userForm"
@@ -65,7 +106,7 @@ export default function CreateRoles(props: any) {
           <Col>
             <Form.Item>
               <Button type="primary" htmlType="submit">
-                Create role
+              {props.setValues === null ? 'Create role' : 'Edit role'}
               </Button>
             </Form.Item>
           </Col>

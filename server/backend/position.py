@@ -165,7 +165,7 @@ def delete_position_skill(position_id, skill_id):
     positionID = position_id
     skillID = skill_id
 
-    position_to_delete = PositionSkill.query.filter_by(position_id=positionID, skill_id=skillID).delete()
+    position_to_delete = PositionSkill.query.filter_by(position_id=positionID, skill_id=skillID).first()
  
     try:
         db.session.delete(position_to_delete)
