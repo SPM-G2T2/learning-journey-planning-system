@@ -18,15 +18,27 @@ export default function PreviewSkills(props: any) {
     courses.push(course.split("_")[0]);
   }
 
-  const skill = {
+  var skill = {}
+  if (props.values === null) {
+  skill = {
     skill_name: props.form.Title,
     skill_desc: props.form.Description,
     skill_status: active,
     courses: courses,
   };
+  } else {
+  skill = {
+    skill_id: props.values.skill_id,
+    skill_name: props.form.Title,
+    skill_desc: props.form.Description,
+    skill_status: active,
+    courses: courses,
+  };
+  }
   console.log(skill);
 
   const submitSkill = async () => {
+    if (props.values === null) {
     axios
       .post("http://127.0.0.1:5000/skills/add", skill)
       .then((response: AxiosResponse) => {
@@ -52,11 +64,37 @@ export default function PreviewSkills(props: any) {
           console.log("Network error");
         }
       });
-  };
+  } else{
+    axios
+    .put("http://127.0.0.1:5000/skills/edit_skill", skill)
+    .then((response: AxiosResponse) => {
+      console.log(response.status);
+      success();
+    })
+    .catch((reason: AxiosError) => {
+      console.log(reason.response!.status);
+      if (reason.response!.status === 406) {
+        warning2();
+        console.log("Duplicated course");
+      }
+      if (reason.response!.status === 400) {
+        warning();
+        console.log("Skill already exist");
+      }
+      if (
+        reason.response!.status !== 400 &&
+        reason.response!.status !== 406
+      )
+      {
+        error();
+        console.log("Network error");
+      }
+    });
+  }}
 
   const success = () => {
     Modal.success({
-      content: "Skill has been successfully created!",
+      content: props.values === null ? "Skill has been successfully created!" : "Skill has been successfully updated!",
     });
     goToForm();
   };
@@ -76,12 +114,16 @@ export default function PreviewSkills(props: any) {
 
   const error = () => {
     Modal.error({
-      content: "An error occurred creating the skill! Please try again later.",
+      content: props.values === null ? "An error occurred creating the skill! Please try again later." : "An error occurred updating the skill! Please try again later.",
     });
   };
 
   const goToForm = () => {
-    props.setNext("form");
+    if (props.values === null) {
+      props.setNext("form");
+    } else {
+      props.setNext("view");
+    }
   };
 
   return (

@@ -1,6 +1,28 @@
 from . import db
 
 
+class Staff(db.Model):
+    __tablename__ = "staff"
+
+    staff_id = db.Column(db.String(20), primary_key=True)
+    staff_fname = db.Column(db.String(50), nullable=False)
+    staff_lname = db.Column(db.String(50), nullable=False)
+    dept = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(50), nullable=False)
+    role_id = db.Column(db.Integer, nullable=False)
+
+    def __init__(self, staff_id, staff_fname, staff_lname, dept, email, role_id):
+        self.staff_id = staff_id
+        self.staff_fname = staff_fname
+        self.staff_lname = staff_lname
+        self.dept = dept
+        self.email = email
+        self.role_id = role_id
+
+    def json(self): 
+        return { "staff_id": self.staff_id, "staff_fname": self.staff_fname, "staff_lname": self.staff_lname, "dept": self.dept, "email": self.email, "role_id": self.role_id }
+
+
 class Position(db.Model):
     __tablename__ = "position"
 
@@ -114,7 +136,8 @@ class LearningJourney(db.Model):
     skill_id = db.Column(db.Integer, primary_key=True)
     course_id = db.Column(db.String(20), primary_key=True)
 
-    def __init__(self, staff_id, position_id, skill_id, course_id):
+    def __init__(self, lj_id, staff_id, position_id, skill_id, course_id):
+        self.lj_id = lj_id
         self.staff_id = staff_id
         self.position_id = position_id
         self.skill_id = skill_id

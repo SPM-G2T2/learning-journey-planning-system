@@ -1,11 +1,50 @@
 import { Typography, Form, Button, Switch, Row, Col } from "antd";
+import { useEffect } from "react";
 import InputField from "./InputField";
 import InputDropdown from "./InputDropdown";
 import styles from "../styles/ManageLJPS.module.css";
+import DeleteSkillBtn from "./DeleteSkill";
+
 
 export default function CreateSkills(props: any) {
   const { Title } = Typography;
-  const [form2] = Form.useForm();
+  const [form] = Form.useForm();
+
+  console.log(props.setValues);
+
+  useEffect(() => {
+    console.log(props.setValues);
+    if (props.setValues !== null) {
+
+      const loadAsync = async () => {
+
+        try {
+          const response = await fetch("http://localhost:5000/skills/" + props.setValues.skill_id + "/courses");
+          const courses = await response.json();
+          console.log(courses.data);
+
+          var reformatCourses: string[] = [];
+
+          for (let course of courses.data) {
+            reformatCourses.push(course.course_id + "_" + course.course_name);
+          }
+
+          form.setFieldsValue({
+            Title: props.setValues.skill_name,
+            Description: props.setValues.skill_desc,
+            Courses: reformatCourses,
+            Active: props.setValues.skill_status === "Active" ? true : false
+          });
+
+        } catch (error) {
+          console.log(error);
+        }
+       
+      }
+
+      loadAsync();
+    }
+   }, []);
 
   const onFinishFailed = (errorInfo: any) => {
     console.log("Errors:", errorInfo);
@@ -27,7 +66,7 @@ export default function CreateSkills(props: any) {
         className={`${styles.tabTitleColor} ${styles.tabTitleSpacing}`}
         level={4}
       >
-        Create a new skill
+        {props.setValues === null ? 'Create a new skill' : 'Edit skill'}
       </Title>
       <Form
         name="userForm"
@@ -35,7 +74,7 @@ export default function CreateSkills(props: any) {
         wrapperCol={{ span: 10 }}
         layout="horizontal"
         initialValues={{ remember: true }}
-        form={form2}
+        form={form}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         style={{ marginLeft: 10 }}
@@ -57,7 +96,7 @@ export default function CreateSkills(props: any) {
           <Col>
             <Form.Item>
               <Button type="primary" htmlType="submit">
-                Create skill
+              {props.setValues === null ? 'Create skill' : 'Edit skill'}
               </Button>
             </Form.Item>
           </Col>

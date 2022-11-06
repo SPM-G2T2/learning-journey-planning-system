@@ -7,6 +7,8 @@ import styles from "../styles/RenderHRCard.module.css";
 
 export default function Skills() {
 
+  const callback =() =>{
+  }
   const [skills, setSkills] = useState<Skill[][]>([]);
   const [countSkills, setCountSkills] = useState();
   const [searchedSkills, setSearchedSkills] = useState<Skill[][]>([]);
@@ -86,14 +88,14 @@ export default function Skills() {
             <Row className={styles.skill}>
                 {row.map((skill: Skill) => (
                 <Col key={skill.skill_id}>
-                    <SkillCard skill={skill} lj={false}/>
+                    <SkillCard skill={skill} lj={false} editClicked={callback}/>
                 </Col>
                 ))}
             </Row>)) : skills && skills.map((row) => (
             <Row className={styles.skill}>
                 {row.map((skill) => (
                 <Col key={skill.skill_id}>
-                    <SkillCard skill={skill} lj={false}/>
+                    <SkillCard skill={skill} lj={false} editClicked={callback}/>
                 </Col>
                 ))}
             </Row>

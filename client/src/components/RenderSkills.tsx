@@ -12,6 +12,11 @@ export default function RenderSkills(props: any) {
   const [searchedSkills, setSearchedSkills] = useState<Skill[][]>([]);
   const [search, setSearch] = useState<boolean>(false);
 
+  const callback = (editSkill: Skill | undefined) => {
+    props.setValues(editSkill);
+    props.setSkillsStep("form");
+  }
+console.log(props.setSkills)
   useEffect(() => {
     axios
     .get("http://localhost:5000/skills/all")
@@ -35,7 +40,7 @@ export default function RenderSkills(props: any) {
 
   console.log(skills);
 
-  function handleChange(event: any) {
+  function handleChange(event: any) { 
     console.log(event.target.value);
     console.log(event.target.value.length);
     var tempSearchedSkills: Skill[][] = [];
@@ -70,7 +75,7 @@ export default function RenderSkills(props: any) {
                     <Input placeholder="Enter search" className={styles.search} onChange={handleChange}/>
                 </Col>
                 <Col span={1} offset={11}>
-                    <Button type="primary" onClick={() => props.setSkillsStep("form")}>Create skill</Button>
+                    <Button type="primary" onClick={() => props.setSkillsStep("form") & props.setValues(null)}>Create skill</Button>
                 </Col>
             </Row>
         {/* </div> */}
@@ -79,14 +84,14 @@ export default function RenderSkills(props: any) {
             <Row className={styles.skill}>
                 {row.map((skill) => (
                 <Col key={skill.skill_id}>
-                    <SkillCard skill={skill} lj={false}/>
+                    <SkillCard skill={skill} lj={false} editClicked={callback}/>
                 </Col>
                 ))}
             </Row>)) : skills && skills.map((row) => (
             <Row className={styles.skill}>
                 {row.map((skill) => (
                 <Col key={skill.skill_id}>
-                    <SkillCard skill={skill} lj={false}/>
+                    <SkillCard skill={skill} lj={false} editClicked={callback}/>
                 </Col>
                 ))}
             </Row>

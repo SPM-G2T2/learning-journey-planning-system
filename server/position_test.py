@@ -24,6 +24,7 @@ class TestPosition(unittest.TestCase):
         ctx.push()
         with ctx:
             db.create_all()
+            
             position_1 = Position(
                 position_id = 1,
                 position_name = "Software Engineer", 
@@ -181,7 +182,7 @@ class TestPosition(unittest.TestCase):
 
     def test_edit_position(self):
 
-        json_data_after = {
+        json_data = {
             "position_id": 2,
             "position_name": "Product Designer", 
             "position_desc": "Design components and user journey", 
@@ -191,7 +192,7 @@ class TestPosition(unittest.TestCase):
             "position_skills": [1, 2, 3, 4]
         }
 
-        response = self.client.put("/positions/edit", data=json.dumps(json_data_after), content_type="application/json")
+        response = self.client.put("/positions/edit", data=json.dumps(json_data), content_type="application/json")
 
         self.assertTrue(response.status_code == 200)
         self.assertEquals(response.json['message'], "Position has been successfully editted.")

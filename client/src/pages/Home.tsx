@@ -13,6 +13,9 @@ export default function Home({ lj }: { lj?: boolean }) {
   const [selectedRole, setSelectedRole] = useState<Role>();
   const [skills, setSkills] = useState<Skill[][]>([]);
 
+  const callback2 = () => {
+  }
+
   const [rolesStep, setRolesStep] = useState("view");
 
   const callback = () => {
@@ -81,7 +84,7 @@ export default function Home({ lj }: { lj?: boolean }) {
               <Row className={styles.skill}>
                 {row.map((skill) => (
                   <Col key={skill.skill_id}>
-                    <SkillCard skill={skill} lj={true} />
+                    <SkillCard skill={skill} lj={true} editClicked={callback2}/>
                   </Col>
                 ))}
               </Row>
