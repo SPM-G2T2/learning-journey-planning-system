@@ -19,7 +19,7 @@ interface DataType {
 
 export default function Home() {
 
-  const [staffID] = useState(1);
+  const [staffID] = useState(140001);
   const [ljData, setLjData] = useState();
   const [tableData, setTableData] = useState<DataType[]>([]);
 

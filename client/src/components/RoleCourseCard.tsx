@@ -10,22 +10,24 @@ import { Course } from "../types/Course";
 import GenericModal from "./GenericModal";
 
 export default function RoleCourseCard(props: {
+  editClicked: (editRole: Role | undefined) => void;
+  edit?: boolean;
   role?: Role;
   course?: Course;
-  purpose: "view" | "lj" | "edit";
   selectedRole?: Role;
   selectedCourse?: Course;
   handleClick?: () => void;
 }) {
   const [modalStatus, setModalStatus] = useState<boolean>(false);
-  const retired =
-    props.purpose === "lj" &&
-    (props.role?.position_status === "Retired" ||
-      props.course?.course_status === "Retired");
 
   function handleClose() {
     setModalStatus(false);
   }
+  const [isActive, setActive] = useState(false);
+
+  const toggleClass = () => {
+    setActive(!isActive);
+  };
 
   return (
     <div
@@ -52,19 +54,29 @@ export default function RoleCourseCard(props: {
           <img src={course2} alt="role icon" className={styles.image} />
         )}
         <div className={styles.cardRow}>
-          <p className={styles.title}>
+          <p className={styles.title} style={{ lineHeight: "14px" }}>
             {props.role
               ? props.role.position_name
+              : props.course && props.course.course_name.length > 30
+              ? props.course?.course_id +
+                ": " +
+                props.course?.course_name.substring(0, 30) +
+                " ..."
               : props.course?.course_id + ": " + props.course?.course_name}
-            {props.purpose === "edit" &&
+            {props.edit &&
             (props.role?.position_status || props.course?.course_status) ===
               "Active" ? (
               <Tag className={styles.activeStatus}>Active</Tag>
             ) : null}
-            {props.purpose === "edit" &&
+            {props.edit &&
+            (props.role?.position_status || props.course?.course_status) ===
+              "Pending" ? (
+              <Tag className={styles.pendingStatus}>Pending</Tag>
+            ) : null}
+            {props.edit &&
             (props.role?.position_status || props.course?.course_status) ===
               "Retired" ? (
-              <Tag className={styles.inactiveStatus}>Retired</Tag>
+              <Tag className={styles.retiredStatus}>Retired</Tag>
             ) : null}
           </p>
           <p style={{ color: "#374A59", fontWeight: "bold" }}>
@@ -72,15 +84,25 @@ export default function RoleCourseCard(props: {
             {props.role ? "Department" : "Category"}:{" "}
             {props.role?.position_dept} {props.course?.course_category}
           </p>
-          <p style={{ color: "#374A59" }}>
+          <p style={{ color: "#374A59", lineHeight: "12px" }}>
             {" "}
-            Description: {props.role?.position_desc}
-            {props.course?.course_desc}
+            Description:{" "}
+            {props.role && props.role?.position_desc.length > 50
+              ? props.role?.position_desc.substring(0, 50) + " ..."
+              : props.role?.position_desc}
+            {props.course && props.course?.course_desc.length > 50
+              ? props.course?.course_desc.substring(0, 50) + " ..."
+              : props.course?.course_desc}
           </p>
         </div>
       </div>
-      {props.purpose === "edit" && props.role ? (
-        <Button className={styles.edit}>Edit</Button>
+      {props.edit && props.role ? (
+        <Button
+          className={styles.edit}
+          onClick={() => props.editClicked(props.role)}
+        >
+          Edit
+        </Button>
       ) : (
         <Button className={styles.more} onClick={() => setModalStatus(true)}>
           Read More
@@ -89,8 +111,6 @@ export default function RoleCourseCard(props: {
       <GenericModal
         role={props.role}
         course={props.course}
-        purpose={props.purpose}
-        retired={retired}
         status={modalStatus}
         handleClose={handleClose}
       />

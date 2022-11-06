@@ -1,4 +1,4 @@
-import { Typography, Form, Button, Switch, Row } from "antd";
+import { Typography, Form, Button, Switch, Row, Col } from "antd";
 import InputField from "./InputField";
 import InputDropdown from "./InputDropdown";
 import styles from "../styles/ManageLJPS.module.css";
@@ -47,11 +47,20 @@ export default function CreateSkills(props: any) {
           <Switch />
         </Form.Item>
         <Row style={{ justifyContent: "flex-end" }}>
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Create skill
-            </Button>
-          </Form.Item>
+          <Col style={{ marginRight: "1vw" }}>
+            <Form.Item>
+              <Button onClick={() => props.setSkillsStep("view")}>
+                Cancel
+              </Button>
+            </Form.Item>
+          </Col>
+          <Col>
+            <Form.Item>
+              <Button type="primary" htmlType="submit">
+                Create skill
+              </Button>
+            </Form.Item>
+          </Col>
         </Row>
       </Form>
     </>

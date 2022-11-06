@@ -1,5 +1,7 @@
 from flask import Blueprint, jsonify
 
+from . import db
+
 from .model import Skill, Course, SkillCourse
 
 course = Blueprint("course", __name__)
@@ -20,7 +22,8 @@ def get_all_courses():
         } 
     ), 404 
 
-@course.route("all_active")
+
+@course.route("active")
 def get_all_active_courses():
     courses = Course.query.filter_by(course_status="Active").all()
 

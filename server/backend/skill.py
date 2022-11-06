@@ -25,6 +25,23 @@ def get_all_skills():
     ), 404
 
 
+@skill.route("active")
+def get_all_active_skills():
+    skills = Skill.query.filter_by(skill_status="Active").all()
+
+    if skills: 
+        return jsonify ( 
+            {
+                "data": [skill.json() for skill in skills]
+            }
+        )
+    return jsonify(
+        {
+            "message": "There are no active skills."
+        }
+    ), 404
+
+
 @skill.route("<int:skill_id>")
 def get_skill_by_id(skill_id):
     skill = Skill.query.get(skill_id)

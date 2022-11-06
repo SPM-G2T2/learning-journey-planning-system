@@ -7,20 +7,21 @@ import styles from "../styles/ChooseRole.module.css";
 import { Role } from "../types/Role";
 import { Skill } from "../types/Skill";
 
-export default function Home() {
+export default function Home({ lj }: { lj?: boolean }) {
   const [step, setStep] = useState<number>(0);
   const [roles, setRoles] = useState<Role[]>([]);
   const [selectedRole, setSelectedRole] = useState<Role>();
   const [skills, setSkills] = useState<Skill[][]>([]);
-  const [staffSkillIDs, setStaffSkillIDs] = useState<Set<number>>(new Set());
-  const [selectedSkills, setSelectedSkills] = useState<{
-    [key: number]: string;
-  }>({});
-  const staffID = 140001;
+
+  const [rolesStep, setRolesStep] = useState("view");
+
+  const callback = () => {
+    setRolesStep(rolesStep);
+  };
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/positions/all")
+      .get("http://localhost:5000/positions/active")
       .then((resp) => setRoles(resp.data.data))
       .catch((err) => console.log(err));
   }, []);
@@ -46,7 +47,7 @@ export default function Home() {
           <p className={styles.selectionLabel}>
             Skills Selected:{" "}
             <span className={styles.selectionContent}>
-              {Object.values(selectedSkills).join(", ")}
+              Technical Support, Diagnosis, Parts Inventory
             </span>
           </p>
           <p className={styles.selectionLabel}>
@@ -57,56 +58,35 @@ export default function Home() {
           </p>
         </div>
 
-        {step === 0 &&
-          roles.map(
-            (role) =>
-              (role.position_status === "Active" ||
-                role.position_id === selectedRole?.position_id) && (
-                <RoleCourseCard
-                  role={role}
-                  purpose="lj"
-                  selectedRole={selectedRole}
-                  handleClick={() => {
-                    if (selectedRole === role) {
-                      setSelectedRole(undefined);
-                    } else {
-                      setSelectedRole(role);
-                    }
-                  }}
-                  key={role.position_id}
-                />
-              )
-          )}
+        <div>
+          {step === 0 &&
+            roles.map((role) => (
+              <RoleCourseCard
+                role={role}
+                selectedRole={selectedRole}
+                editClicked={callback}
+                handleClick={() => {
+                  if (selectedRole === role) {
+                    setSelectedRole(undefined);
+                  } else {
+                    setSelectedRole(role);
+                  }
+                }}
+                key={role.position_id}
+              />
+            ))}
 
-        {step === 1 &&
-          skills.map((row, i) => (
-            <Row key={i}>
-              {row.map(
-                (skill) =>
-                  (skill.skill_status === "Active" ||
-                    selectedSkills[skill.skill_id]) && (
-                    <Col className={styles.skill} key={skill.skill_id}>
-                      <SkillCard
-                        skill={skill}
-                        purpose="lj"
-                        staffSkillIDs={staffSkillIDs}
-                        selectedSkills={selectedSkills}
-                        handleClick={() => {
-                          const newSelectedSkills = { ...selectedSkills };
-                          if (newSelectedSkills[skill.skill_id]) {
-                            delete newSelectedSkills[skill.skill_id];
-                          } else {
-                            newSelectedSkills[skill.skill_id] =
-                              skill.skill_name;
-                          }
-                          setSelectedSkills(newSelectedSkills);
-                        }}
-                      />
-                    </Col>
-                  )
-              )}
-            </Row>
-          ))}
+          {step === 1 &&
+            skills.map((row) => (
+              <Row className={styles.skill}>
+                {row.map((skill) => (
+                  <Col key={skill.skill_id}>
+                    <SkillCard skill={skill} lj={true} />
+                  </Col>
+                ))}
+              </Row>
+            ))}
+        </div>
       </div>
 
       <div className={styles.bottom}>
@@ -119,7 +99,7 @@ export default function Home() {
                 .get(
                   "http://localhost:5000/positions/" +
                     selectedRole?.position_id +
-                    "/skills"
+                    "/skills/active"
                 )
                 .then((resp) => {
                   const rows = [];
@@ -136,11 +116,6 @@ export default function Home() {
                   }
                   setSkills(rows);
                 })
-                .catch((err) => console.log(err));
-
-              axios
-                .get("http://localhost:5000/staff/" + staffID + "/skill_ids")
-                .then((resp) => setStaffSkillIDs(new Set(resp.data.data)))
                 .catch((err) => console.log(err));
             } else if (step === 1) {
             }

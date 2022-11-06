@@ -1,22 +1,21 @@
-import { Row, Input, Col } from 'antd';
+import { Row, Col, Input, Button } from 'antd';
 import { useState, useEffect } from "react";
 import axios from "axios";
+import styles from "../styles/RenderHRCard.module.css";
 import SkillCard from "../components/SkillCard";
 import { Skill } from "../types/Skill";
-import styles from "../styles/RenderHRCard.module.css";
 
-export default function Skills() {
+
+export default function RenderSkills(props: any) {
 
   const [skills, setSkills] = useState<Skill[][]>([]);
-  const [countSkills, setCountSkills] = useState();
   const [searchedSkills, setSearchedSkills] = useState<Skill[][]>([]);
-  const [countSearchedSkills, setCountSearchedSkills] = useState<number>();
   const [search, setSearch] = useState<boolean>(false);
-  
+
   useEffect(() => {
     axios
-      .get("http://localhost:5000/skills/active")
-      .then((resp) => {
+    .get("http://localhost:5000/skills/all")
+    .then((resp) => {
         const rows = [];
         let row = [];
         for (let col of resp.data.data) {
@@ -29,24 +28,23 @@ export default function Skills() {
         if (row.length > 0) {
             rows.push(row);
         }
-        setSkills(rows);
-        setCountSkills(resp.data.data.length);
-        })
-      .catch((err) => console.log(err));
+        setSkills(rows) 
+    })
+    .catch((err) => console.log(err));
   }, []);
+
+  console.log(skills);
 
   function handleChange(event: any) {
     console.log(event.target.value);
     console.log(event.target.value.length);
     var tempSearchedSkills: Skill[][] = [];
     var tempRow: Skill[] = [];
-    var count: number = 0;
     for (let row of skills) { 
         for (let skill of row) {
             if (skill.skill_name.toLowerCase().includes(event.target.value.toLowerCase())) {
                 if (tempRow.length === 3) {
                     tempSearchedSkills.push(tempRow);
-                    count += 3;
                     tempRow = [];
                 }
                 tempRow.push(skill);
@@ -55,36 +53,31 @@ export default function Skills() {
     }
     if (tempRow.length > 0) {
         tempSearchedSkills.push(tempRow);
-        count += tempRow.length;
     }
     setSearchedSkills(tempSearchedSkills);
     console.log(searchedSkills);
     setSearch(true);
-    setCountSearchedSkills(count);
     if (event.target.value.length === 0) {
         setSearch(false);
     } 
   }
 
-    return (
+  return (
     <>
-      <Row>
-        <Col>
-          <h1>Available Skills</h1>
-        </Col>
-        <Col style={{paddingTop: '0.2vh'}} offset={1}>
-          <Input placeholder="Enter search" className={styles.search} onChange={handleChange}/>
-        </Col>
-      </Row>
-      <div style={{  width: '66vw', margin: 'auto', marginTop: '10vh' }}>
-        <Row style={{ marginBottom: '5vh' }}>
-          <b>
-            {search ? countSearchedSkills : countSkills} Skills Displayed
-          </b>
-        </Row>
-       {search ? searchedSkills && searchedSkills.map((row) => (
+        {/* <div className={styles.container}> */}
+            <Row style={{ width: '100%', margin: '5vh auto 5vh auto' }}>
+                <Col span={12}>
+                    <Input placeholder="Enter search" className={styles.search} onChange={handleChange}/>
+                </Col>
+                <Col span={1} offset={11}>
+                    <Button type="primary" onClick={() => props.setSkillsStep("form")}>Create skill</Button>
+                </Col>
+            </Row>
+        {/* </div> */}
+        <div className={styles.content}>
+            {search ? searchedSkills && searchedSkills.map((row) => (
             <Row className={styles.skill}>
-                {row.map((skill: Skill) => (
+                {row.map((skill) => (
                 <Col key={skill.skill_id}>
                     <SkillCard skill={skill} lj={false}/>
                 </Col>
@@ -98,7 +91,7 @@ export default function Skills() {
                 ))}
             </Row>
             ))}
-      </div>
+        </div>
     </>
   );
 }
