@@ -13,6 +13,13 @@ export default function Home({ lj }: { lj?: boolean }) {
   const [selectedRole, setSelectedRole] = useState<Role>();
   const [skills, setSkills] = useState<Skill[][]>([]);
 
+  const [rolesStep, setRolesStep] = useState("view");
+
+  const callback = () => {
+    setRolesStep(rolesStep);
+  }
+
+
   useEffect(() => {
     axios
       .get("http://localhost:5000/positions/active")
@@ -58,6 +65,7 @@ export default function Home({ lj }: { lj?: boolean }) {
               <RoleCourseCard
                 role={role}
                 selectedRole={selectedRole}
+                editClicked={callback}  
                 handleClick={() => {
                   if (selectedRole === role) {
                     setSelectedRole(undefined);

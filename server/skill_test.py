@@ -3,7 +3,6 @@ import unittest
 import json
 from main import app
 from backend import db
-
 from backend.model import Skill
 
 class TestSkill(unittest.TestCase): 

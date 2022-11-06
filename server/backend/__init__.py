@@ -1,8 +1,10 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
-
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 db = SQLAlchemy()
 
@@ -10,7 +12,7 @@ def create_app():
     app = Flask(__name__)
     CORS(app)
 
-    password = os.environ["PASSWORD"]
+    password = os.getenv("PASSWORD")
 
     # Mac
     # authDetails = "root:root@localhost:8889"

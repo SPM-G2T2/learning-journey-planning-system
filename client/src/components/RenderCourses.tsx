@@ -12,6 +12,9 @@ export default function RenderCourses(props: any) {
   const [searchedCourses, setSearchedCourses] = useState<Course[]>([]);
   const [search, setSearch] = useState<boolean>(false);
 
+  const callback = () => {
+  }
+
   useEffect(() => {
     axios
     .get("http://localhost:5000/courses/all")
@@ -47,9 +50,9 @@ export default function RenderCourses(props: any) {
           </Col>
         </Row>
       { search ? searchedCourses && searchedCourses.map((searchedCourse) => (
-        <RoleCourseCard course={searchedCourse} edit={true}/>
+        <RoleCourseCard course={searchedCourse} edit={true} editClicked={callback}/>
       )) : courses && courses.map((course) => (
-        <RoleCourseCard course={course} edit={true}/>
+        <RoleCourseCard course={course} edit={true} editClicked={callback}/>
       )) }
       </div>
     </>

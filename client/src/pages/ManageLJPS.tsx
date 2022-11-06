@@ -12,6 +12,7 @@ export default function ManageLJPS() {
   const [rolesStep, setRolesStep] = useState("view");
   const [skillsStep, setSkillsStep] = useState("view");
   const [form, setForm] = useState(null);
+  const [values, setValues] = useState(null);
 
   return (
     <>
@@ -23,11 +24,11 @@ export default function ManageLJPS() {
             label: "Roles",
             key: "roles",
             children: 
-              rolesStep === "view" ? <RenderRoles setRolesStep={setRolesStep}/> :
+              rolesStep === "view" ? <RenderRoles setRolesStep={setRolesStep} setValues={setValues}/> :
               (rolesStep === "form" ? (
-                <CreateRoles setRolesStep={setRolesStep} setForm={setForm} setNext={setRolesStep} />
+                <CreateRoles setRolesStep={setRolesStep} setForm={setForm} setNext={setRolesStep} setValues={values}/>
               ) : (
-                <PreviewRoles form={form} setNext={setRolesStep} />
+                <PreviewRoles form={form} setNext={setRolesStep} values={values}/>
               )),
           },
           {

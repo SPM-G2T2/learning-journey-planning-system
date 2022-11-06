@@ -27,7 +27,7 @@ export default function InputField(props: InputFieldsProps) {
             },
           ]}
         >
-          <Input style={{ width: "30vw" }} />
+          <Input style={{ width: "30vw" }}/>
         </Form.Item>
       ) : (
         <Form.Item
@@ -41,7 +41,7 @@ export default function InputField(props: InputFieldsProps) {
             },
           ]}
         >
-          <TextArea style={{ width: "30vw", maxWidth: "125%" }} />
+          <TextArea style={{ width: "30vw", maxWidth: "125%" }}/>
         </Form.Item>
       )}
     </>
