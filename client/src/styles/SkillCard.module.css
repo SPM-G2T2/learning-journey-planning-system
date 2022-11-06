@@ -8,6 +8,11 @@
     position: relative;
 }
 
+.card:hover,
+.cardSelected {
+    border: 2px solid #3649F9;
+}
+
 .title {
     font-size: 2vh;
     font-weight: 700;

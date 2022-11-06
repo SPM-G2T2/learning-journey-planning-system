@@ -7,14 +7,15 @@ import styles from "../styles/ChooseRole.module.css";
 import { Role } from "../types/Role";
 import { Skill } from "../types/Skill";
 
-export default function Home({ lj }: { lj?: boolean }) {
+export default function Home() {
   const [step, setStep] = useState<number>(0);
   const [roles, setRoles] = useState<Role[]>([]);
   const [selectedRole, setSelectedRole] = useState<Role>();
   const [skills, setSkills] = useState<Skill[][]>([]);
-  const [staffSkillIDs, setStaffSkillIDs] = useState<Set<number>>();
-  const [selectedSkills, setSelectedSkills] =
-    useState<Set<{ skill_id: number; skill_name: string }>>();
+  const [staffSkillIDs, setStaffSkillIDs] = useState<Set<number>>(new Set());
+  const [selectedSkills, setSelectedSkills] = useState<{
+    [key: number]: string;
+  }>({});
   const staffID = 140001;
 
   useEffect(() => {
@@ -45,7 +46,7 @@ export default function Home({ lj }: { lj?: boolean }) {
           <p className={styles.selectionLabel}>
             Skills Selected:{" "}
             <span className={styles.selectionContent}>
-              Technical Support, Diagnosis, Parts Inventory
+              {Object.values(selectedSkills).join(", ")}
             </span>
           </p>
           <p className={styles.selectionLabel}>
@@ -78,21 +79,28 @@ export default function Home({ lj }: { lj?: boolean }) {
           )}
 
         {step === 1 &&
-          staffSkillIDs &&
           skills.map((row, i) => (
             <Row key={i}>
               {row.map(
                 (skill) =>
                   (skill.skill_status === "Active" ||
-                    selectedSkills?.has({
-                      skill_id: skill.skill_id,
-                      skill_name: skill.skill_name,
-                    })) && (
+                    selectedSkills[skill.skill_id]) && (
                     <Col className={styles.skill} key={skill.skill_id}>
                       <SkillCard
                         skill={skill}
                         purpose="lj"
                         staffSkillIDs={staffSkillIDs}
+                        selectedSkills={selectedSkills}
+                        handleClick={() => {
+                          const newSelectedSkills = { ...selectedSkills };
+                          if (newSelectedSkills[skill.skill_id]) {
+                            delete newSelectedSkills[skill.skill_id];
+                          } else {
+                            newSelectedSkills[skill.skill_id] =
+                              skill.skill_name;
+                          }
+                          setSelectedSkills(newSelectedSkills);
+                        }}
                       />
                     </Col>
                   )

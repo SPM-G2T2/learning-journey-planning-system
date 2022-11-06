@@ -33,10 +33,10 @@ def get_learning_journeys_by_staff(staff_id):
     sorted_learning_journeys = {}
     for learning_journey in learning_journeys:
         if learning_journey.lj_id not in sorted_learning_journeys:
-            sorted_learning_journeys[learning_journey.lj_id] = {"position":{"position_id":learning_journey.position_id, "position_name":learning_journey.position_name, "position_status":learning_journey.position_status}, "skill":[{"skill_id":learning_journey.skill_id, "skill_name":learning_journey.skill_name, "skill_status":learning_journey.skill_status}], "course":[{"course_id":learning_journey.course_id, "course_name":learning_journey.course_name, "course_status":learning_journey.course_status}]}
+            sorted_learning_journeys[learning_journey.lj_id] = {"position":{"position_id":learning_journey.position_id, "position_name":learning_journey.position_name}, "skill":[{"skill_id":learning_journey.skill_id, "skill_name":learning_journey.skill_name}], "course":[{"course_id":learning_journey.course_id, "course_name":learning_journey.course_name}]}
         else:
-            sorted_learning_journeys[learning_journey.lj_id]["skill"].append({"skill_id":learning_journey.skill_id, "skill_name":learning_journey.skill_name, "skill_status":learning_journey.skill_status})
-            sorted_learning_journeys[learning_journey.lj_id]["course"].append({"course_id":learning_journey.course_id, "course_name":learning_journey.course_name, "course_status":learning_journey.course_status})
+            sorted_learning_journeys[learning_journey.lj_id]["skill"].append({"skill_id":learning_journey.skill_id, "skill_name":learning_journey.skill_name})
+            sorted_learning_journeys[learning_journey.lj_id]["course"].append({"course_id":learning_journey.course_id, "course_name":learning_journey.course_name})
 
     # print(sorted_learning_journeys)
 

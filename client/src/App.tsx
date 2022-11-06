@@ -75,7 +75,7 @@ const App = () => (
           Eric
         </Button>
         <Routes>
-          <Route path="/" element={<Home lj={true}/>} />
+          <Route path="/" element={<Home />} />
           <Route path="/LearningJourney" element={<LearningJourney />} />
           <Route path="/roles" element={<Roles />} />
           <Route path="/skills" element={<Skills />} />

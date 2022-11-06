@@ -8,10 +8,8 @@ export default function SkillCard(props: {
   skill: Skill;
   purpose: "view" | "lj" | "edit";
   staffSkillIDs?: Set<number>;
-  // role?: Role;
-  // selectedRole?: Role;
-  // handleClick: () => void;
-  // course?: Course;
+  selectedSkills?: { [key: number]: string };
+  handleClick?: () => void;
 }) {
   const [modalStatus, setModalStatus] = useState<boolean>(false);
   const missing =
@@ -25,11 +23,12 @@ export default function SkillCard(props: {
 
   return (
     <div
-      // className={`${styles.horizontal} ${styles.card} ${
-      //   props.role === props.selectedRole && styles.cardSelected
-      // }`}
-      // onClick={props.handleClick}
-      className={styles.card}
+      className={`${styles.card} ${
+        props.selectedSkills &&
+        props.selectedSkills[props.skill.skill_id] &&
+        styles.cardSelected
+      }`}
+      onClick={props.handleClick}
     >
       <p className={styles.title}>
         {props.skill.skill_name}
