@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { MinusCircleOutlined } from "@ant-design/icons";
 import { Form, Select, Button } from "antd";
-import axios, { AxiosResponse, AxiosError } from "axios";
+import { Course } from "../types/Course";
+import { Skill } from "../types/Skill";
 
 interface InputDropdownProps {
   label?: string;
@@ -32,47 +33,37 @@ const formItemLayoutWithOutLabel = {
  * @return {React.FC}: The JSX Code for input dropdown template component.
  */
 export default function InputDropdown(props: InputDropdownProps) {
+
   const { Option } = Select;
 
-  const [skills, setSkills] = useState<String[]>([]);
-  const [courses, setCourses] = useState<String[]>([]);
+  const [skills, setSkills] = useState<Skill[]>([]);
+  const [courses, setCourses] = useState<Course[]>([]);
 
   useEffect(() => {
-    const submitSkill = async () => {
-      axios
-        .get("http://127.0.0.1:5000/courses/all")
-        .then((response: AxiosResponse) => {
-          console.log(response.data.data.courses);
-          var courseArr: String[] = [];
-          for (const course of response.data.data.courses) {
-            // console.log(course.course_name)
-            // console.log(course.course_id)
-            courseArr.push(course);
-          }
-          setCourses(courseArr);
-        })
-        .catch((reason: AxiosError) => {
-          console.log(reason);
-          if (reason.response!.status === 404) {
-            console.log("There are no courses");
-          } else {
-            console.log("Network error");
-          }
-        });
-    };
-    submitSkill();
+    fetch("http://localhost:5000/courses/active")
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data.data);
+      var courseArr = [];
+      for (var course of data.data) {
+          courseArr.push(course);
+      }
+      console.log(courseArr);
+      setCourses(courseArr);
+    })
+    .then((error) => console.log(error));
   }, []);
 
+  console.log(courses);
+
   useEffect(() => {
-    fetch("http://localhost:5000/skills/all")
+    fetch("http://localhost:5000/skills/active")
       .then((response) => response.json())
       .then((data) => {
         console.log(data.data);
-        var skillArr: String[] = [];
+        var skillArr = [];
         for (var skill of data.data) {
-          if (skill.skill_status.toUpperCase() === "ACTIVE") {
             skillArr.push(skill);
-          }
         }
         console.log(skillArr);
         setSkills(skillArr);

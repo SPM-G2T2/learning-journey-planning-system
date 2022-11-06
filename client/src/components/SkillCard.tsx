@@ -1,37 +1,56 @@
-import { Tag, Button, Card } from "antd";
-import role from "../assets/role.png";
+import { Button, Tag } from "antd";
+import { useState } from "react";
+import styles from "../styles/SkillCard.module.css";
+import { Skill } from "../types/Skill";
+import GenericModal from "./GenericModal";
 
-export default function CourseCard() {
+export default function SkillCard(props: {
+  skill: Skill;
+  lj: boolean;
+  // role?: Role;
+  // selectedRole?: Role;
+  // handleClick: () => void;
+  // course?: Course;
+}) {
+  const [modalStatus, setModalStatus] = useState<boolean>(false);
+
+  function handleClose() {
+    setModalStatus(false);
+  }
+
+  const color = { Active: "#008767", Retired: "#FF0000" };
+
+  const bgColor = { Active: "#16C098", Retired: "#F3A1A9" };
+
   return (
-    <Card
-      bordered={false}
-      style={{ width: 280, borderRadius: 10, background: "#FAFAFA" }}
+    <div
+      // className={`${styles.horizontal} ${styles.card} ${
+      //   props.role === props.selectedRole && styles.cardSelected
+      // }`}
+      // onClick={props.handleClick}
+      className={styles.card}
     >
-      <Tag
-        color="#F3A1A9"
-        style={{
-          borderRadius: 5,
-          fontSize: 13,
-          fontWeight: "Bold",
-          color: "#FF0000",
-          marginTop: -20,
-          marginLeft: 180,
-        }}
-      >
-        Missing
-      </Tag>
-      <p>
-        <img src={role} alt="role icon" className="icon" />
+      <p className={styles.title}>
+        {props.skill.skill_name}
+        <Tag className={`${styles.status} ${styles[props.skill.skill_status]}`}>
+          {props.skill.skill_status}
+        </Tag>
       </p>
-      <p
-        className="card-row"
-        style={{ fontSize: 18, fontWeight: "Bold", marginTop: 20 }}
-      >
-        Role Name
-      </p>
-      <Button className="border btn-color" style={{ fontWeight: "500" }}>
-        Read More
-      </Button>
-    </Card>
+      {props.skill.skill_desc.length > 200
+        ? props.skill.skill_desc.substring(0, 200) + " ..."
+        : props.skill.skill_desc}
+      {props.lj ? (
+        <Button className={styles.more} onClick={() => setModalStatus(true)}>
+          Read More
+        </Button>
+      ) : (
+        <Button className={styles.edit}>Edit</Button>
+      )}
+      <GenericModal
+        skill={props.skill}
+        status={modalStatus}
+        handleClose={handleClose}
+      />
+    </div>
   );
 }

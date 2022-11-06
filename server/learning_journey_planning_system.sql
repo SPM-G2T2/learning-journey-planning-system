@@ -3,18 +3,12 @@ CREATE SCHEMA learning_journey_planning_system;
 USE learning_journey_planning_system;
 
 
-DROP TABLE IF EXISTS Role;
-CREATE TABLE IF NOT EXISTS Role (
+DROP TABLE IF EXISTS role;
+CREATE TABLE IF NOT EXISTS role (
 role_id int NOT NULL AUTO_INCREMENT,
 role_name varchar(50) NOT NULL,
 PRIMARY KEY (role_id)
 );
-
-
-insert into role values (1, "User");
-insert into role values (2, "Trainer");
-insert into role values (3, "Manager");
-insert into role values (4, "Admin");
 
 
 DROP TABLE IF EXISTS staff;
@@ -25,15 +19,9 @@ staff_lname varchar(50) NOT NULL,
 dept varchar(50) NOT NULL,
 email varchar(50) NOT NULL,
 role_id int NOT NULL,
-FOREIGN KEY (role_id) REFERENCES ROLE (role_id),
+FOREIGN KEY (role_id) REFERENCES role (role_id),
 PRIMARY KEY (staff_id)
 );
-
-
-insert into staff values (1, "Mary", "Lee", "Operations", "mary_lee@all-in-one.com", 3);
-insert into staff values (2, "Sally", "Loh", "Human Resource", "sally_loh@all-in-one.com", 4);
-insert into staff values (3, "Bob", "Tan", "IT Team", "bob_tan@all-in-one.com", 1);
-insert into staff values (4, "Tom", "Soh", "Sales", "tom_soh@all-in-one.com", 2);
 
 
 DROP TABLE IF EXISTS position;
