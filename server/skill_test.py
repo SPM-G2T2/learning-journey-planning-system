@@ -118,5 +118,65 @@ class TestSkill(unittest.TestCase):
         endpoint_call = self.client.put("/skills/edit_skill", data = json.dumps(edited_skill), content_type = "application/json")
         self.assertEquals(endpoint_call.json, {"message": "skill already exists."})
 
+    def test_edit_skill_with_same_name(self):
+
+        skill_1 = Skill(
+            skill_id = 1, 
+            skill_name = "Solution Management", 
+            skill_desc = "Learn to manage solutions", 
+            skill_status = "Active")
+
+        skill_2 = Skill(
+            skill_id = 2, 
+            skill_name = "Project Management", 
+            skill_desc = "Learn to manage projects", 
+            skill_status = "Active")
+
+        edited_skill = {
+            "skill_id": 1,
+            "skill_name": "Solution Management", #Same skill name as skill_2
+            "skill_desc": "Learn to manage projects",
+            "skill_status": "Active",
+            "courses": ["3"]
+        }
+
+
+        db.session.add(skill_1)
+        db.session.add(skill_2)
+
+        endpoint_call = self.client.put("/skills/edit_skill", data = json.dumps(edited_skill), content_type = "application/json")
+        self.assertEquals(endpoint_call.json, {"message": "Skill successfully edited."})
+
+    def test_edit_skill_with_duplicate_course(self):
+
+        skill_1 = Skill(
+            skill_id = 1, 
+            skill_name = "Solution Management", 
+            skill_desc = "Learn to manage solutions", 
+            skill_status = "Active")
+
+        skill_2 = Skill(
+            skill_id = 2, 
+            skill_name = "Project Management", 
+            skill_desc = "Learn to manage projects", 
+            skill_status = "Active")
+
+        edited_skill = {
+            "skill_id": 1,
+            "skill_name": "Project Management", #Same skill name as skill_2
+            "skill_desc": "Learn to manage projects",
+            "skill_status": "Active",
+            "courses": ["3", "3"]
+        }
+
+
+        db.session.add(skill_1)
+        db.session.add(skill_2)
+
+        endpoint_call = self.client.put("/skills/edit_skill", data = json.dumps(edited_skill), content_type = "application/json")
+        self.assertEquals(endpoint_call.json, {"message": "Duplicate courses detected. Please try again."})
+
+
+
 
 

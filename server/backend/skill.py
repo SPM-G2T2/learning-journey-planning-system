@@ -295,11 +295,25 @@ def edit_skill():
     new_skill_status = front_end_json['skill_status']
     new_skill_courses = front_end_json['courses']
 
-    print(new_skill_courses)
+    def checkIfDuplicates_1(listOfElems):
+        if len(listOfElems) == len(set(listOfElems)):
+            return False
+        else:
+            return True
+
+    result = checkIfDuplicates_1(new_skill_courses)
+    if result:
+        return jsonify( 
+            {
+                "message": "Duplicate courses detected. Please try again." 
+            } 
+        ), 406
 
     #check if edited name is duplicated
 
-    if (Skill.query.filter_by(skill_name = string.capwords(new_skill_name)).first()): 
+    skill_name_check = Skill.query.filter_by(skill_name = string.capwords(new_skill_name)).first()
+
+    if (skill_name_check and skill_name_check.skill_id != skill_id): 
         return jsonify( 
             {
                 "message": "skill already exists." 

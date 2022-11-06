@@ -73,6 +73,18 @@ export default function PreviewSkills(props: any) {
     })
     .catch((reason: AxiosError) => {
       console.log(reason.response!.status);
+      if (reason.response!.status === 406) {
+        warning2();
+        console.log("Duplicated course");
+      }
+      if (reason.response!.status === 400) {
+        warning();
+        console.log("Skill already exist");
+      }
+      if (
+        reason.response!.status !== 400 &&
+        reason.response!.status !== 406
+      )
       {
         error();
         console.log("Network error");
