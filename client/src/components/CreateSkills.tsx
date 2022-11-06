@@ -88,12 +88,9 @@ export default function CreateSkills(props: any) {
         <Row style={{ justifyContent: "flex-end" }}>
           <Col style={{ marginRight: "1vw" }}>
             <Form.Item>
-            {props.setValues === null ? 
               <Button onClick={() => props.setSkillsStep("view")}>
                 Cancel
-              </Button>:
-              <DeleteSkillBtn skill={props.setValues}></DeleteSkillBtn>
-            }
+              </Button>
             </Form.Item>
           </Col>
           <Col>
