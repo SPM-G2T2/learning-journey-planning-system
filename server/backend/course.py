@@ -57,7 +57,7 @@ def get_skills_by_course(course_id):
     ), 404 
 
 
-@course.route("<int:course_id>/skills/active")
+@course.route("<string:course_id>/skills/active")
 def get_active_skills_by_course(course_id):
     skills = db.session.query(Skill).filter(Skill.skill_id==SkillCourse.skill_id, SkillCourse.course_id==course_id, Skill.skill_status=="Active").all()
 
@@ -74,19 +74,19 @@ def get_active_skills_by_course(course_id):
     ), 404 
 
 
-@course.route("<string:course_id>/filterCourseById")
-def get_course_by_course_id(course_id):
+# @course.route("<string:course_id>/filterCourseById")
+# def get_course_by_course_id(course_id):
 
-    course = Course.query.filter_by(course_id=course_id).first()
+#     course = Course.query.filter_by(course_id=course_id).first()
 
-    if course:
-        return jsonify( 
-            {
-                "data": course.json()
-            } 
-        )
-    return jsonify( 
-        {
-            "message": "There are no courses." 
-        } 
-    ), 404 
+#     if course:
+#         return jsonify( 
+#             {
+#                 "data": course.json()
+#             } 
+#         )
+#     return jsonify( 
+#         {
+#             "message": "There are no courses." 
+#         } 
+#     ), 404 
