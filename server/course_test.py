@@ -62,16 +62,16 @@ class TestCourse(unittest.TestCase):
                 skill_status = "Retired"
             )
             
-            SC_1 = SkillCourse(1, "IS212")
-            SC_2 = SkillCourse(2, "IS212")
+            skill_course_1 = SkillCourse(1, "IS212")
+            skill_course_2 = SkillCourse(2, "IS212")
 
             db.session.add(course_1)
             db.session.add(course_2)
             db.session.add(course_3)
             db.session.add(skill_1)
             db.session.add(skill_2)
-            db.session.add(SC_1)
-            db.session.add(SC_2)
+            db.session.add(skill_course_1)
+            db.session.add(skill_course_2)
             
 
     def tearDown(self):

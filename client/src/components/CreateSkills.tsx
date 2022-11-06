@@ -3,8 +3,6 @@ import { useEffect } from "react";
 import InputField from "./InputField";
 import InputDropdown from "./InputDropdown";
 import styles from "../styles/ManageLJPS.module.css";
-import DeleteSkillBtn from "./DeleteSkill";
-
 
 export default function CreateSkills(props: any) {
   const { Title } = Typography;
