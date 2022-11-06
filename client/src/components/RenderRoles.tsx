@@ -12,6 +12,11 @@ export default function RenderRoles(props: any) {
   const [searchedRoles, setSearchedRoles] = useState<Role[]>([]);
   const [search, setSearch] = useState<boolean>(false);
 
+  const callback = (editRole: Role | undefined) => {
+    props.setValues(editRole);
+    props.setRolesStep("form");
+  }
+
   useEffect(() => {
     axios
     .get("http://localhost:5000/positions/all")
@@ -46,13 +51,13 @@ export default function RenderRoles(props: any) {
             <Input placeholder="Enter search" className={styles.search} onChange={handleChange}/>
           </Col>
           <Col span={4} offset={12}>
-            <Button type="primary" onClick={() => props.setRolesStep("form")}>Create role</Button>
+            <Button type="primary" onClick={() => props.setRolesStep("form") & props.setValues(null)}>Create role</Button>
           </Col>
         </Row>
         { search ? searchedRoles && searchedRoles.map((searchedRole) => (
-        <RoleCourseCard role={searchedRole} edit={true}/>
+        <RoleCourseCard role={searchedRole} edit={true} editClicked={callback}/>
       )) : roles && roles.map((role) => (
-        <RoleCourseCard role={role} edit={true}/>
+        <RoleCourseCard role={role} edit={true} editClicked={callback}/>
       )) }
       </div>
     </>

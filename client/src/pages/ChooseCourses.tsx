@@ -13,6 +13,12 @@ export default function Courses({ lj }: { lj?: boolean }) {
   // To change based on props from prev step
   const skillIds = [2,3,4];
 
+  const [rolesStep, setRolesStep] = useState("view");
+
+  const callback = () => {
+    setRolesStep(rolesStep);
+  }
+
   useEffect(() => {
     for (let skillId of skillIds) {
       console.log(skillId);
@@ -129,7 +135,8 @@ console.log(showCourses)
               <RoleCourseCard
                 course={course}
                 key={course.course_id}
-                handleClick={() => showCourseswhenclick(`${course.course_name}`)}           
+                handleClick={() => showCourseswhenclick(`${course.course_name}`)}   
+                editClicked={callback}        
               />
             ))}
           </Col>

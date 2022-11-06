@@ -30,8 +30,11 @@ jobs:
         pip install flask-sqlalchemy
         pip install Flask-Cors
         pip install mysql-connector
+        pip install python-dotenv
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Run our unit tests
+      env: # Or as an environment variable
+        PASSWORD: ${{ secrets.PASSWORD }}
       run: |
         cd server
         python position_test.py

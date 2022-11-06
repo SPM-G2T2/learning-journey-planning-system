@@ -13,8 +13,15 @@ export default function Home({ lj }: { lj?: boolean }) {
   const [selectedRole, setSelectedRole] = useState<Role>();
   const [skills, setSkills] = useState<Skill[][]>([]);
 
-  const callback = () => {
+  const callback2 = () => {
   }
+
+  const [rolesStep, setRolesStep] = useState("view");
+
+  const callback = () => {
+    setRolesStep(rolesStep);
+  }
+
 
   useEffect(() => {
     axios
@@ -61,6 +68,7 @@ export default function Home({ lj }: { lj?: boolean }) {
               <RoleCourseCard
                 role={role}
                 selectedRole={selectedRole}
+                editClicked={callback}  
                 handleClick={() => {
                   if (selectedRole === role) {
                     setSelectedRole(undefined);
@@ -77,7 +85,7 @@ export default function Home({ lj }: { lj?: boolean }) {
               <Row className={styles.skill}>
                 {row.map((skill) => (
                   <Col key={skill.skill_id}>
-                    <SkillCard skill={skill} lj={true} editClicked={callback}/>
+                    <SkillCard skill={skill} lj={true} editClicked={callback2}/>
                   </Col>
                 ))}
               </Row>

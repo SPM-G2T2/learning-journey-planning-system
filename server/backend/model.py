@@ -11,7 +11,8 @@ class Position(db.Model):
     position_res = db.Column(db.String(1000), nullable=False)
     position_status = db.Column(db.String(10), nullable=False)
 
-    def __init__(self, position_name, position_desc, position_dept, position_res, position_status):
+    def __init__(self, position_id, position_name, position_desc, position_dept, position_res, position_status):
+        self.position_id = position_id
         self.position_name = position_name
         self.position_desc = position_desc
         self.position_dept = position_dept

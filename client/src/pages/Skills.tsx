@@ -1,85 +1,106 @@
-import { Row, Col, Button, Pagination, Steps } from "antd";
-import Header from "../components/RolesHeader";
+import { Row, Input, Col } from 'antd';
+import { useState, useEffect } from "react";
+import axios from "axios";
+import SkillCard from "../components/SkillCard";
+import { Skill } from "../types/Skill";
+import styles from "../styles/RenderHRCard.module.css";
 
-export default function Roles2({ lj }: { lj?: boolean }) {
-  return (
+export default function Skills() {
+
+  const callback =() =>{
+  }
+  const [skills, setSkills] = useState<Skill[][]>([]);
+  const [countSkills, setCountSkills] = useState();
+  const [searchedSkills, setSearchedSkills] = useState<Skill[][]>([]);
+  const [countSearchedSkills, setCountSearchedSkills] = useState<number>();
+  const [search, setSearch] = useState<boolean>(false);
+  
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/skills/active")
+      .then((resp) => {
+        const rows = [];
+        let row = [];
+        for (let col of resp.data.data) {
+            if (row.length === 3) {
+                rows.push(row);
+                row = [];
+            }
+            row.push(col);
+        }
+        if (row.length > 0) {
+            rows.push(row);
+        }
+        setSkills(rows);
+        setCountSkills(resp.data.data.length);
+        })
+      .catch((err) => console.log(err));
+  }, []);
+
+  function handleChange(event: any) {
+    console.log(event.target.value);
+    console.log(event.target.value.length);
+    var tempSearchedSkills: Skill[][] = [];
+    var tempRow: Skill[] = [];
+    var count: number = 0;
+    for (let row of skills) { 
+        for (let skill of row) {
+            if (skill.skill_name.toLowerCase().includes(event.target.value.toLowerCase())) {
+                if (tempRow.length === 3) {
+                    tempSearchedSkills.push(tempRow);
+                    count += 3;
+                    tempRow = [];
+                }
+                tempRow.push(skill);
+            }
+        }
+    }
+    if (tempRow.length > 0) {
+        tempSearchedSkills.push(tempRow);
+        count += tempRow.length;
+    }
+    setSearchedSkills(tempSearchedSkills);
+    console.log(searchedSkills);
+    setSearch(true);
+    setCountSearchedSkills(count);
+    if (event.target.value.length === 0) {
+        setSearch(false);
+    } 
+  }
+
+    return (
     <>
-      <Header />
-
-      <div
-        style={{
-          width: "50vw",
-          margin: "auto",
-          marginTop: "3vh",
-        }}
-      >
-        <Steps current={1} labelPlacement="vertical">
-          <Steps.Step title="Choose a role" />
-          <Steps.Step title="Choose skills" />
-          <Steps.Step title="Choose courses" />
-        </Steps>
-        <div style={{ color: "#3649F9", marginBottom: 20, marginTop: 20 }}>
-          <Row gutter={[10, 10]}>
-            <Col
-              span={12}
-              style={{
-                textAlign: "right",
-                fontWeight: 700,
-              }}
-            >
-              Role Selected:
-            </Col>
-            <Col span={12} style={{ textAlign: "left", fontWeight: 450 }}>
-              Role Name
-            </Col>
-            <Col
-              span={12}
-              style={{
-                textAlign: "right",
-                fontWeight: 700,
-              }}
-            >
-              Skills Selected:
-            </Col>
-            <Col span={12} style={{ textAlign: "left", fontWeight: 450 }}>
-              Skill Name
-            </Col>
-          </Row>
-        </div>
-      </div>
-      <Row style={{ marginTop: "6vh", fontWeight: 700 }}>
-        <Col span={12} style={{ textAlign: "right" }}>
-          <Pagination defaultCurrent={1} total={50} />
+      <Row>
+        <Col>
+          <h1>Available Skills</h1>
         </Col>
-        <Col offset={4} span={3} style={{ textAlign: "right" }}>
-          <Button
-            type="default"
-            style={{
-              fontSize: 14,
-              fontWeight: 500,
-              color: "black",
-              background: "",
-              borderRadius: 5,
-            }}
-          >
-            Back
-          </Button>
-        </Col>
-        <Col offset={1} span={3} style={{ textAlign: "left" }}>
-          <Button
-            className="border btn-color"
-            style={{
-              fontSize: 14,
-              fontWeight: 500,
-              color: "black",
-              background: "",
-              borderRadius: 5,
-            }}
-          >
-            Next
-          </Button>
+        <Col style={{paddingTop: '0.2vh'}} offset={1}>
+          <Input placeholder="Enter search" className={styles.search} onChange={handleChange}/>
         </Col>
       </Row>
+      <div style={{  width: '66vw', margin: 'auto', marginTop: '10vh' }}>
+        <Row style={{ marginBottom: '5vh' }}>
+          <b>
+            {search ? countSearchedSkills : countSkills} Skills Displayed
+          </b>
+        </Row>
+       {search ? searchedSkills && searchedSkills.map((row) => (
+            <Row className={styles.skill}>
+                {row.map((skill: Skill) => (
+                <Col key={skill.skill_id}>
+                    <SkillCard skill={skill} lj={false} editClicked={callback}/>
+                </Col>
+                ))}
+            </Row>)) : skills && skills.map((row) => (
+            <Row className={styles.skill}>
+                {row.map((skill) => (
+                <Col key={skill.skill_id}>
+                    <SkillCard skill={skill} lj={false} editClicked={callback}/>
+                </Col>
+                ))}
+            </Row>
+            ))}
+      </div>
     </>
   );
 }
