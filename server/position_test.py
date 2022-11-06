@@ -72,6 +72,8 @@ class TestPosition(unittest.TestCase):
 
             PS_1 = PositionSkill(1, 1)
             PS_2 = PositionSkill(1, 2)
+            PS_3 = PositionSkill(2, 1)
+            PS_4 = PositionSkill(2, 2)
 
             db.session.add(position_1)
             db.session.add(position_2)
@@ -81,6 +83,8 @@ class TestPosition(unittest.TestCase):
             db.session.add(skill_4)
             db.session.add(PS_1)
             db.session.add(PS_2)
+            db.session.add(PS_3)
+            db.session.add(PS_4)
 
 
     def tearDown(self):
@@ -90,13 +94,27 @@ class TestPosition(unittest.TestCase):
 
     def test_get_all_positions(self):
         response = self.client.get("/positions/all")
-        self.assertEquals(response.status_code, 200)
+        self.assertTrue(response.status_code == 200)
         self.assertEquals(len(response.json['data']), 2)
+        self.assertListEqual(response.json['data'], [{
+            "position_id": 1,
+            "position_name": "Software Engineer", 
+            "position_desc": "Code reusable components", 
+            "position_dept": "IT Team", 
+            "position_res": "Code 24 hours per day", 
+            "position_status": "Active"}, { 
+            "position_id": 2,
+            "position_name": "Product Designer", 
+            "position_desc": "Design components and user journey", 
+            "position_dept": "IT Team", 
+            "position_res": "Design 12 hours per day", 
+            "position_status": "Retired"}])
 
 
     def test_get_active_positions(self):
         response = self.client.get("/positions/active")
-        self.assertEquals(response.json['data'], [{ 
+        self.assertTrue(response.status_code == 200)
+        self.assertListEqual(response.json['data'], [{ 
             "position_id": 1,
             "position_name": "Software Engineer", 
             "position_desc": "Code reusable components", 
@@ -107,20 +125,35 @@ class TestPosition(unittest.TestCase):
 
     def test_get_skills_by_position(self):
         response = self.client.get("/positions/1/skills")
-        self.assertEquals(response.status_code, 200)
+        self.assertTrue(response.status_code == 200)
         self.assertEquals(len(response.json['data']), 2)
+        self.assertListEqual(response.json['data'], [{ 
+            "skill_id": 1, 
+            "skill_name": "Java Programming",
+            "skill_desc": "Code in Java", 
+            "skill_status": "Active"},{
+            "skill_id": 2, 
+            "skill_name": "Python Programming",
+            "skill_desc": "Code in Python", 
+            "skill_status": "Retired"}])
 
 
     def test_get_skill_ids_by_position(self, position_id = "1"):
         response = self.client.get("/positions/" + position_id + "/skill_ids")
-        self.assertEquals(response.status_code, 200)
+        self.assertTrue(response.status_code == 200)
         self.assertEquals(len(response.json['data']), 2)
+        self.assertListEqual(response.json['data'], [1, 2])
 
 
     def test_get_active_skills_by_position(self):
         response = self.client.get("/positions/1/skills/active")
-        self.assertEquals(response.status_code, 200)
+        self.assertTrue(response.status_code == 200)
         self.assertEquals(len(response.json['data']), 1)
+        self.assertListEqual(response.json['data'], [{ 
+            "skill_id": 1, 
+            "skill_name": "Java Programming",
+            "skill_desc": "Code in Java", 
+            "skill_status": "Active"}])
 
     
     def test_create_position(self):
@@ -135,7 +168,7 @@ class TestPosition(unittest.TestCase):
         }
 
         response = self.client.post("/positions/create", data=json.dumps(json_data), content_type="application/json")
-        self.assertEquals(response.status_code, 201)
+        self.assertTrue(response.status_code == 201)
         self.assertEquals(response.json['data'], {
             "position_id": 3,
             "position_name": "Staff Software Engineer", 
@@ -146,22 +179,19 @@ class TestPosition(unittest.TestCase):
         })
 
 
-    # def test_edit_position(self):
+    def test_edit_position(self):
 
-    #     json_data = {
-    #         "position_id": 2,
-    #         "position_name": "Product Designer", 
-    #         "position_desc": "Design components and user journey", 
-    #         "position_dept": "IT Team", 
-    #         "position_res": "Design 12 hours per day", 
-    #         "position_status": "Active",
-    #         "position_skills": [1, 2, 3, 4]
-    #     }
+        json_data_after = {
+            "position_id": 2,
+            "position_name": "Product Designer", 
+            "position_desc": "Design components and user journey", 
+            "position_dept": "IT Team", 
+            "position_res": "Design 12 hours per day", 
+            "position_status": "Active",
+            "position_skills": [1, 2, 3, 4]
+        }
 
-    #     response = self.client.put("/positions/edit", data=json.dumps(json_data), content_type="application/json")
+        response = self.client.put("/positions/edit", data=json.dumps(json_data_after), content_type="application/json")
 
-    #     with open('op.txt', 'w') as f:
-    #         f.write(json.dumps(response))
-
-    #     self.assertEquals(response.status_code, 200)
-    #     self.assertEquals(response.json['message'], "Position has been successfully editted." )
+        self.assertTrue(response.status_code == 200)
+        self.assertEquals(response.json['message'], "Position has been successfully editted.")

@@ -235,7 +235,6 @@ def edit_position():
     current_skills_response = get_skill_ids_by_position(positionID)
     print(current_skills_response)
     # print(json.loads(current_skills_response.data)['data'])
-    # if type(current_skills_response) == dict:
     current_skills = json.loads(current_skills_response.data)['data']
     current_skills_set = set(current_skills)
     # if not in skillIDs => to delete
