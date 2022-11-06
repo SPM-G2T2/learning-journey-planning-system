@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 
 from . import db
 
-from .model import Skill, Course, SkillCourse
+from .model import Position, Skill, PositionSkill, Course, SkillCourse
 from sqlalchemy import func
 import string
 
@@ -25,9 +25,26 @@ def get_all_skills():
     ), 404
 
 
+@skill.route("active")
+def get_all_active_skills():
+    skills = Skill.query.filter_by(skill_status="Active").all()
+
+    if skills: 
+        return jsonify ( 
+            {
+                "data": [skill.json() for skill in skills]
+            }
+        )
+    return jsonify(
+        {
+            "message": "There are no active skills."
+        }
+    ), 404
+
+
 @skill.route("<int:skill_id>")
 def get_skill_by_id(skill_id):
-    skill = Skill.query.filter_by(skill_id=skill_id).first()
+    skill = Skill.query.get(skill_id)
     if skill:
         return jsonify(
             {
@@ -41,69 +58,74 @@ def get_skill_by_id(skill_id):
     ), 404
 
 
+@skill.route('<int:skill_id>/positions')
+def get_positions_by_skill(skill_id):
+    positions = db.session.query(Position).filter(Position.position_id==PositionSkill.position_id, PositionSkill.skill_id==skill_id).all()
+
+    if positions:
+        return jsonify (
+            {
+                "data": [position.json() for position in positions]
+            }
+        )
+    return jsonify(
+        {
+            "message": "There are no positions requiring this skill."
+        }
+    ), 404
+
+
+@skill.route('<int:skill_id>/positions/active')
+def get_active_positions_by_skill(skill_id):
+    positions = db.session.query(Position).filter(Position.position_id==PositionSkill.position_id, PositionSkill.skill_id==skill_id, Position.position_status=="Active").all()
+
+    if positions:
+        return jsonify (
+            {
+                "data": [position.json() for position in positions]
+            }
+        )
+    return jsonify(
+        {
+            "message": "There are no active positions requiring this skill."
+        }
+    ), 404
+
+
 #FUNCTION 3: Filter courses by skill_id
 @skill.route("<int:skill_id>/courses")
-def get_courses_by_skill(skill_id): 
-
-    courselist = SkillCourse.query.filter_by(skill_id=skill_id).all()
-
-    courses = []
-
-    for item in courselist:
-
-        course_id = item.json()['course_id']
-        # print(course_id)
-
-        course = Course.query.filter_by(course_id=course_id).all()
-        # print(course[0].json())
-
-        courses.append(course[0].json())
-
-    # print(courses)
+def get_courses_by_skill(skill_id):
+    courses = db.session.query(Course).filter(SkillCourse.course_id==Course.course_id, SkillCourse.skill_id==skill_id).all()
 
     if courses: 
         return jsonify( 
             {
-                "data": [course for course in courses]
+                "data": [course.json() for course in courses]
             } 
         )
     return jsonify( 
         {
-            "message": "Skill ID invalid." 
+            "message": "There are no courses teaching this skill." 
         } 
     ), 404 
 
 
 #FUNCTION 4: Filter ACTIVE courses by skill_id
 @skill.route("<int:skill_id>/courses/active") 
-def get_active_courses_by_skill(skill_id): 
-
-    courselist = SkillCourse.query.filter_by(skill_id=skill_id).all()
-
-    courses = []
-
-    for item in courselist:
-
-        course_id = item.json()['course_id']
-        # print(course_id)
-        course = Course.query.filter_by(course_id=course_id).all()
-        course_obj=course[0].json()
-        if course_obj["course_status"] == "Active":
-            courses.append(course_obj)
-
-    # print(courses)
+def get_active_courses_by_skill(skill_id):
+    courses = db.session.query(Course).filter(SkillCourse.course_id==Course.course_id, SkillCourse.skill_id==skill_id, Course.course_status=="Active").all()
 
     if courses: 
         return jsonify( 
             {
-                "data": [course for course in courses]
+                "data": [course.json() for course in courses]
             } 
         )
     return jsonify( 
         {
-            "message": "Skill ID invalid." 
+            "message": "There are no active courses teaching this skill." 
         } 
-    ), 404 
+    ), 404
 
 
 #FUNCTION 2: Add a skill and assign it to selected courses
@@ -241,4 +263,4 @@ def delete_skill_course(skill_id):
         {
             "message": "Skill successfully edited."
         } 
-    ), 201 
+    )

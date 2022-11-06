@@ -11,7 +11,8 @@ class Position(db.Model):
     position_res = db.Column(db.String(1000), nullable=False)
     position_status = db.Column(db.String(10), nullable=False)
 
-    def __init__(self, position_name, position_desc, position_dept, position_res, position_status):
+    def __init__(self, position_id, position_name, position_desc, position_dept, position_res, position_status):
+        self.position_id = position_id
         self.position_name = position_name
         self.position_desc = position_desc
         self.position_dept = position_dept
@@ -107,11 +108,11 @@ class StaffSkill(db.Model):
 class LearningJourney(db.Model):
     __tablename__ = "learning_journey"
 
-    lj_id = db.Column(db.Integer, primary_key=True, nullable=False)
+    lj_id = db.Column(db.Integer, primary_key=True)
     staff_id = db.Column(db.Integer, nullable=False)
     position_id = db.Column(db.Integer, nullable=False)
-    skill_id = db.Column(db.Integer, primary_key=True, nullable=False)
-    course_id = db.Column(db.String(20), primary_key=True, nullable=False)
+    skill_id = db.Column(db.Integer, primary_key=True)
+    course_id = db.Column(db.String(20), primary_key=True)
 
     def __init__(self, staff_id, position_id, skill_id, course_id):
         self.staff_id = staff_id
