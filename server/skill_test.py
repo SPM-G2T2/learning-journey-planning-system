@@ -4,12 +4,8 @@ from requests import request
 import json
 from main import app
 from backend import db
-<<<<<<< HEAD
 
 from backend.model import Skill, SkillCourse, PositionSkill, StaffSkill
-=======
-from backend.model import Skill
->>>>>>> 140fe33c3070eeda3f56f6c5842ea3bcac5f1059
 
 class TestSkill(unittest.TestCase): 
 
@@ -35,7 +31,6 @@ class TestSkill(unittest.TestCase):
         response = self.client.get("/skills/all")
         self.assertEquals(response.json, {"message": "There are no skills."})
 
-<<<<<<< HEAD
     def test_delete_skill(self, skill_id= "1"):
 
         skill_1 = Skill(
@@ -185,8 +180,3 @@ class TestSkill(unittest.TestCase):
 
 
 
-=======
-    def test_get_all_active_skills(self):
-        response = self.client.get("/skills/active")
-        self.assertEquals(response.json, {"message": "There are no active skills."})
->>>>>>> 140fe33c3070eeda3f56f6c5842ea3bcac5f1059
