@@ -19,7 +19,7 @@ export default function CreateSkills(props: any) {
       const loadAsync = async () => {
 
         try {
-          const response = await fetch("http://localhost:5000/skills/" + props.setValues.skill_id + "/courses/active");
+          const response = await fetch("http://localhost:5000/skills/" + props.setValues.skill_id + "/courses");
           const courses = await response.json();
           console.log(courses.data);
 

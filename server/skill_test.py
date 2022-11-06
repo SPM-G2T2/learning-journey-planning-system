@@ -1,6 +1,5 @@
 import unittest
 
-from requests import request
 import json
 from main import app
 from backend import db
@@ -175,8 +174,3 @@ class TestSkill(unittest.TestCase):
 
         endpoint_call = self.client.put("/skills/edit_skill", data = json.dumps(edited_skill), content_type = "application/json")
         self.assertEquals(endpoint_call.json, {"message": "Duplicate courses detected. Please try again."})
-
-
-
-
-
