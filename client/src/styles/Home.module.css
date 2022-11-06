@@ -24,7 +24,6 @@
 .deleteButton, .deleteButton:focus {
     border-color: #FF3131;
     background-color: #FF3131;
-    margin: 15px;
     color: #FFF
 }
 

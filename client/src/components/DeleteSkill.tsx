@@ -65,7 +65,6 @@ export default function DeleteSkillBtn(props: any){
             Delete
         </Button>
         <Modal title="Are you sure you want to delete this skill?" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-            <p style={{ fontWeight: '600'}}>Skill ID: <span style={{ fontWeight: 'normal'}}>{props.skill["skill_id"]}</span></p>
             <p style={{ fontWeight: '600'}}>Skill Name: <span style={{ fontWeight: 'normal'}}>{props.skill["skill_name"]}</span></p>
             <p style={{ fontWeight: '600'}}>Skill Description: <span style={{ fontWeight: 'normal'}}>{props.skill["skill_desc"]}</span></p>
             <p style={{ fontWeight: '600'}}>Skill Status: <span style={{ fontWeight: 'normal'}}>{props.skill["skill_status"]}</span></p>
