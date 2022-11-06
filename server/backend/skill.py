@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 
 from . import db
 
-from .model import Position, Skill, PositionSkill, Course, SkillCourse
+from .model import Skill, Course, SkillCourse, PositionSkill, StaffSkill
 from sqlalchemy import func
 import string
 
@@ -209,6 +209,175 @@ def add_skill():
     ), 201 
 
 
+@skill.route("<int:skill_id>/delete_skill", methods=['POST'])
+def delete_skill(skill_id):
+
+    # Edit skill from skill table "Active" -> "Retired"
+    
+    skill_table_delete = Skill.query.filter_by(skill_id=skill_id).first()
+
+    skill_table_delete.skill_status = "Retired"
+
+    try:
+        db.session.commit()
+        
+    except: 
+        return jsonify( 
+            {
+                "message": "An error occurred editing the skill." 
+            } 
+        ), 500 
+
+    # Delete skill from skill_course table
+
+    skill_course_table_delete = SkillCourse.query.filter_by(skill_id=skill_id).all()
+
+    for skill in skill_course_table_delete:
+        try:
+            db.session.delete(skill)
+            db.session.commit()
+        
+        except: 
+            return jsonify( 
+                {
+                    "message": "An error occurred deleting the skill from the skill_course table." 
+                } 
+            ), 500 
+
+    # Delete skill from position_skill table
+
+    position_skill_table_delete = PositionSkill.query.filter_by(skill_id=skill_id).all()
+
+    for skill in position_skill_table_delete:
+        try:
+            db.session.delete(skill)
+            db.session.commit()
+        
+        except: 
+            return jsonify( 
+                {
+                    "message": "An error occurred deleting the skill from the position_skill table." 
+                } 
+            ), 500 
+
+    # Delete skill from staff_skill table
+
+    staff_skill_table_delete = StaffSkill.query.filter_by(skill_id=skill_id).all()
+
+    for skill in staff_skill_table_delete:
+        try:
+            db.session.delete(skill)
+            db.session.commit()
+        
+        except: 
+            return jsonify( 
+                {
+                    "message": "An error occurred deleting the skill from the staff_skill table." 
+                } 
+            ), 500 
+
+    
+    return jsonify( 
+        {
+            "message": "Skill successfully deleted."
+        } 
+    ), 201 
+
+
+@skill.route("/edit_skill", methods=['PUT'])
+def edit_skill():
+    
+    front_end_json = request.get_json()
+    
+    skill_id = front_end_json['skill_id']
+    new_skill_name = front_end_json['skill_name']
+    new_skill_desc = front_end_json['skill_desc']
+    new_skill_status = front_end_json['skill_status']
+    new_skill_courses = front_end_json['courses']
+
+    def checkIfDuplicates_1(listOfElems):
+        if len(listOfElems) == len(set(listOfElems)):
+            return False
+        else:
+            return True
+
+    result = checkIfDuplicates_1(new_skill_courses)
+    if result:
+        return jsonify( 
+            {
+                "message": "Duplicate courses detected. Please try again." 
+            } 
+        ), 406
+
+    #check if edited name is duplicated
+
+    skill_name_check = Skill.query.filter_by(skill_name = string.capwords(new_skill_name)).first()
+
+    if (skill_name_check and skill_name_check.skill_id != skill_id): 
+        return jsonify( 
+            {
+                "message": "skill already exists." 
+            } 
+        ), 400 
+
+    #Edit skill in skill table
+
+    skill_to_edit = Skill.query.filter_by(skill_id=skill_id).first()
+
+    skill_to_edit.skill_name = new_skill_name
+    skill_to_edit.skill_desc = new_skill_desc
+    skill_to_edit.skill_status = new_skill_status
+
+    try:
+        db.session.commit()
+        
+    except: 
+        return jsonify( 
+            {
+                "message": "An error occurred editing the skill." 
+            } 
+        ), 500 
+
+
+    # Edit skill in skill_course table
+
+    skills_to_delete = SkillCourse.query.filter_by(skill_id=skill_id).all()
+
+    for skill in skills_to_delete:
+        try:
+            db.session.delete(skill)
+            db.session.commit()
+        
+        except: 
+            return jsonify( 
+                {
+                    "message": "An error occurred deleting the skill from the skill_course table." 
+                } 
+            ), 500 
+
+    for course in new_skill_courses:
+
+        skill_course_to_add = SkillCourse(skill_id, course)
+
+        try:
+            db.session.add(skill_course_to_add)
+            db.session.commit()
+        
+        except: 
+            return jsonify( 
+                {
+                    "message": "An error occurred adding the skill to the skill_course table." 
+                } 
+            ), 500 
+
+    return jsonify( 
+    {
+        "message": "Skill successfully edited."
+    } 
+    ), 201 
+    
+    
+
 #FUNCTION 5: Assign courses to the created skill (assigning different courses to a skill_id)
 @skill.route("assign_course", methods=['POST']) 
 def create_skill_course(): 
@@ -238,7 +407,6 @@ def create_skill_course():
             "message": "Skill successfully created."
         } 
     ), 201
-
 
 #FUNCTION 6: Delete skill from courses (delete course entry by course_id and skill_id)
 @skill.route("<int:skill_id>/unassign_course", methods=['POST'])

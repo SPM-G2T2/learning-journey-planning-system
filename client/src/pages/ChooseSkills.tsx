@@ -8,6 +8,9 @@ import { Skill } from "../types/Skill";
 export default function ChooseSkills() {
   const [skills, setSkills] = useState<Skill[]>([]);
 
+  const callback = () =>{
+  }
+
   useEffect(() => {
     axios
       .get("http://localhost:5000/skills/active")
@@ -64,7 +67,7 @@ export default function ChooseSkills() {
         {skills &&
           skills.map((skill) => (
             <Col span={8}>
-              <SkillCard skill={skill} lj={false} />
+              <SkillCard skill={skill} lj={false} editClicked={callback}/>
             </Col>
           ))}
       </Row>

@@ -35,11 +35,11 @@ export default function ManageLJPS() {
             label: "Skills",
             key: "skills",
             children:
-              skillsStep === "view" ? <RenderSkills setSkillsStep={setSkillsStep}/> :
+              skillsStep === "view" ? <RenderSkills setSkillsStep={setSkillsStep} setValues={setValues}/> :
               (skillsStep === "form" ? (
-                <CreateSkills setSkillsStep={setSkillsStep} setForm={setForm} setNext={setSkillsStep} />
+                <CreateSkills setSkillsStep={setSkillsStep} setForm={setForm} setNext={setSkillsStep} setValues={values} />
               ) : (
-                <PreviewSkills form={form} setNext={setSkillsStep} />
+                <PreviewSkills form={form} setNext={setSkillsStep} values={values}/>
               )),
           },
           {
