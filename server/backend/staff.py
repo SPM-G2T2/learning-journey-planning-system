@@ -10,16 +10,17 @@ staff = Blueprint("staff", __name__)
 @staff.route("<string:staff_id>/skills")
 def get_skills_by_staff(staff_id):
 
-    staffs = StaffSkill.query.filter_by(staff_id=staff_id).all()
-    if staffs:
+    skills = StaffSkill.query.filter_by(staff_id=staff_id).all()
+
+    if skills:
         return jsonify(
             {
-                "data": [staff.json() for staff in staffs]
+                "data": [skill.json() for skill in skills]
             }
         )
     return jsonify(
         {
-            "message": "Staff not found."
+            "message": "Staff has no skills."
         }
     ), 404
 
