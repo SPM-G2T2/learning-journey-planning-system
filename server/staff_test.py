@@ -65,12 +65,12 @@ class TestStaff(unittest.TestCase):
                 course_type = "Internal", 
                 course_category = "Technical")
             
-            PS_1 = PositionSkill(1, 1)
-            SC_1 = SkillCourse(1, "IS212")
-            SS_1 = StaffSkill("S1234", 1)
-            SS_2 = StaffSkill("S1234", 2)
+            position_skill_1 = PositionSkill(1, 1)
+            skill_course_1 = SkillCourse(1, "IS212")
+            staff_skill_1 = StaffSkill("S1234", 1)
+            staff_skill_2 = StaffSkill("S1234", 2)
 
-            LJ_1 = LearningJourney(
+            learning_journey_1 = LearningJourney(
                 lj_id = 1, 
                 staff_id = "S1234", 
                 position_id = 1, 
@@ -82,11 +82,11 @@ class TestStaff(unittest.TestCase):
             db.session.add(skill_1)
             db.session.add(skill_2)
             db.session.add(course_1)
-            db.session.add(PS_1)
-            db.session.add(SC_1)
-            db.session.add(SS_1)
-            db.session.add(SS_2)
-            db.session.add(LJ_1)
+            db.session.add(position_skill_1)
+            db.session.add(skill_course_1)
+            db.session.add(staff_skill_1)
+            db.session.add(staff_skill_2)
+            db.session.add(learning_journey_1)
             
 
     def tearDown(self):

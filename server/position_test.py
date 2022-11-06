@@ -71,10 +71,10 @@ class TestPosition(unittest.TestCase):
                 skill_status = "Retired"
             )
 
-            PS_1 = PositionSkill(1, 1)
-            PS_2 = PositionSkill(1, 2)
-            PS_3 = PositionSkill(2, 1)
-            PS_4 = PositionSkill(2, 2)
+            position_skill_1 = PositionSkill(1, 1)
+            position_skill_2 = PositionSkill(1, 2)
+            position_skill_3 = PositionSkill(2, 1)
+            position_skill_4 = PositionSkill(2, 2)
 
             db.session.add(position_1)
             db.session.add(position_2)
@@ -82,10 +82,10 @@ class TestPosition(unittest.TestCase):
             db.session.add(skill_2)
             db.session.add(skill_3)
             db.session.add(skill_4)
-            db.session.add(PS_1)
-            db.session.add(PS_2)
-            db.session.add(PS_3)
-            db.session.add(PS_4)
+            db.session.add(position_skill_1)
+            db.session.add(position_skill_2)
+            db.session.add(position_skill_3)
+            db.session.add(position_skill_4)
 
 
     def tearDown(self):

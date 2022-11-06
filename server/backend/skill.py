@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 
 from . import db
 
-from .model import Skill, Course, SkillCourse, PositionSkill, StaffSkill
+from .model import Position, Skill, Course, SkillCourse, PositionSkill, StaffSkill
 from sqlalchemy import func
 import string
 
@@ -129,8 +129,8 @@ def get_active_courses_by_skill(skill_id):
 
 
 #FUNCTION 2: Add a skill and assign it to selected courses
-@skill.route("add", methods=['POST']) 
-def add_skill(): 
+@skill.route("create", methods=['POST']) 
+def create_skill(): 
 
     data = request.get_json() 
 
@@ -281,7 +281,7 @@ def delete_skill(skill_id):
         {
             "message": "Skill successfully deleted."
         } 
-    ), 201 
+    )
 
 
 @skill.route("/edit_skill", methods=['PUT'])
@@ -316,7 +316,7 @@ def edit_skill():
     if (skill_name_check and skill_name_check.skill_id != skill_id): 
         return jsonify( 
             {
-                "message": "skill already exists." 
+                "message": "Skill already exists." 
             } 
         ), 400 
 
@@ -374,7 +374,7 @@ def edit_skill():
     {
         "message": "Skill successfully edited."
     } 
-    ), 201 
+    ), 201
     
     
 
