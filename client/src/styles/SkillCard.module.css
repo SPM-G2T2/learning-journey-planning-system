@@ -6,7 +6,6 @@
     border-radius: 1.3vw;
     padding: 1vw;
     position: relative;
-    margin: 0 1vw 0 1vw;
 }
 
 .card:hover,
@@ -21,31 +20,23 @@
 
 .status {
     margin-left: 0.5vw;
+    font-weight: 400;
 }
 
 .Active {
     color: #FFF;
     background-color: #16C098;
     border: #16C098;
-    font-weight: 400;
 }
 
 .Retired {
     color: #FFF;
     background-color: #FF3131;
     border: #FF3131;
-    font-weight: 400;
 }
 
-.more {
+.btn {
     position: absolute;
     right: 2vw;
     bottom: 4vh;
-}
-
-.edit {
-    position: absolute;
-    right: 2vw;
-    bottom: 4vh;
-    width: 5vw;
 }

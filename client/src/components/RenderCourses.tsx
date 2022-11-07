@@ -59,16 +59,16 @@ export default function RenderCourses(props: any) {
             searchedCourses.map((searchedCourse) => (
               <RoleCourseCard
                 course={searchedCourse}
-                edit={true}
-                editClicked={callback}
+                purpose="edit"
+                // editClicked={callback}
               />
             ))
           : courses &&
             courses.map((course) => (
               <RoleCourseCard
                 course={course}
-                edit={true}
-                editClicked={callback}
+                purpose="edit"
+                // editClicked={callback}
               />
             ))}
       </div>

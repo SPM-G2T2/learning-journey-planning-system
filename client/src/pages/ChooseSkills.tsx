@@ -67,7 +67,11 @@ export default function ChooseSkills() {
         {skills &&
           skills.map((skill) => (
             <Col span={8}>
-              <SkillCard skill={skill} lj={false} editClicked={callback}/>
+              <SkillCard
+                skill={skill}
+                purpose="lj"
+                // editClicked={callback}
+              />
             </Col>
           ))}
       </Row>

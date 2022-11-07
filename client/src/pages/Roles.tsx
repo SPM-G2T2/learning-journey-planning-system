@@ -63,13 +63,17 @@ export default function Roles() {
             searchedRoles.map((searchedRole) => (
               <RoleCourseCard
                 role={searchedRole}
-                edit={false}
-                editClicked={callback}
+                purpose="view"
+                // editClicked={callback}
               />
             ))
           : roles &&
             roles.map((role) => (
-              <RoleCourseCard role={role} edit={false} editClicked={callback} />
+              <RoleCourseCard
+                role={role}
+                purpose="view"
+                // editClicked={callback}
+              />
             ))}
       </div>
     </>

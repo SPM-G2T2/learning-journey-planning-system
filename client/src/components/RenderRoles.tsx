@@ -70,13 +70,17 @@ export default function RenderRoles(props: any) {
             searchedRoles.map((searchedRole) => (
               <RoleCourseCard
                 role={searchedRole}
-                edit={true}
-                editClicked={callback}
+                purpose="edit"
+                // editClicked={callback}
               />
             ))
           : roles &&
             roles.map((role) => (
-              <RoleCourseCard role={role} edit={true} editClicked={callback} />
+              <RoleCourseCard
+                role={role}
+                purpose="edit"
+                // editClicked={callback}
+              />
             ))}
       </div>
     </>

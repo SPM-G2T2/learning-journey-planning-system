@@ -10,8 +10,8 @@ import { Course } from "../types/Course";
 import GenericModal from "./GenericModal";
 
 export default function RoleCourseCard(props: {
-  editClicked: (editRole: Role | undefined) => void;
-  edit?: boolean;
+  // editClicked: (editRole: Role | undefined) => void;
+  purpose: "view" | "lj" | "edit";
   role?: Role;
   course?: Course;
   selectedRole?: Role;
@@ -63,17 +63,17 @@ export default function RoleCourseCard(props: {
                 props.course?.course_name.substring(0, 30) +
                 " ..."
               : props.course?.course_id + ": " + props.course?.course_name}
-            {props.edit &&
+            {props.purpose === "edit" &&
             (props.role?.position_status || props.course?.course_status) ===
               "Active" ? (
               <Tag className={styles.activeStatus}>Active</Tag>
             ) : null}
-            {props.edit &&
+            {props.purpose === "edit" &&
             (props.role?.position_status || props.course?.course_status) ===
               "Pending" ? (
               <Tag className={styles.pendingStatus}>Pending</Tag>
             ) : null}
-            {props.edit &&
+            {props.purpose === "edit" &&
             (props.role?.position_status || props.course?.course_status) ===
               "Retired" ? (
               <Tag className={styles.retiredStatus}>Retired</Tag>
@@ -96,10 +96,10 @@ export default function RoleCourseCard(props: {
           </p>
         </div>
       </div>
-      {props.edit && props.role ? (
+      {props.purpose === "edit" && props.role ? (
         <Button
           className={styles.edit}
-          onClick={() => props.editClicked(props.role)}
+          // onClick={() => props.editClicked(props.role)}
         >
           Edit
         </Button>
