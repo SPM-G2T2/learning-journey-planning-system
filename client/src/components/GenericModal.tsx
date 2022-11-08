@@ -108,7 +108,7 @@ export default function GenericModal(props: {
           {props.missing && (
             <Tag className={`${styles.status} ${styles.Retired}`}>Missing</Tag>
           )}
-          {(generic.status === "Retired" || props.course) && (
+          {(generic.status !== "Active" || props.course) && (
             <Tag className={`${styles.status} ${styles[generic.status]}`}>
               {generic.status}
             </Tag>

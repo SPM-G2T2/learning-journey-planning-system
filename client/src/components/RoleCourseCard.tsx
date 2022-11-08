@@ -14,8 +14,10 @@ export default function RoleCourseCard(props: {
   purpose: "view" | "lj" | "edit";
   role?: Role;
   course?: Course;
-  selectedRole?: Role;
-  selectedCourse?: Course;
+  selectedRole?: [number, string];
+  selectedCourses?: {
+    [key: string]: string;
+  };
   handleClick?: () => void;
 }) {
   const [modalStatus, setModalStatus] = useState<boolean>(false);
@@ -32,13 +34,13 @@ export default function RoleCourseCard(props: {
   return (
     <div
       className={`${styles.horizontal} ${styles.card} ${
-        props.course &&
-        props.course === props.selectedCourse &&
-        styles.cardSelected
-      }}
-      ${
-        props.role && props.role === props.selectedRole && styles.cardSelected
-      }`}
+        (props.role
+          ? props.role.position_id ===
+            (props.selectedRole as [number, string])[0]
+          : (props.selectedCourses as { [key: string]: string })[
+              props.course?.course_id as string
+            ]) && styles.cardSelected
+      } ${props.purpose === "lj" && styles.hover}`}
       onClick={props.handleClick}
     >
       <div className={styles.horizontal}>

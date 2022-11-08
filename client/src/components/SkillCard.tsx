@@ -8,16 +8,12 @@ export default function SkillCard(props: {
   skill: Skill;
   purpose: "view" | "lj" | "edit";
   staffSkillIDs?: Set<number>;
-  selectedSkills?: { [key: number]: string };
+  selectedSkills?: { [key: string]: string };
   handleClick?: () => void;
 }) {
   const [modalStatus, setModalStatus] = useState<boolean>(false);
   const missing =
     props.staffSkillIDs && !props.staffSkillIDs.has(props.skill.skill_id);
-
-  function handleClose() {
-    setModalStatus(false);
-  }
 
   return (
     <div
@@ -25,7 +21,7 @@ export default function SkillCard(props: {
         props.selectedSkills &&
         props.selectedSkills[props.skill.skill_id] &&
         styles.cardSelected
-      }`}
+      } ${props.purpose === "lj" && styles.hover}`}
       onClick={props.handleClick}
     >
       <p className={styles.title}>
@@ -61,7 +57,7 @@ export default function SkillCard(props: {
         skill={props.skill}
         missing={missing}
         status={modalStatus}
-        handleClose={handleClose}
+        handleClose={() => setModalStatus(false)}
       />
     </div>
   );

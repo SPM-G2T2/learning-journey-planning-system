@@ -6,9 +6,10 @@
     border-radius: 1.3vw;
     padding: 1vw;
     position: relative;
+    margin: 0 1vw 4vh 1vw;
 }
 
-.card:hover,
+.hover:hover,
 .cardSelected {
     border: 2px solid #3649F9;
 }

@@ -1,4 +1,4 @@
-import { Button, Col, Pagination, Row, Steps } from "antd";
+import { Button, Col, Modal, Pagination, Row, Steps } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import RoleCourseCard from "../components/RoleCourseCard";
@@ -6,16 +6,24 @@ import SkillCard from "../components/SkillCard";
 import styles from "../styles/ChooseRole.module.css";
 import { Role } from "../types/Role";
 import { Skill } from "../types/Skill";
+import { Course } from "../types/Course";
+import createlj from "../assets/createlj.png";
 
 export default function Home() {
   const [step, setStep] = useState<number>(0);
   const [roles, setRoles] = useState<Role[]>([]);
-  const [selectedRole, setSelectedRole] = useState<Role>();
+  const [selectedRole, setSelectedRole] = useState<[number, string]>([0, ""]);
   const [skills, setSkills] = useState<Skill[][]>([]);
   const [staffSkillIDs, setStaffSkillIDs] = useState<Set<number>>(new Set());
   const [selectedSkills, setSelectedSkills] = useState<{
-    [key: number]: string;
+    [key: string]: string;
   }>({});
+  const [selectedSkillID, setSelectedSkillID] = useState<string>("");
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [selectedCourses, setSelectedCourses] = useState<{
+    [key: string]: string;
+  }>({});
+  const [modalStatus, setModalStatus] = useState<boolean>(false);
   const staffID = 140001;
 
   useEffect(() => {
@@ -39,9 +47,7 @@ export default function Home() {
         <div className={styles.selection}>
           <p className={styles.selectionLabel}>
             Role Selected:{" "}
-            <span className={styles.selectionContent}>
-              {selectedRole?.position_name}
-            </span>
+            <span className={styles.selectionContent}>{selectedRole[1]}</span>
           </p>
           <p className={styles.selectionLabel}>
             Skills Selected:{" "}
@@ -52,7 +58,7 @@ export default function Home() {
           <p className={styles.selectionLabel}>
             Courses Selected:{" "}
             <span className={styles.selectionContent}>
-              Intro to Technical Support
+              {Object.values(selectedCourses).join(", ")}
             </span>
           </p>
         </div>
@@ -61,18 +67,14 @@ export default function Home() {
           roles.map(
             (role) =>
               (role.position_status === "Active" ||
-                role.position_id === selectedRole?.position_id) && (
+                role.position_id === selectedRole[0]) && (
                 <RoleCourseCard
                   role={role}
                   purpose="lj"
                   selectedRole={selectedRole}
-                  handleClick={() => {
-                    if (selectedRole === role) {
-                      setSelectedRole(undefined);
-                    } else {
-                      setSelectedRole(role);
-                    }
-                  }}
+                  handleClick={() =>
+                    setSelectedRole([role.position_id, role.position_name])
+                  }
                   key={role.position_id}
                 />
               )
@@ -80,76 +82,185 @@ export default function Home() {
 
         {step === 1 &&
           skills.map((row, i) => (
-            <Row key={i}>
-              {row.map(
-                (skill) =>
-                  (skill.skill_status === "Active" ||
-                    selectedSkills[skill.skill_id]) && (
-                    <Col className={styles.skill} key={skill.skill_id}>
-                      <SkillCard
-                        skill={skill}
-                        purpose="lj"
-                        staffSkillIDs={staffSkillIDs}
-                        selectedSkills={selectedSkills}
-                        handleClick={() => {
-                          const newSelectedSkills = { ...selectedSkills };
-                          if (newSelectedSkills[skill.skill_id]) {
-                            delete newSelectedSkills[skill.skill_id];
-                          } else {
-                            newSelectedSkills[skill.skill_id] =
-                              skill.skill_name;
-                          }
-                          setSelectedSkills(newSelectedSkills);
-                        }}
-                      />
-                    </Col>
+            <div className={styles.skillRow} key={i}>
+              {row.map((skill) => (
+                <SkillCard
+                  skill={skill}
+                  purpose="lj"
+                  staffSkillIDs={staffSkillIDs}
+                  selectedSkills={selectedSkills}
+                  handleClick={() => {
+                    const newSelectedSkills = { ...selectedSkills };
+                    if (newSelectedSkills[skill.skill_id]) {
+                      delete newSelectedSkills[skill.skill_id];
+                    } else {
+                      newSelectedSkills[skill.skill_id] = skill.skill_name;
+                    }
+                    setSelectedSkills(newSelectedSkills);
+                  }}
+                  key={skill.skill_id}
+                />
+              ))}
+            </div>
+          ))}
+
+        {step === 2 && (
+          <Row>
+            <Col span={5}>
+              {Object.keys(selectedSkills).map((skillID) => (
+                <Button
+                  onClick={() => {
+                    setSelectedSkillID(skillID);
+                    axios
+                      .get(
+                        "http://localhost:5000/skills/" + skillID + "/courses"
+                      )
+                      .then((resp) => setCourses(resp.data.data))
+                      .catch((err) => console.log(err));
+                  }}
+                  type={selectedSkillID === skillID ? "primary" : "default"}
+                  className={styles.selectedSkill}
+                  key={skillID}
+                >
+                  {selectedSkills[skillID]}
+                </Button>
+              ))}
+            </Col>
+            <Col span={19}>
+              {courses.map(
+                (course) =>
+                  (course.course_status === "Active" ||
+                    selectedCourses[course.course_id]) && (
+                    <RoleCourseCard
+                      course={course}
+                      purpose="lj"
+                      selectedCourses={selectedCourses}
+                      handleClick={() => {
+                        const newSelectedCourses = { ...selectedCourses };
+                        if (newSelectedCourses[course.course_id]) {
+                          delete newSelectedCourses[course.course_id];
+                        } else {
+                          newSelectedCourses[course.course_id] =
+                            course.course_name;
+                        }
+                        setSelectedCourses(newSelectedCourses);
+                      }}
+                      key={course.course_id}
+                    />
                   )
               )}
-            </Row>
-          ))}
+            </Col>
+          </Row>
+        )}
       </div>
 
       <div className={styles.bottom}>
         <Pagination total={15} defaultPageSize={3} />
-        <Button
-          type="primary"
-          onClick={() => {
-            if (step === 0) {
-              axios
-                .get(
-                  "http://localhost:5000/positions/" +
-                    selectedRole?.position_id +
-                    "/skills"
-                )
-                .then((resp) => {
-                  const rows = [];
-                  let row = [];
-                  for (let col of resp.data.data) {
-                    if (row.length === 3) {
-                      rows.push(row);
-                      row = [];
-                    }
-                    row.push(col);
-                  }
-                  if (row.length > 0) {
-                    rows.push(row);
-                  }
-                  setSkills(rows);
-                })
-                .catch((err) => console.log(err));
+        <div>
+          <Button onClick={() => setStep(step - 1)} className={styles.back}>
+            Back
+          </Button>
+          {step < 2 ? (
+            <Button
+              type="primary"
+              onClick={() => {
+                if (step === 0) {
+                  axios
+                    .get(
+                      "http://localhost:5000/positions/" +
+                        selectedRole[0] +
+                        "/skills"
+                    )
+                    .then((resp) => {
+                      const rows = [];
+                      let row = [];
+                      for (let col of resp.data.data) {
+                        if (row.length === 3) {
+                          rows.push(row);
+                          row = [];
+                        }
+                        if (
+                          col.skill_status === "Active" ||
+                          selectedSkills[col.skill_id]
+                        ) {
+                          row.push(col);
+                        }
+                      }
+                      if (row.length > 0) {
+                        rows.push(row);
+                      }
+                      setSkills(rows);
+                    })
+                    .catch((err) => console.log(err));
 
-              axios
-                .get("http://localhost:5000/staff/" + staffID + "/skill_ids")
-                .then((resp) => setStaffSkillIDs(new Set(resp.data.data)))
-                .catch((err) => console.log(err));
-            } else if (step === 1) {
-            }
-            setStep(step + 1);
+                  axios
+                    .get(
+                      "http://localhost:5000/staff/" + staffID + "/skill_ids"
+                    )
+                    .then((resp) => setStaffSkillIDs(new Set(resp.data.data)))
+                    .catch((err) => console.log(err));
+                } else if (step === 1) {
+                  const skillID = Object.keys(selectedSkills)[0];
+                  setSelectedSkillID(skillID);
+                  axios
+                    .get("http://localhost:5000/skills/" + skillID + "/courses")
+                    .then((resp) => setCourses(resp.data.data))
+                    .catch((err) => console.log(err));
+                }
+                setStep(step + 1);
+              }}
+            >
+              Next
+            </Button>
+          ) : (
+            <Button type="primary" onClick={() => setModalStatus(true)}>
+              Submit
+            </Button>
+          )}
+        </div>
+      </div>
+      <Modal
+        open={modalStatus}
+        onCancel={() => setModalStatus(false)}
+        footer={null}
+        width="25vw"
+      >
+        <img src={createlj} alt="createlj icon" className={styles.modalImg} />
+        <p className={styles.modalTitle}>Confirm Learning Journey?</p>
+        <div className={styles.modalContent}>
+          You are creating a learning journey for the following:
+          <br />
+          <br />
+          Role:{" "}
+          <span className={styles.selectionContent}>{selectedRole[1]}</span>
+          <br />
+          Skills:{" "}
+          <span className={styles.selectionContent}>
+            {Object.values(selectedSkills).join(", ")}
+          </span>
+          <br />
+          Courses:{" "}
+          <span className={styles.selectionContent}>
+            {Object.values(selectedCourses).join(", ")}
+          </span>
+        </div>
+        <Button
+          className={styles.modalBtn}
+          onClick={() => {
+            axios
+              .post("http://localhost:5000/learning_journeys/create", {
+                staff_id: staffID,
+                position_id: selectedRole[0],
+                skill_ids: Object.keys(selectedSkills),
+                course_ids: Object.keys(selectedCourses),
+              })
+              .then((resp) => console.log(resp))
+              .catch((err) => console.log(err));
           }}
         >
-          Next
+          Confirm
         </Button>
-      </div>
+      </Modal>
     </>
   );
 }

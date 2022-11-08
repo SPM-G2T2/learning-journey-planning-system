@@ -1,8 +1,10 @@
 from flask import Blueprint, request, jsonify
 
-from . import db
+from . import db, course
 
-from .model import Position, Skill, Course, LearningJourney
+from .model import Position, Skill, SkillCourse, Course, LearningJourney
+
+from sqlalchemy import func
 
 learning_journey = Blueprint("learning_journey", __name__)
 
@@ -29,28 +31,28 @@ def get_all_learning_journeys():
 def create_learning_journey():
 
     learningjourney = request.get_json()
-    # print(type(learningjourney)) #dict 
+
+    max_lj_id = db.session.query(func.max(LearningJourney.lj_id)).first()
     
-    staff_id = learningjourney['staff_id']
-    position_id = learningjourney['position_id']
-    skill_id = learningjourney['skill_id']
-    course_id = learningjourney['course_id']
+    lj_id = max_lj_id[0] + 1
+    addedCourseIDs = set(learningjourney['course_ids'])
 
-    learningjourney = LearningJourney(staff_id, position_id, skill_id, course_id)
-    # print(learningjourney)
-
-    try:
-        db.session.add(learningjourney)
-        db.session.commit()
-    except:
-        return jsonify(
-            {
-                "message": "An error occurred creating the learning journey."
-            }
-        ), 500
+    for addedSkillID in learningjourney['skill_ids']:
+        courseIDs = db.session.query(Course.course_id).filter(SkillCourse.course_id==Course.course_id, SkillCourse.skill_id==addedSkillID, Course.course_status=="Active").all()
+        for courseID in courseIDs:
+            if courseID[0] in addedCourseIDs:
+                try:
+                    db.session.add(LearningJourney(lj_id, learningjourney['staff_id'], learningjourney['position_id'], addedSkillID, courseID[0]))
+                    db.session.commit()
+                except:
+                    return jsonify(
+                        {
+                            "message": "An error occurred creating the Learning Journey."
+                        }
+                    ), 500
     return jsonify(
         {
-            "data": learningjourney.json()
+            "message": "Learning Journey has been successfully created."
         }
     ), 201
 
