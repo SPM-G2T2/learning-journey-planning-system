@@ -41,3 +41,4 @@ jobs:
         python skill_test.py
         python course_test.py
         python staff_test.py
+        python learning_journey_test.py

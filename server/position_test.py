@@ -179,6 +179,22 @@ class TestPosition(unittest.TestCase):
             "position_status": "Active",
         })
 
+    
+    def test_create_position_with_duplicate_name(self):
+        
+        json_data = {
+            "position_name": "Software Engineer", 
+            "position_desc": "Manage team and code reusable components", 
+            "position_dept": "IT Team", 
+            "position_res": "Code 36 hours per day", 
+            "position_status": "Active",
+            "position_skills": [1, 2, 3]
+        }
+
+        response = self.client.post("/positions/create", data=json.dumps(json_data), content_type="application/json")
+        self.assertTrue(response.status_code == 400)
+        self.assertEquals(response.json['message'], "Position Name already exists.")
+        
 
     def test_edit_position(self):
 
@@ -196,3 +212,21 @@ class TestPosition(unittest.TestCase):
 
         self.assertTrue(response.status_code == 200)
         self.assertEquals(response.json['message'], "Position has been successfully editted.")
+
+
+    def test_edit_position_with_duplicate_name(self):
+
+        json_data = {
+            "position_id": 2,
+            "position_name": "Software Engineer", 
+            "position_desc": "Design components and user journey", 
+            "position_dept": "IT Team", 
+            "position_res": "Design 12 hours per day", 
+            "position_status": "Active",
+            "position_skills": [1, 2, 3, 4]
+        }
+
+        response = self.client.put("/positions/edit", data=json.dumps(json_data), content_type="application/json")
+
+        self.assertTrue(response.status_code == 400)
+        self.assertEquals(response.json['message'], "Position Name already exists.")

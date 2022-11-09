@@ -157,7 +157,7 @@ def create_skill():
     if (Skill.query.filter_by(skill_name=skill_name).first()): 
         return jsonify( 
             {
-                "message": "skill already exists." 
+                "message": "Skill Name already exists." 
             } 
         ), 400 
 
@@ -316,7 +316,7 @@ def edit_skill():
     if (skill_name_check and skill_name_check.skill_id != skill_id): 
         return jsonify( 
             {
-                "message": "Skill already exists." 
+                "message": "Skill Name already exists." 
             } 
         ), 400 
 

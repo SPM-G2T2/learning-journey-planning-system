@@ -146,6 +146,20 @@ class TestSkill(unittest.TestCase):
         self.assertEquals(response.json,  {"message": "Skill successfully created and assigned."})
 
 
+    def test_create_skill_with_duplicate_name(self):
+
+        json_data = {
+            "skill_name": "Project Management", 
+            "skill_desc": "Code OOP", 
+            "skill_status": "Active",
+            "courses": ["IS111"]
+        }
+
+        response = self.client.post("/skills/create", data=json.dumps(json_data), content_type="application/json")
+        self.assertTrue(response.status_code == 400)
+        self.assertEquals(response.json, {"message": "Skill Name already exists."})
+
+
     def test_delete_skill(self, skill_id="1"):
 
         endpoint_call = self.client.post("/skills/" + skill_id + "/delete_skill")
@@ -193,7 +207,7 @@ class TestSkill(unittest.TestCase):
 
         endpoint_call = self.client.put("/skills/edit_skill", data = json.dumps(edited_skill), content_type = "application/json")
         self.assertTrue(endpoint_call.status_code == 400)
-        self.assertEquals(endpoint_call.json, {"message": "Skill already exists."})
+        self.assertEquals(endpoint_call.json, {"message": "Skill Name already exists."})
 
 
     def test_edit_skill_with_same_name(self):
