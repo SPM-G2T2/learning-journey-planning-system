@@ -1,4 +1,4 @@
-<h1 align='center'>📚 💻 All-in-One Learning Journey Planning System 📚 💻 </h1>
+<h2 align='center'>📚 💻 All-in-One Learning Journey Planning System 📚 💻 </h2>
 
 ## Description:
 A Learning Journey Planning System to complement the existing Learning Management System for All-In-One Printing Solution Equipment Servicing Company.
