@@ -2,9 +2,27 @@ from flask import Blueprint, jsonify
 
 from . import db
 
-from .model import StaffSkill, Position, Skill, Course, LearningJourney
+from .model import Role, Staff, StaffSkill, Position, Skill, Course, LearningJourney
 
 staff = Blueprint("staff", __name__)
+
+
+@staff.route("<string:staff_id>/role")
+def get_role_by_staff(staff_id):
+
+    role = db.session.query(Role).filter(Staff.staff_id == staff_id).filter(Staff.role_id == Role.role_id).first()
+
+    if role:
+        return jsonify(
+            {
+                "data": role.json()
+            }
+        )
+    return jsonify(
+        {
+            "message": "Staff has no role."
+        }
+    ), 404
 
 
 @staff.route("<string:staff_id>/skills")
