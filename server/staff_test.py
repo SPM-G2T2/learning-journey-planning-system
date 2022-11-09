@@ -4,7 +4,7 @@ import json
 from main import app
 from backend import db
 
-from backend.model import Staff, StaffSkill, Position, Skill, Course, PositionSkill, SkillCourse, LearningJourney
+from backend.model import Role, Staff, StaffSkill, Position, Skill, Course, PositionSkill, SkillCourse, LearningJourney
 
 class TestStaff(unittest.TestCase): 
 
@@ -33,6 +33,11 @@ class TestStaff(unittest.TestCase):
                 role_id = 1
             )
 
+            role_1 = Role(
+                role_id = 1, 
+                role_name = "Admin"
+            )
+
             position_1 = Position(
                 position_id = 1,
                 position_name = "Software Engineer", 
@@ -41,7 +46,6 @@ class TestStaff(unittest.TestCase):
                 position_res = "Code 24 hours per day", 
                 position_status = "Active"
             )
-
 
             skill_1 = Skill(
                 skill_id = 1, 
@@ -78,6 +82,7 @@ class TestStaff(unittest.TestCase):
                 course_id = "IS212")
 
             db.session.add(staff_1)
+            db.session.add(role_1)
             db.session.add(position_1)
             db.session.add(skill_1)
             db.session.add(skill_2)
@@ -92,6 +97,14 @@ class TestStaff(unittest.TestCase):
     def tearDown(self):
         db.session.remove()
         db.drop_all()
+
+
+    def test_get_role_by_staff(self, staff_id="S1234"):
+        response = self.client.get("/staff/" + staff_id + "/role")
+        self.assertTrue(response.status_code == 200)
+        self.assertDictEqual(response.json['data'], { 
+            "role_id": 1,
+            "role_name": "Admin"})
 
     
     def test_get_skills_by_staff(self, staff_id="S1234"):
