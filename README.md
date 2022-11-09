@@ -48,4 +48,6 @@ Provide direction for staff to reach their career aspirations within the company
  5. From the prompt, select *"[*_test.py] Python files ending with ‘_test’"*
  6. The testing panel on the left should populate all the unit tests discovered in the repository
  7. From the context menu, choose *“Run tests”*
- 
+
+
+Lastly, here's the [link](https://github.com/SPM-G2T2/learning-journey-planning-system) to our Github Repository! 😁
