@@ -104,7 +104,7 @@ export default function CreateRoles(props: any) {
           </Col>
           <Col>
             <Form.Item>
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit" id="createRoleBtn">
               {props.setValues === null ? 'Create role' : 'Edit role'}
               </Button>
             </Form.Item>

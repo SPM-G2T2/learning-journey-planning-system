@@ -51,7 +51,7 @@ export default function RenderRoles(props: any) {
             <Input placeholder="Enter search" className={styles.search} onChange={handleChange}/>
           </Col>
           <Col span={4} offset={12}>
-            <Button type="primary" onClick={() => props.setRolesStep("form") & props.setValues(null)}>Create role</Button>
+            <Button type="primary" onClick={() => props.setRolesStep("form") & props.setValues(null)} id="createRoleBtn">Create role</Button>
           </Col>
         </Row>
         { search ? searchedRoles && searchedRoles.map((searchedRole) => (

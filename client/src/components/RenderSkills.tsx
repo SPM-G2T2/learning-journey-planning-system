@@ -75,7 +75,7 @@ console.log(props.setSkills)
                     <Input placeholder="Enter search" className={styles.search} onChange={handleChange}/>
                 </Col>
                 <Col span={1} offset={11}>
-                    <Button type="primary" onClick={() => props.setSkillsStep("form") & props.setValues(null)}>Create skill</Button>
+                    <Button type="primary" onClick={() => props.setSkillsStep("form") & props.setValues(null)} id="createSkillBtn">Create skill</Button>
                 </Col>
             </Row>
         {/* </div> */}

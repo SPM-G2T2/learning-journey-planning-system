@@ -25,7 +25,7 @@ const { Content, Sider } = Layout;
 export default function App() {
 
   // use 130001 for Admin and 140001 for Staff, Trainer and Manager
-  const [user, setUser] = useState(140001);
+  const [user, setUser] = useState(130001);
   const [role, setRole] = useState(null);
 
   useEffect(() => {

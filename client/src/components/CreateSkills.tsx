@@ -93,7 +93,7 @@ export default function CreateSkills(props: any) {
           </Col>
           <Col>
             <Form.Item>
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit" id="createSkillBtn">
               {props.setValues === null ? 'Create skill' : 'Edit skill'}
               </Button>
             </Form.Item>
