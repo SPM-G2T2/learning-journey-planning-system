@@ -17,10 +17,16 @@ export default function GenericModal(props: {
   role?: Role;
   course?: Course;
   skill?: Skill;
+  missing?: boolean;
   status: boolean;
   handleClose: () => void;
 }) {
-  const [generic, setGeneric] = useState<Generic>();
+  const [generic, setGeneric] = useState<Generic>({
+    title: "",
+    status: "",
+    descType: "",
+    desc: "",
+  });
   const [skills, setSkills] = useState<Skill[]>([]);
   const [roles, setRoles] = useState<Role[]>([]);
   const [courses, setCourses] = useState<Course[]>([]);
@@ -98,17 +104,20 @@ export default function GenericModal(props: {
         }
       >
         <p className={styles.title}>
-          {generic?.title}
-          <Tag
-            className={`${styles.status} ${styles[generic?.status as string]}`}
-          >
-            {generic?.status}
-          </Tag>
+          {generic.title}
+          {props.missing && (
+            <Tag className={`${styles.status} ${styles.Retired}`}>Missing</Tag>
+          )}
+          {(generic.status !== "Active" || props.course) && (
+            <Tag className={`${styles.status} ${styles[generic.status]}`}>
+              {generic.status}
+            </Tag>
+          )}
         </p>
         <hr className={styles.hr}></hr>
 
-        <h3>{generic?.descType} Description: </h3>
-        <p>{generic?.desc}</p>
+        <h3>{generic.descType} Description: </h3>
+        <p>{generic.desc}</p>
 
         {props.role && (
           <>
@@ -144,7 +153,7 @@ export default function GenericModal(props: {
           </>
         )}
 
-        {(props.role || props.course) &&
+        {!props.skill &&
           skills.map((skill) => (
             <Badge
               key={skill.skill_id}

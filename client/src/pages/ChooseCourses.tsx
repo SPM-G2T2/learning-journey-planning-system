@@ -134,9 +134,10 @@ console.log(showCourses)
             {courses.map((course) => (
               <RoleCourseCard
                 course={course}
+                purpose="lj"
                 key={course.course_id}
                 handleClick={() => showCourseswhenclick(`${course.course_name}`)}   
-                editClicked={callback}        
+                // editClicked={callback}
               />
             ))}
           </Col>

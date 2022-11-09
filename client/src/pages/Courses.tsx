@@ -65,16 +65,16 @@ export default function Courses() {
             searchedCourses.map((searchedCourse) => (
               <RoleCourseCard
                 course={searchedCourse}
-                edit={false}
-                editClicked={callback}
+                purpose="view"
+                // editClicked={callback}
               />
             ))
           : courses &&
             courses.map((course) => (
               <RoleCourseCard
                 course={course}
-                edit={false}
-                editClicked={callback}
+                purpose="view"
+                // editClicked={callback}
               />
             ))}
       </div>

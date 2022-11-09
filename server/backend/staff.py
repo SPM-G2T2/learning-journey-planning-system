@@ -28,12 +28,11 @@ def get_role_by_staff(staff_id):
 @staff.route("<string:staff_id>/skills")
 def get_skills_by_staff(staff_id):
 
-    skills = StaffSkill.query.filter_by(staff_id=staff_id).all()
-
-    if skills:
+    staffSkills = StaffSkill.query.filter_by(staff_id=staff_id).all()
+    if staffSkills:
         return jsonify(
             {
-                "data": [skill.json() for skill in skills]
+                "data": [staffSkill.skill_id for staffSkill in staffSkills]
             }
         )
     return jsonify(

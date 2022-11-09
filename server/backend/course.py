@@ -72,21 +72,3 @@ def get_active_skills_by_course(course_id):
             "message": "There are no active skills taught in this course." 
         } 
     ), 404 
-
-
-# @course.route("<string:course_id>/filterCourseById")
-# def get_course_by_course_id(course_id):
-
-#     course = Course.query.filter_by(course_id=course_id).first()
-
-#     if course:
-#         return jsonify( 
-#             {
-#                 "data": course.json()
-#             } 
-#         )
-#     return jsonify( 
-#         {
-#             "message": "There are no courses." 
-#         } 
-#     ), 404 

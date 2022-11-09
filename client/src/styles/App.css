@@ -95,25 +95,27 @@ label {
   color: #808080;
 }
 
-.ant-btn-primary {
-  border-color: #3649F9;
+.ant-btn {
   border-radius: 10px;
+}
+
+.ant-btn-primary,
+.ant-btn-primary:focus {
+  border-color: #3649F9;
   background-color: #3649F9;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 .ant-btn-primary:hover,
 .ant-btn-default,
-.ant-btn-default:hover,
-.ant-btn-default::after {
+.ant-btn-default:hover {
   border-color: #3649F9;
-  border-radius: 10px;
   color: #3649F9;
   background-color: #FFF;
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
 }
 
-.ant-table-thead > tr > th {
+.ant-table-thead>tr>th {
   font-weight: bold;
-  color:  #3649F9;
+  color: #3649F9;
 }

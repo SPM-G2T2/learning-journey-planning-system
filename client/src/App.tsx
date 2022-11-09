@@ -23,19 +23,18 @@ import ManageLJPS from "./pages/ManageLJPS";
 const { Content, Sider } = Layout;
 
 export default function App() {
-
   // use 130001 for Admin and 140001 for Staff, Trainer and Manager
   const [user, setUser] = useState(140001);
   const [role, setRole] = useState(null);
 
   useEffect(() => {
     axios
-    .get("http://localhost:5000/staff/" + user + "/role")
-    .then((resp) => {
-      console.log(resp.data.data.role_name)
-      setRole(resp.data.data.role_name)
-    })
-    .catch((err) => console.log(err));
+      .get("http://localhost:5000/staff/" + user + "/role")
+      .then((resp) => {
+        console.log(resp.data.data.role_name);
+        setRole(resp.data.data.role_name);
+      })
+      .catch((err) => console.log(err));
   }, []);
 
   return (
@@ -71,11 +70,13 @@ export default function App() {
                 </Link>
               </Menu.Item>
             ))}
-            { role === "Admin" && <Menu.Item icon={<EditOutlined />} key="LJPS">
-              <Link to="/ljps" className="menu-item-link">
-                Manage LJPS
-              </Link>
-            </Menu.Item> }
+            {role === "Admin" && (
+              <Menu.Item icon={<EditOutlined />} key="LJPS">
+                <Link to="/ljps" className="menu-item-link">
+                  Manage LJPS
+                </Link>
+              </Menu.Item>
+            )}
           </Menu>
         </Sider>
         <Content>
@@ -93,15 +94,16 @@ export default function App() {
             Eric
           </Button>
           <Routes>
-            <Route path="/" element={<Home lj={true}/>} />
-            <Route path="/LearningJourney" element={<LearningJourney />} />
+            <Route path="/" element={<Home />} />
             <Route path="/roles" element={<Roles />} />
             <Route path="/skills" element={<Skills />} />
             <Route path="/courses" element={<Courses />} />
-            <Route path="/create/2" element={<Home />} />
-            { role === "Admin" && <Route path="/ljps" element={<ManageLJPS />} /> }
+            {role === "Admin" && (
+              <Route path="/ljps" element={<ManageLJPS />} />
+            )}
           </Routes>
         </Content>
       </BrowserRouter>
-    </Layout>)
-};
+    </Layout>
+  );
+}

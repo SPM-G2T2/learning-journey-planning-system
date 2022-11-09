@@ -10,12 +10,14 @@ import { Course } from "../types/Course";
 import GenericModal from "./GenericModal";
 
 export default function RoleCourseCard(props: {
-  editClicked: (editRole: Role | undefined) => void;
-  edit?: boolean;
+  // editClicked: (editRole: Role | undefined) => void;
+  purpose: "view" | "lj" | "edit";
   role?: Role;
   course?: Course;
-  selectedRole?: Role;
-  selectedCourse?: Course;
+  selectedRole?: [number, string];
+  selectedCourses?: {
+    [key: string]: string;
+  };
   handleClick?: () => void;
 }) {
   const [modalStatus, setModalStatus] = useState<boolean>(false);
@@ -32,13 +34,13 @@ export default function RoleCourseCard(props: {
   return (
     <div
       className={`${styles.horizontal} ${styles.card} ${
-        props.course &&
-        props.course === props.selectedCourse &&
-        styles.cardSelected
-      }}
-      ${
-        props.role && props.role === props.selectedRole && styles.cardSelected
-      }`}
+        (props.role
+          ? props.role.position_id ===
+            (props.selectedRole as [number, string])[0]
+          : (props.selectedCourses as { [key: string]: string })[
+              props.course?.course_id as string
+            ]) && styles.cardSelected
+      } ${props.purpose === "lj" && styles.hover}`}
       onClick={props.handleClick}
     >
       <div className={styles.horizontal}>
@@ -63,17 +65,17 @@ export default function RoleCourseCard(props: {
                 props.course?.course_name.substring(0, 30) +
                 " ..."
               : props.course?.course_id + ": " + props.course?.course_name}
-            {props.edit &&
+            {props.purpose === "edit" &&
             (props.role?.position_status || props.course?.course_status) ===
               "Active" ? (
               <Tag className={styles.activeStatus}>Active</Tag>
             ) : null}
-            {props.edit &&
+            {props.purpose === "edit" &&
             (props.role?.position_status || props.course?.course_status) ===
               "Pending" ? (
               <Tag className={styles.pendingStatus}>Pending</Tag>
             ) : null}
-            {props.edit &&
+            {props.purpose === "edit" &&
             (props.role?.position_status || props.course?.course_status) ===
               "Retired" ? (
               <Tag className={styles.retiredStatus}>Retired</Tag>
@@ -96,10 +98,10 @@ export default function RoleCourseCard(props: {
           </p>
         </div>
       </div>
-      {props.edit && props.role ? (
+      {props.purpose === "edit" && props.role ? (
         <Button
           className={styles.edit}
-          onClick={() => props.editClicked(props.role)}
+          // onClick={() => props.editClicked(props.role)}
         >
           Edit
         </Button>

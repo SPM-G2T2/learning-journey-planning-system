@@ -5,52 +5,59 @@ import { Skill } from "../types/Skill";
 import GenericModal from "./GenericModal";
 
 export default function SkillCard(props: {
-  editClicked: (editSkill: Skill | undefined) => void;
   skill: Skill;
-  lj: boolean;
-  // role?: Role;
-  // selectedRole?: Role;
-  // handleClick: () => void;
-  // course?: Course;
+  purpose: "view" | "lj" | "edit";
+  staffSkillIDs?: Set<number>;
+  selectedSkills?: { [key: string]: string };
+  handleClick?: () => void;
 }) {
   const [modalStatus, setModalStatus] = useState<boolean>(false);
-
-  function handleClose() {
-    setModalStatus(false);
-  }
-
-  const color = { Active: "#008767", Retired: "#FF0000" };
-
-  const bgColor = { Active: "#16C098", Retired: "#F3A1A9" };
+  const missing =
+    props.staffSkillIDs && !props.staffSkillIDs.has(props.skill.skill_id);
 
   return (
     <div
-      // className={`${styles.horizontal} ${styles.card} ${
-      //   props.role === props.selectedRole && styles.cardSelected
-      // }`}
-      // onClick={props.handleClick}
-      className={styles.card}
+      className={`${styles.card} ${
+        props.selectedSkills &&
+        props.selectedSkills[props.skill.skill_id] &&
+        styles.cardSelected
+      } ${props.purpose === "lj" && styles.hover}`}
+      onClick={props.handleClick}
     >
       <p className={styles.title}>
         {props.skill.skill_name}
-        <Tag className={`${styles.status} ${styles[props.skill.skill_status]}`}>
-          {props.skill.skill_status}
-        </Tag>
+        {missing && (
+          <Tag className={`${styles.status} ${styles.Retired}`}>Missing</Tag>
+        )}
+        {(props.purpose === "edit" ||
+          props.skill.skill_status === "Retired") && (
+          <Tag
+            className={`${styles.status} ${styles[props.skill.skill_status]}`}
+          >
+            {props.skill.skill_status}
+          </Tag>
+        )}
       </p>
       {props.skill.skill_desc.length > 200
         ? props.skill.skill_desc.substring(0, 200) + " ..."
         : props.skill.skill_desc}
-      {props.lj ? 
-      <Button className={styles.more} onClick={() => setModalStatus(true)}>
-        Read More
-      </Button>:
-      <Button className={styles.edit} onClick={() => props.editClicked(props.skill) }>
-            Edit
-      </Button> }
+      {props.purpose === "edit" ? (
+        <Button className={styles.btn} onClick={() => {}}>
+          Edit
+        </Button>
+      ) : (
+        <Button
+          className={styles.btn}
+          onClick={() => (props.purpose === "lj" ? setModalStatus(true) : {})}
+        >
+          Read More
+        </Button>
+      )}
       <GenericModal
         skill={props.skill}
+        missing={missing}
         status={modalStatus}
-        handleClose={handleClose}
+        handleClose={() => setModalStatus(false)}
       />
     </div>
   );
