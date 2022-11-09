@@ -21,6 +21,13 @@ Provide direction for staff to reach their career aspirations within the company
 ## Set Up Guide
 1. Clone the repository 
 2. Create a ```.env``` file under Server folder and place the password for the database
+3. Create a new SQL connection to access data in the database <br/>
+  ```
+     hostname: learning-journey-planning-system.czgju3uctwbf.ap-southeast-1.rds.amazonaws.com
+     username: admin
+     port: 3306
+     password: 
+  ```
 
 
 ## Installation Guide 
