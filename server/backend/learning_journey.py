@@ -31,25 +31,22 @@ def get_all_learning_journeys():
 def create_learning_journey():
 
     learningjourney = request.get_json()
+    skillIDs = learningjourney['skill_course'][0]
+    courseIDs = learningjourney['skill_course'][1]
 
     max_lj_id = db.session.query(func.max(LearningJourney.lj_id)).first()
-    
     lj_id = max_lj_id[0] + 1
-    addedCourseIDs = set(learningjourney['course_ids'])
 
-    for addedSkillID in learningjourney['skill_ids']:
-        courseIDs = db.session.query(Course.course_id).filter(SkillCourse.course_id==Course.course_id, SkillCourse.skill_id==addedSkillID, Course.course_status=="Active").all()
-        for courseID in courseIDs:
-            if courseID[0] in addedCourseIDs:
-                try:
-                    db.session.add(LearningJourney(lj_id, learningjourney['staff_id'], learningjourney['position_id'], addedSkillID, courseID[0]))
-                    db.session.commit()
-                except:
-                    return jsonify(
-                        {
-                            "message": "An error occurred creating the Learning Journey."
-                        }
-                    ), 500
+    for i in range(len(skillIDs)):
+        try:
+            db.session.add(LearningJourney(lj_id, learningjourney['staff_id'], learningjourney['position_id'], skillIDs[i], courseIDs[i]))
+            db.session.commit()
+        except:
+            return jsonify(
+                {
+                    "message": "An error occurred while creating the Learning Journey."
+                }
+            ), 500
     return jsonify(
         {
             "message": "Learning Journey has been successfully created."

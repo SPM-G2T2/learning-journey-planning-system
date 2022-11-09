@@ -128,6 +128,32 @@ def get_active_courses_by_skill(skill_id):
     ), 404
 
 
+@skill.route("skill_course", methods=["POST"])
+def get_skill_course():
+    skillCourse = request.get_json()
+    skillCourseRecords = [[], []]
+    skillIDs = set(skillCourse["skill_ids"])
+
+    skillCoursePairs = SkillCourse.query.filter(SkillCourse.course_id.in_(skillCourse["course_ids"])).all()
+
+    for pair in skillCoursePairs:
+        if str(pair.skill_id) in skillIDs:
+            skillCourseRecords[0].append(pair.skill_id)
+            skillCourseRecords[1].append(pair.course_id)
+
+    if skillCourseRecords[0]: 
+        return jsonify( 
+            {
+                "data": skillCourseRecords
+            } 
+        )
+    return jsonify( 
+        {
+            "message": "There are no skills for these courses." 
+        } 
+    ), 404 
+
+
 #FUNCTION 2: Add a skill and assign it to selected courses
 @skill.route("create", methods=['POST']) 
 def create_skill(): 

@@ -12,7 +12,7 @@ import "./styles/App.css";
 import logo from "./assets/logo.png";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
-import LearningJourney from "./pages/LearningJourney";
+import LearningJourney from "./components/LearningJourney";
 import Roles from "./pages/Roles";
 import Skills from "./pages/Skills";
 import Courses from "./pages/Courses";
@@ -76,11 +76,9 @@ const App = () => (
         </Button>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/LearningJourney" element={<LearningJourney />} />
           <Route path="/roles" element={<Roles />} />
           <Route path="/skills" element={<Skills />} />
           <Route path="/courses" element={<Courses />} />
-          <Route path="/create/2" element={<Home />} />
           <Route path="/ljps" element={<ManageLJPS />} />
         </Routes>
       </Content>
