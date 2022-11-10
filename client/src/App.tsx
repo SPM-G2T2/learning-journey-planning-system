@@ -14,7 +14,6 @@ import { useState, useEffect } from "react";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import axios from "axios";
 import Home from "./pages/Home";
-import LearningJourney from "./pages/LearningJourney";
 import Roles from "./pages/Roles";
 import Skills from "./pages/Skills";
 import Courses from "./pages/Courses";
@@ -24,7 +23,7 @@ const { Content, Sider } = Layout;
 
 export default function App() {
   // use 130001 for Admin and 140001 for Staff, Trainer and Manager
-  const [user, setUser] = useState(140001);
+  const [user, setUser] = useState(130001);
   const [role, setRole] = useState(null);
 
   useEffect(() => {
@@ -94,7 +93,7 @@ export default function App() {
             Eric
           </Button>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Home user={user} />} />
             <Route path="/roles" element={<Roles />} />
             <Route path="/skills" element={<Skills />} />
             <Route path="/courses" element={<Courses />} />

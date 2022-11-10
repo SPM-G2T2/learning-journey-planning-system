@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify
 
 from . import db
 
-from .model import Role, Staff, StaffSkill, Position, Skill, Course, LearningJourney
+from .model import StaffSkill, Position, Skill, Course, LearningJourney, Staff, Role
 
 staff = Blueprint("staff", __name__)
 
@@ -25,8 +25,8 @@ def get_role_by_staff(staff_id):
     ), 404
 
 
-@staff.route("<string:staff_id>/skills")
-def get_skills_by_staff(staff_id):
+@staff.route("<string:staff_id>/skill_ids")
+def get_skill_ids_by_staff(staff_id):
 
     staffSkills = StaffSkill.query.filter_by(staff_id=staff_id).all()
     if staffSkills:

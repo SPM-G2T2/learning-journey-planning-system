@@ -100,7 +100,7 @@ export default function RenderSkills(props: any) {
                     <SkillCard
                       skill={skill}
                       purpose="edit"
-                    //   editClicked={callback}
+                      editClicked={callback}
                     />
                   </Col>
                 ))}
@@ -114,7 +114,7 @@ export default function RenderSkills(props: any) {
                     <SkillCard
                       skill={skill}
                       purpose="edit"
-                    //   editClicked={callback}
+                      editClicked={callback}
                     />
                   </Col>
                 ))}

@@ -10,7 +10,7 @@ import { Course } from "../types/Course";
 import createlj from "../assets/createlj.png";
 import LearningJourney from "../components/LearningJourney";
 
-export default function Home() {
+export default function Home({ user }: { user: number }) {
   const [step, setStep] = useState<number>(-1);
   const [roles, setRoles] = useState<Role[]>([]);
   const [selectedRole, setSelectedRole] = useState<[number, string]>([0, ""]);
@@ -32,17 +32,17 @@ export default function Home() {
   const [finalSkills, setFinalSkills] = useState<Set<number>>(new Set());
   const [droppedSkills, setDroppedSkills] = useState<string[]>([]);
   const [modalStatus, setModalStatus] = useState<boolean>(false);
-  const staffID = 140001;
 
   useEffect(() => {
-    next();
+    if (roles.length === 0) {
+      next();
+    }
   }, [selectedRole]);
 
   function next() {
     axios
       .get("http://localhost:5000/positions/" + selectedRole[0] + "/skills")
       .then((resp) => {
-        console.log("hihihihihhihihihihihi");
         const rows = [];
         let row = [];
         for (let col of resp.data.data) {
@@ -62,7 +62,7 @@ export default function Home() {
       .catch((err) => console.log(err));
 
     axios
-      .get("http://localhost:5000/staff/" + staffID + "/skill_ids")
+      .get("http://localhost:5000/staff/" + user + "/skill_ids")
       .then((resp) => setStaffSkillIDs(new Set(resp.data.data)))
       .catch((err) => console.log(err));
   }
@@ -223,29 +223,29 @@ export default function Home() {
             <Pagination total={15} defaultPageSize={3} />
             <div>
               <Button
-                  onClick={() => {
-                    if (roles.length === 0){
-                      if (step === 1){
-                        setSelectedRole([0, ""])
-                        setSelectedSkills({})
-                        setSelectedCourses({})
-                        setStep(step - 2)
-                      } else {
-                        setStep(step - 1)
-                      }
+                onClick={() => {
+                  if (roles.length === 0) {
+                    if (step === 1) {
+                      setSelectedRole([0, ""]);
+                      setSelectedSkills({});
+                      setSelectedCourses({});
+                      setStep(step - 2);
                     } else {
-                      if (step === 0){
-                        setSelectedRole([0, ""]);
-                        setSelectedSkills({});
-                        setSelectedCourses({});
-                        setRoles([])
-                      }
-                      setStep(step - 1)
+                      setStep(step - 1);
                     }
-                  }}
-                  className={styles.back}
-                >
-                  Back
+                  } else {
+                    if (step === 0) {
+                      setSelectedRole([0, ""]);
+                      setSelectedSkills({});
+                      setSelectedCourses({});
+                      setRoles([]);
+                    }
+                    setStep(step - 1);
+                  }
+                }}
+                className={styles.back}
+              >
+                Back
               </Button>
               {step < 2 ? (
                 <Button
@@ -255,45 +255,7 @@ export default function Home() {
                       if (selectedRole[1] === "") {
                         setErr("Please select a role.");
                       } else {
-                        axios
-                          .get(
-                            "http://localhost:5000/positions/" +
-                              selectedRole[0] +
-                              "/skills"
-                          )
-                          .then((resp) => {
-                            const rows = [];
-                            let row = [];
-                            for (let col of resp.data.data) {
-                              if (row.length === 3) {
-                                rows.push(row);
-                                row = [];
-                              }
-                              if (
-                                col.skill_status === "Active" ||
-                                selectedSkills[col.skill_id]
-                              ) {
-                                row.push(col);
-                              }
-                            }
-                            if (row.length > 0) {
-                              rows.push(row);
-                            }
-                            setSkills(rows);
-                          })
-                          .catch((err) => console.log(err));
-
-                        axios
-                          .get(
-                            "http://localhost:5000/staff/" +
-                              staffID +
-                              "/skill_ids"
-                          )
-                          .then((resp) =>
-                            setStaffSkillIDs(new Set(resp.data.data))
-                          )
-                          .catch((err) => console.log(err));
-
+                        next();
                         setStep(step + 1);
                       }
                     } else if (step === 1) {
@@ -361,7 +323,7 @@ export default function Home() {
             />
             <p className={styles.modalTitle}>Confirm Learning Journey?</p>
             <div className={styles.modalContent}>
-              You are creating a learning journey for the following:
+              You are {roles.length === 0 ? "updating" : "creating"} a learning journey for the following:
               <br />
               <br />
               Role:{" "}
@@ -393,11 +355,15 @@ export default function Home() {
               className={styles.modalBtn}
               onClick={() => {
                 axios
-                  .post("http://localhost:5000/learning_journeys/create", {
-                    staff_id: staffID,
-                    position_id: selectedRole[0],
-                    skill_course: skillCourse,
-                  })
+                  .post(
+                    "http://localhost:5000/learning_journeys/" +
+                      (roles.length === 0 ? "update" : "create"),
+                    {
+                      staff_id: user,
+                      position_id: selectedRole[0],
+                      skill_course: skillCourse,
+                    }
+                  )
                   .then((resp) => console.log(resp))
                   .catch((err) => console.log(err));
               }}

@@ -10,6 +10,7 @@ export default function SkillCard(props: {
   staffSkillIDs?: Set<number>;
   selectedSkills?: { [key: string]: string };
   handleClick?: () => void;
+  editClicked?: (editRole: Skill | undefined) => void;
 }) {
   const [modalStatus, setModalStatus] = useState<boolean>(false);
   const missing =
@@ -39,17 +40,17 @@ export default function SkillCard(props: {
         )}
       </p>
       {props.skill.skill_desc.length > 200
-        ? props.skill.skill_desc.substring(0, 200) + " ..."
+        ? props.skill.skill_desc.substring(0, 150) + " ..."
         : props.skill.skill_desc}
       {props.purpose === "edit" ? (
-        <Button className={styles.btn} onClick={() => {}}>
+        <Button
+          className={styles.btn}
+          onClick={() => props.editClicked && props.editClicked(props.skill)}
+        >
           Edit
         </Button>
       ) : (
-        <Button
-          className={styles.btn}
-          onClick={() => (props.purpose === "lj" ? setModalStatus(true) : {})}
-        >
+        <Button className={styles.btn} onClick={() => setModalStatus(true)}>
           Read More
         </Button>
       )}
