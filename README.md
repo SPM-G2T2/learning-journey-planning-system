@@ -33,7 +33,8 @@ Provide direction for staff to reach their career aspirations within the company
 
 ## Installation Guide 
 1. Navigate to Front-End Folder - At the root directory, type ```cd client``` and <br/>
-  1.1. ```npm install```
+  1.1. ```npm install``` <br/>
+  1.2. ```npm install cypress``` <br/>
 2. Navigate to Back-End Folder - At the root directory, type ```cd server``` and<br/>
   2.1. ```pip install Flask``` <br/>
   2.2. ``` pip install flask-sqlalchemy```  <br/>
