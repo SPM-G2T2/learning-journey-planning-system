@@ -32,9 +32,9 @@ Provide direction for staff to reach their career aspirations within the company
 **Password is submitted in the .zip file*
 
 ## Installation Guide 
-1. Front-End <br/>
+1. Navigate to Front-End Folder - At the root directory, type ```cd client``` and <br/>
   1.1. ```npm install```
-2. Back-End <br/>
+2. Navigate to Back-End Folder - At the root directory, type ```cd server``` and<br/>
   2.1. ```pip install Flask``` <br/>
   2.2. ``` pip install flask-sqlalchemy```  <br/>
   2.3. ``` pip install Flask-Cors```  <br/>
@@ -44,11 +44,16 @@ Provide direction for staff to reach their career aspirations within the company
  ## How to Run the Application?
  1. Run the Client (Front-End) <br/>
   1.1. At the root directory, type ```cd client``` and ```npm run start``` in the terminal
-2. Run the Server (Back-End) <br/>
+ 2. Run the Server (Back-End) <br/>
   2.1. At the root directory, type ```cd server``` and ```python main.py``` in the terminal
 
+ ## How to Test the Front-End of the Application?
+ 1. At the root directory, type ```cd client``` and <br/>
+  1.1. ```npx cypress open``` to run the Specs File <br/>
+  1.2. ```npx cypress run``` to verify if the tests have passed in the terminal
+
  
- ## How to Test the Application?
+ ## How to Test the Back-End of the Application?
  1. In your Visual Studio Code, click on *"Testing"* on the Activity Bar
  2. Next, click on *"Configure Python Tests"*
  3. From the prompt, select *"[unittest] Standard Python test framework"*
@@ -56,6 +61,5 @@ Provide direction for staff to reach their career aspirations within the company
  5. From the prompt, select *"[*_test.py] Python files ending with ‘_test’"*
  6. The testing panel on the left should populate all the unit tests discovered in the repository
  7. From the context menu, choose *“Run tests”*
-
 
 Lastly, here's the [link](https://github.com/SPM-G2T2/learning-journey-planning-system) to our Github Repository! 😁
