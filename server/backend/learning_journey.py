@@ -37,7 +37,10 @@ def create_learning_journey():
 
     if not lj_id:
         max_lj_id = db.session.query(func.max(LearningJourney.lj_id)).first()
-        lj_id = max_lj_id[0] + 1
+        if max_lj_id[0] == None:
+            lj_id = 1
+        else:
+            lj_id = max_lj_id[0] + 1
 
     for i in range(len(skillIDs)):
         try:
