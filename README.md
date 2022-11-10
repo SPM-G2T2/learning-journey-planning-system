@@ -49,8 +49,13 @@ Provide direction for staff to reach their career aspirations within the company
 
  ## How to Test the Front-End of the Application?
  1. At the root directory, type ```cd client``` and <br/>
-  1.1. ```npx cypress open``` to run the Specs File <br/>
-  1.2. ```npx cypress run``` to verify if the tests have passed in the terminal
+  1.1. ```npx cypress open``` to open Cypress <br/>
+  1.2. In the window, click *"E2E Testing"* <br/>
+  1.3. Next, select *"Chrome"* as preferred browser for E2E Testing <br/>
+  1.4. Modify the ```spec.cy.ts``` file with a line break <br/>
+  1.5. In the window, click on *"spec"* <br/>
+  1.6. Watch the execution of the E2E Test <br/>
+  1.7. ```npx cypress run``` to verify if the tests have passed in the terminal
 
  
  ## How to Test the Back-End of the Application?
