@@ -60,6 +60,7 @@ export default function RenderRoles(props: any) {
             <Button
               type="primary"
               onClick={() => props.setRolesStep("form") & props.setValues(null)}
+              id="createRoleBtn"
             >
               Create role
             </Button>

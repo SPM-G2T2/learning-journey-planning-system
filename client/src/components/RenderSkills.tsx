@@ -84,6 +84,7 @@ export default function RenderSkills(props: any) {
           <Button
             type="primary"
             onClick={() => props.setSkillsStep("form") & props.setValues(null)}
+            id="createSkillBtn"
           >
             Create skill
           </Button>
