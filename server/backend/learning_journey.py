@@ -30,16 +30,18 @@ def get_all_learning_journeys():
 @learning_journey.route("/create", methods=['POST'])
 def create_learning_journey():
 
-    learningjourney = request.get_json()
-    skillIDs = learningjourney['skill_course'][0]
-    courseIDs = learningjourney['skill_course'][1]
+    learning_journey = request.get_json()
+    lj_id = learning_journey['lj_id']
+    skillIDs = learning_journey['skill_course'][0]
+    courseIDs = learning_journey['skill_course'][1]
 
-    max_lj_id = db.session.query(func.max(LearningJourney.lj_id)).first()
-    lj_id = max_lj_id[0] + 1
+    if not lj_id:
+        max_lj_id = db.session.query(func.max(LearningJourney.lj_id)).first()
+        lj_id = max_lj_id[0] + 1
 
     for i in range(len(skillIDs)):
         try:
-            db.session.add(LearningJourney(lj_id, learningjourney['staff_id'], learningjourney['position_id'], skillIDs[i], courseIDs[i]))
+            db.session.add(LearningJourney(lj_id, learning_journey['staff_id'], learning_journey['position_id'], skillIDs[i], courseIDs[i]))
             db.session.commit()
         except:
             return jsonify(
@@ -51,7 +53,7 @@ def create_learning_journey():
         {
             "message": "Learning Journey has been successfully created."
         }
-    ), 201
+    ), 201  
 
 
 @learning_journey.route("/<int:lj_id>/delete", methods=['POST'])
@@ -75,7 +77,7 @@ def delete_learning_journey(lj_id):
         { 
             "message": "Learning Journey has been successfully deleted."
         } 
-    ), 201
+    )
 
 
 @learning_journey.route("/<int:lj_id>/filterLearningjourneyById", methods=['GET'])
@@ -96,15 +98,29 @@ def filter_learning_journey_by_id(lj_id):
         ), 404
 
 
-@learning_journey.route("/edit", methods=['PUT'])
-def edit_learning_journey():
+# @learning_journey.route("/edit", methods=['PUT'])
+# def edit_learning_journey():
 
-    front_end_json = request.get_json()
-    print(front_end_json["params"]["ljid"])
+#     learning_journey = request.get_json()
+#     lj_id = learning_journey['lj_id']
+#     position_id = learning_journey['position_id']
+#     skillIDs = learning_journey['skill_course'][0]
+#     courseIDs = learning_journey['skill_course'][1]
 
-    lj_id = front_end_json["params"]["ljid"]
-    role = front_end_json["params"]["role"]
-    courses = front_end_json["params"]["courses"]
-    skills = front_end_json["params"]["skills"]
+#     print(lj_id)
 
-    return front_end_json
+#     delete_learning_journey(lj_id)
+#     create_learning_journey(lj_id)
+
+#     # skillIDs = learningjourney['skill_course'][0]
+#     # courseIDs = learningjourney['skill_course'][1]
+
+#     # front_end_json = request.get_json()
+#     # print(front_end_json["params"]["ljid"])
+
+#     # lj_id = front_end_json["params"]["ljid"]
+#     # role = front_end_json["params"]["role"]
+#     # courses = front_end_json["params"]["courses"]
+#     # skills = front_end_json["params"]["skills"]
+
+#     return ""

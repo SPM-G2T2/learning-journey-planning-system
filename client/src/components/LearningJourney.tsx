@@ -35,9 +35,10 @@ export default function LearningJourney(props: {
   setSelectedRole: (val: [number, string]) => void;
   setSelectedSkills: (val: { [key: string]: string }) => void;
   setSelectedCourses: (val: { [key: string]: string }) => void;
+  setLJID: (val: number) => void;
   create: () => void;
 }) {
-  const [staffID] = useState(140001);
+  const [staffID, setStaffID] = useState<number>(130001);
   const [ljData, setLjData] = useState();
   const [tableData, setTableData] = useState<DataType[]>([]);
 
@@ -111,6 +112,7 @@ export default function LearningJourney(props: {
                 selectedCourses[course.course_id] = course.course_name;
               }
               props.setSelectedCourses(selectedCourses);
+              props.setLJID(data[2]);
               props.setStep(props.step + 2);
             }}
           >
@@ -183,7 +185,7 @@ export default function LearningJourney(props: {
             requiredSkills: jsonForPS.data.length,
             missingSkills: countMissingSkills,
             addedCourses: values.course.length,
-            editAction: [values.position.position_status, jsonForLJ.data[ljID]],
+            editAction: [values.position.position_status, jsonForLJ.data[ljID], ljID],
             deleteAction: [Number(ljID), jsonForLJ.data[ljID]],
           };
           tableDataArr.push(oneTableData);

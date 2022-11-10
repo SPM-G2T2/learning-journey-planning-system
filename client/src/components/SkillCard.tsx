@@ -39,8 +39,8 @@ export default function SkillCard(props: {
           </Tag>
         )}
       </p>
-      {props.skill.skill_desc.length > 200
-        ? props.skill.skill_desc.substring(0, 150) + " ..."
+      {props.skill.skill_desc.length > 100
+        ? props.skill.skill_desc.substring(0, 100) + " ..."
         : props.skill.skill_desc}
       {props.purpose === "edit" ? (
         <Button

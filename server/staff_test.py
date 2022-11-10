@@ -108,14 +108,10 @@ class TestStaff(unittest.TestCase):
 
     
     def test_get_skills_by_staff(self, staff_id="S1234"):
-        response = self.client.get("/staff/" + staff_id + "/skills")
+        response = self.client.get("/staff/" + staff_id + "/skill_ids")
         self.assertTrue(response.status_code == 200)
         self.assertEquals(len(response.json['data']), 2)
-        self.assertListEqual(response.json['data'], [{ 
-            "staff_id": "S1234",
-            "skill_id": 1 }, {
-            "staff_id": "S1234",
-            "skill_id": 2 }])
+        self.assertListEqual(response.json['data'], [ 1 , 2 ])
 
 
     def test_get_learning_journeys_by_staff(self, staff_id="S1234"):

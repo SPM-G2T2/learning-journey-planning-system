@@ -1,4 +1,4 @@
-import { Button, Col, Modal, Pagination, Row, Steps } from "antd";
+import { Button, Col, message, Modal, Pagination, Row, Steps } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import RoleCourseCard from "../components/RoleCourseCard";
@@ -29,6 +29,7 @@ export default function Home({ user }: { user: number }) {
     [],
     [],
   ]);
+  const [LJID, setLJID] = useState<number>(0);
   const [finalSkills, setFinalSkills] = useState<Set<number>>(new Set());
   const [droppedSkills, setDroppedSkills] = useState<string[]>([]);
   const [modalStatus, setModalStatus] = useState<boolean>(false);
@@ -76,6 +77,7 @@ export default function Home({ user }: { user: number }) {
           setSelectedRole={setSelectedRole}
           setSelectedSkills={setSelectedSkills}
           setSelectedCourses={setSelectedCourses}
+          setLJID={setLJID}
           create={() => {
             axios
               .get("http://localhost:5000/positions/all")
@@ -85,7 +87,7 @@ export default function Home({ user }: { user: number }) {
         />
       ) : (
         <>
-          <h1>Create Your Desired Learning Journey</h1>
+          <h1>{ roles.length === 0 ? 'Edit' : 'Create' } Your Desired Learning Journey</h1>
 
           <div className={styles.content}>
             <Steps
@@ -354,18 +356,41 @@ export default function Home({ user }: { user: number }) {
             <Button
               className={styles.modalBtn}
               onClick={() => {
-                axios
+                if (roles.length === 0) {
+                  axios
                   .post(
-                    "http://localhost:5000/learning_journeys/" +
-                      (roles.length === 0 ? "update" : "create"),
-                    {
-                      staff_id: user,
-                      position_id: selectedRole[0],
-                      skill_course: skillCourse,
-                    }
+                    "http://localhost:5000/learning_journeys/" + LJID + "/delete",
                   )
-                  .then((resp) => console.log(resp))
+                  .then((resp) => {
+                    console.log(resp)
+                    // setStep(-1);
+                  })
                   .catch((err) => console.log(err));
+
+                } 
+                axios
+                .post(
+                  "http://localhost:5000/learning_journeys/create",
+                  {
+                    lj_id: roles.length === 0 ? LJID : 0,
+                    staff_id: user,
+                    position_id: selectedRole[0],
+                    skill_course: skillCourse,
+                  }
+                )
+                .then((resp) => {
+                  console.log(resp)
+                  if (roles.length === 0) {
+                    message.success("Your learning journey has been successfully updated!");
+                  } else {
+                    message.success("Your learning journey has been successfully created!");
+                  }
+                  // setStep(-1);
+                })
+                .catch((err) => console.log(err));
+                setTimeout(function(){
+                  window.location.reload();
+               }, 1000);
               }}
             >
               Confirm

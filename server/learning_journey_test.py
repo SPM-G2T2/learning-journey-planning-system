@@ -92,47 +92,34 @@ class TestLearningJourney(unittest.TestCase):
         db.drop_all()
 
 
-    # def test_create_learning_journey(self):
+    def test_create_learning_journey_with_no_lj_id(self):
 
-    #     json_data = {
-    #         "staff_id": "S1234", 
-    #         "position_id": 1, 
-    #         "skill_id": 1, 
-    #         "course_id": "IS212"
-    #     }
+        json_data = {
+            "lj_id": 0,
+            "staff_id": "S1234", 
+            "position_id": 1, 
+            "skill_course": [ [1, 2], ["IS212", "IS111"] ] 
+        }
 
-    #     response = self.client.post("/positions/create", data=json.dumps(json_data), content_type="application/json")
-    #     self.assertTrue(response.status_code == 201)
-
-
-    # def test_delete_learning_journey(self, lj_id="1"):
-    #     response = self.client.post("/positions/" + lj_id + "/delete")
-    #     self.assertTrue(response.status_code == 200)
+        response = self.client.post("/learning_journeys/create", data=json.dumps(json_data), content_type="application/json")
+        self.assertTrue(response.status_code == 201)
+        self.assertEquals(response.json['message'], "Learning Journey has been successfully created.")
 
 
-    # def test_edit_learning_journey_with_single_selection(self, lj_id="1"):
+    def test_create_learning_journey_with_lj_id(self):
 
-    #     json_data = {
-    #         "lj_id": lj_id,
-    #         "staff_id": "S1234", 
-    #         "position_id": 1, 
-    #         "skill_id": 1, 
-    #         "course_id": "IS212"
-    #     }
+        json_data = {
+            "lj_id": 2,
+            "staff_id": "S1234", 
+            "position_id": 1, 
+            "skill_course": [ [1, 2], ["IS212", "IS111"] ] 
+        }
 
-    #     response = self.client.put("/positions/edit", data=json.dumps(json_data), content_type="application/json")
-    #     self.assertTrue(response.status_code == 200)
+        response = self.client.post("/learning_journeys/create", data=json.dumps(json_data), content_type="application/json")
+        self.assertTrue(response.status_code == 201)
+        self.assertEquals(response.json['message'], "Learning Journey has been successfully created.")
 
 
-    # def test_edit_learning_journey_with_multiple_selection(self, lj_id="1"):
-
-    #     json_data = {
-    #         "lj_id": lj_id,
-    #         "staff_id": "S1234", 
-    #         "position_id": 1, 
-    #         "skill_id": 1, 
-    #         "course_id": "IS212"
-    #     }
-
-    #     response = self.client.put("/positions/edit", data=json.dumps(json_data), content_type="application/json")
-    #     self.assertTrue(response.status_code == 200)
+    def test_delete_learning_journey(self, lj_id="1"):
+        response = self.client.post("/learning_journeys/" + lj_id + "/delete")
+        self.assertTrue(response.status_code == 200)
