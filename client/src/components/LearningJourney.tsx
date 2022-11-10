@@ -1,8 +1,8 @@
 import { Row, Col, Table, Card, Button, Typography, Tag } from "antd";
-import type { ColumnsType } from 'antd/es/table';
+import type { ColumnsType } from "antd/es/table";
 import gorilla_image from "../assets/gorilla_image.png";
 import styles from "../styles/Home.module.css";
-import DeleteLJBtn from "./DeleteLearningJourney"
+import DeleteLJBtn from "./DeleteLearningJourney";
 import { useEffect, useState } from "react";
 
 type DataType = {
@@ -15,19 +15,19 @@ type DataType = {
   addedCourses: number;
   editAction: String;
   deleteAction: number;
-}
+};
 
 type SelectedSkill = {
-  skill_id: number
-  skill_name: string
-  skill_status: string
-}
+  skill_id: number;
+  skill_name: string;
+  skill_status: string;
+};
 
 type SelectedCourse = {
-  course_id: string
-  course_name: string
-  course_status: string
-}
+  course_id: string;
+  course_name: string;
+  course_status: string;
+};
 
 export default function LearningJourney(props: {
   step: number;
@@ -96,19 +96,19 @@ export default function LearningJourney(props: {
         data[0] === "Active" ? (
           <Button
             onClick={() => {
-              console.log(data)
+              console.log(data);
               props.setSelectedRole([
                 data[1]["position"].position_id,
                 data[1]["position"].position_name,
               ]);
-              const selectedSkills:{[key:string]:string} = {}
-              for (let skill of data[1]["skill"]){
-                selectedSkills[skill.skill_id] = skill.skill_name
+              const selectedSkills: { [key: string]: string } = {};
+              for (let skill of data[1]["skill"]) {
+                selectedSkills[skill.skill_id] = skill.skill_name;
               }
               props.setSelectedSkills(selectedSkills);
-              const selectedCourses:{[key:string]:string} = {}
-              for (let course of data[1]["course"]){
-                selectedCourses[course.course_id] = course.course_name
+              const selectedCourses: { [key: string]: string } = {};
+              for (let course of data[1]["course"]) {
+                selectedCourses[course.course_id] = course.course_name;
               }
               props.setSelectedCourses(selectedCourses);
               props.setStep(props.step + 2);

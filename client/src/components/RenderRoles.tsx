@@ -71,7 +71,7 @@ export default function RenderRoles(props: any) {
               <RoleCourseCard
                 role={searchedRole}
                 purpose="edit"
-                // editClicked={callback}
+                editClicked={callback}
               />
             ))
           : roles &&
@@ -79,7 +79,7 @@ export default function RenderRoles(props: any) {
               <RoleCourseCard
                 role={role}
                 purpose="edit"
-                // editClicked={callback}
+                editClicked={callback}
               />
             ))}
       </div>

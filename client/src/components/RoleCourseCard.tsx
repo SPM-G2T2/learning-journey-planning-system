@@ -10,7 +10,7 @@ import { Course } from "../types/Course";
 import GenericModal from "./GenericModal";
 
 export default function RoleCourseCard(props: {
-  // editClicked: (editRole: Role | undefined) => void;
+  editClicked?: (editRole: Role | undefined) => void;
   purpose: "view" | "lj" | "edit";
   role?: Role;
   course?: Course;
@@ -34,12 +34,13 @@ export default function RoleCourseCard(props: {
   return (
     <div
       className={`${styles.horizontal} ${styles.card} ${
-        (props.role
-          ? props.role.position_id ===
-            (props.selectedRole as [number, string])[0]
-          : (props.selectedCourses as { [key: string]: string })[
-              props.course?.course_id as string
-            ]) && styles.cardSelected
+        ((props.selectedRole &&
+          props.role &&
+          props.selectedRole[0] === props.role.position_id) ||
+          (props.selectedCourses &&
+            props.course &&
+            props.selectedCourses[props.course.course_id])) &&
+        styles.cardSelected
       } ${props.purpose === "lj" && styles.hover}`}
       onClick={props.handleClick}
     >
@@ -101,7 +102,7 @@ export default function RoleCourseCard(props: {
       {props.purpose === "edit" && props.role ? (
         <Button
           className={styles.edit}
-          // onClick={() => props.editClicked(props.role)}
+          onClick={() => props.editClicked && props.editClicked(props.role)}
         >
           Edit
         </Button>

@@ -60,7 +60,7 @@ export default function RenderCourses(props: any) {
               <RoleCourseCard
                 course={searchedCourse}
                 purpose="edit"
-                // editClicked={callback}
+                editClicked={callback}
               />
             ))
           : courses &&
@@ -68,7 +68,7 @@ export default function RenderCourses(props: any) {
               <RoleCourseCard
                 course={course}
                 purpose="edit"
-                // editClicked={callback}
+                editClicked={callback}
               />
             ))}
       </div>

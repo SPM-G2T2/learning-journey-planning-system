@@ -64,7 +64,7 @@ export default function Roles() {
               <RoleCourseCard
                 role={searchedRole}
                 purpose="view"
-                // editClicked={callback}
+                editClicked={callback}
               />
             ))
           : roles &&
@@ -72,7 +72,7 @@ export default function Roles() {
               <RoleCourseCard
                 role={role}
                 purpose="view"
-                // editClicked={callback}
+                editClicked={callback}
               />
             ))}
       </div>
