@@ -78,6 +78,7 @@ export default function Home({ user }: { user: number }) {
           setSelectedSkills={setSelectedSkills}
           setSelectedCourses={setSelectedCourses}
           setLJID={setLJID}
+          user={user}
           create={() => {
             axios
               .get("http://localhost:5000/positions/all")

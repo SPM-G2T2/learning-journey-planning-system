@@ -36,9 +36,9 @@ export default function LearningJourney(props: {
   setSelectedSkills: (val: { [key: string]: string }) => void;
   setSelectedCourses: (val: { [key: string]: string }) => void;
   setLJID: (val: number) => void;
+  user: number
   create: () => void;
 }) {
-  const [staffID, setStaffID] = useState<number>(130001);
   const [ljData, setLjData] = useState();
   const [tableData, setTableData] = useState<DataType[]>([]);
 
@@ -132,7 +132,7 @@ export default function LearningJourney(props: {
     const loadAsync = async () => {
       try {
         const responseForLJ = await fetch(
-          "http://localhost:5000/staff/" + staffID + "/learning_journeys"
+          "http://localhost:5000/staff/" + props.user + "/learning_journeys"
         );
         const jsonForLJ = await responseForLJ.json();
         console.log(jsonForLJ);
@@ -159,7 +159,7 @@ export default function LearningJourney(props: {
           // console.log(uniquePositionSkills);
 
           const responseForStaffSkills = await fetch(
-            "http://localhost:5000/staff/" + staffID + "/skill_ids"
+            "http://localhost:5000/staff/" + props.user + "/skill_ids"
           );
           const jsonForStaffSkills = await responseForStaffSkills.json();
           console.log(jsonForStaffSkills.data);
