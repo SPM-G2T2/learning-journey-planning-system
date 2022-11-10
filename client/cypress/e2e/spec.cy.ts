@@ -2,7 +2,7 @@
 
 describe('Create a Role Form', () => {
   it('Visit the Site and Test the Role Form', () => {
-    cy.visit('localhost:3000/ljps')
+    cy.visit('/ljps')
     cy.get("#createRoleBtn").contains("Create role").click();
     cy.get("#userForm_Title").type('QA Test Manager').should('have.value', 'QA Test Manager');
     cy.get("#userForm_Description").type('Ensure code quality').should('have.value', 'Ensure code quality');
@@ -16,7 +16,7 @@ describe('Create a Role Form', () => {
 
 describe('Create a Skill Form', () => {
   it('Visit the Site and Test the Skill Form', () => {
-    cy.visit('localhost:3000/ljps')
+    cy.visit('/ljps')
     cy.get("#rc-tabs-0-tab-skills").contains("Skills").click();
     cy.get("#createSkillBtn").contains("Create skill").click();
     cy.get("#userForm_Title").type('Research').should('have.value', 'Research');
